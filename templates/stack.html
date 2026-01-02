@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stack Visualizer - DSA Visualizer</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
     <div class="container">
         <!-- Navigation -->
         <nav class="nav">
-            <a href="/" class="nav-brand">🎯 DSA Visualizer</a>
-            <span class="nav-current">Stack</span>
+            <a href="/" class="nav-brand"><i data-lucide="target"></i> DSA Visualizer</a>
+            <span class="nav-current"><i data-lucide="layers"></i> Stack</span>
         </nav>
 
         <div class="visualizer-layout">
@@ -55,7 +56,7 @@
 
                 <!-- Learning Section -->
                 <div class="learn-section">
-                    <h3>📖 Learn</h3>
+                    <h3><i data-lucide="book-open" class="icon-sm"></i> Learn</h3>
                     <p><strong>Stack</strong> is a LIFO structure:</p>
                     <ul>
                         <li><strong>Push O(1):</strong> Add to top</li>
@@ -80,8 +81,320 @@
                 </div>
             </div>
         </div>
+
+        <!-- Code Implementation Section -->
+        <div class="code-section">
+            <h2><i data-lucide="code-2"></i> Implementation</h2>
+            
+            <div class="code-tabs">
+                <button class="tab-btn active" data-lang="python">
+                    <i data-lucide="file-code"></i> Python
+                </button>
+                <button class="tab-btn" data-lang="javascript">
+                    <i data-lucide="file-code"></i> JavaScript
+                </button>
+                <button class="tab-btn" data-lang="java">
+                    <i data-lucide="file-code"></i> Java
+                </button>
+                <button class="tab-btn" data-lang="csharp">
+                    <i data-lucide="file-code"></i> C#
+                </button>
+                <button class="tab-btn" data-lang="cpp">
+                    <i data-lucide="file-code"></i> C++
+                </button>
+                <button class="tab-btn" data-lang="c">
+                    <i data-lucide="file-code"></i> C
+                </button>
+            </div>
+
+            <div class="code-panels">
+                <!-- Python -->
+                <div class="code-panel active" data-lang="python">
+                    <pre><code>class Stack:
+    def __init__(self):
+        self.items = []
+    
+    def push(self, item):
+        """Add item to top - O(1)"""
+        self.items.append(item)
+    
+    def pop(self):
+        """Remove and return top item - O(1)"""
+        if not self.is_empty():
+            return self.items.pop()
+        raise IndexError("Stack is empty")
+    
+    def peek(self):
+        """View top item without removing - O(1)"""
+        if not self.is_empty():
+            return self.items[-1]
+        return None
+    
+    def is_empty(self):
+        return len(self.items) == 0
+    
+    def size(self):
+        return len(self.items)
+
+# Usage
+stack = Stack()
+stack.push(10)
+stack.push(20)
+print(stack.pop())  # 20</code></pre>
+                </div>
+
+                <!-- JavaScript -->
+                <div class="code-panel" data-lang="javascript">
+                    <pre><code>class Stack {
+    constructor() {
+        this.items = [];
+    }
+    
+    push(item) {
+        // Add item to top - O(1)
+        this.items.push(item);
+    }
+    
+    pop() {
+        // Remove and return top item - O(1)
+        if (!this.isEmpty()) {
+            return this.items.pop();
+        }
+        throw new Error("Stack is empty");
+    }
+    
+    peek() {
+        // View top item without removing - O(1)
+        if (!this.isEmpty()) {
+            return this.items[this.items.length - 1];
+        }
+        return null;
+    }
+    
+    isEmpty() {
+        return this.items.length === 0;
+    }
+    
+    size() {
+        return this.items.length;
+    }
+}
+
+// Usage
+const stack = new Stack();
+stack.push(10);
+stack.push(20);
+console.log(stack.pop()); // 20</code></pre>
+                </div>
+
+                <!-- Java -->
+                <div class="code-panel" data-lang="java">
+                    <pre><code>import java.util.ArrayList;
+
+public class Stack&lt;T&gt; {
+    private ArrayList&lt;T&gt; items;
+    
+    public Stack() {
+        this.items = new ArrayList&lt;&gt;();
+    }
+    
+    // Add item to top - O(1)
+    public void push(T item) {
+        items.add(item);
+    }
+    
+    // Remove and return top item - O(1)
+    public T pop() {
+        if (!isEmpty()) {
+            return items.remove(items.size() - 1);
+        }
+        throw new RuntimeException("Stack is empty");
+    }
+    
+    // View top item without removing - O(1)
+    public T peek() {
+        if (!isEmpty()) {
+            return items.get(items.size() - 1);
+        }
+        return null;
+    }
+    
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+    
+    public int size() {
+        return items.size();
+    }
+}
+
+// Usage
+Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+stack.push(10);
+stack.push(20);
+System.out.println(stack.pop()); // 20</code></pre>
+                </div>
+
+                <!-- C# -->
+                <div class="code-panel" data-lang="csharp">
+                    <pre><code>using System;
+using System.Collections.Generic;
+
+public class Stack&lt;T&gt; {
+    private List&lt;T&gt; items = new List&lt;T&gt;();
+    
+    // Add item to top - O(1)
+    public void Push(T item) {
+        items.Add(item);
+    }
+    
+    // Remove and return top item - O(1)
+    public T Pop() {
+        if (!IsEmpty()) {
+            T item = items[items.Count - 1];
+            items.RemoveAt(items.Count - 1);
+            return item;
+        }
+        throw new InvalidOperationException("Stack is empty");
+    }
+    
+    // View top item without removing - O(1)
+    public T Peek() {
+        if (!IsEmpty()) {
+            return items[items.Count - 1];
+        }
+        return default(T);
+    }
+    
+    public bool IsEmpty() =&gt; items.Count == 0;
+    
+    public int Size() =&gt; items.Count;
+}
+
+// Usage
+var stack = new Stack&lt;int&gt;();
+stack.Push(10);
+stack.Push(20);
+Console.WriteLine(stack.Pop()); // 20</code></pre>
+                </div>
+
+                <!-- C++ -->
+                <div class="code-panel" data-lang="cpp">
+                    <pre><code>#include &lt;vector&gt;
+#include &lt;stdexcept&gt;
+
+template &lt;typename T&gt;
+class Stack {
+private:
+    std::vector&lt;T&gt; items;
+
+public:
+    // Add item to top - O(1)
+    void push(T item) {
+        items.push_back(item);
+    }
+    
+    // Remove and return top item - O(1)
+    T pop() {
+        if (!isEmpty()) {
+            T item = items.back();
+            items.pop_back();
+            return item;
+        }
+        throw std::runtime_error("Stack is empty");
+    }
+    
+    // View top item without removing - O(1)
+    T peek() {
+        if (!isEmpty()) {
+            return items.back();
+        }
+        throw std::runtime_error("Stack is empty");
+    }
+    
+    bool isEmpty() {
+        return items.empty();
+    }
+    
+    int size() {
+        return items.size();
+    }
+};
+
+// Usage
+Stack&lt;int&gt; stack;
+stack.push(10);
+stack.push(20);
+std::cout &lt;&lt; stack.pop(); // 20</code></pre>
+                </div>
+
+                <!-- C -->
+                <div class="code-panel" data-lang="c">
+                    <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+
+#define MAX_SIZE 100
+
+typedef struct {
+    int items[MAX_SIZE];
+    int top;
+} Stack;
+
+void init(Stack* s) {
+    s-&gt;top = -1;
+}
+
+// Add item to top - O(1)
+void push(Stack* s, int item) {
+    if (s-&gt;top &lt; MAX_SIZE - 1) {
+        s-&gt;items[++s-&gt;top] = item;
+    }
+}
+
+// Remove and return top item - O(1)
+int pop(Stack* s) {
+    if (!isEmpty(s)) {
+        return s-&gt;items[s-&gt;top--];
+    }
+    return -1; // Error
+}
+
+// View top item without removing - O(1)
+int peek(Stack* s) {
+    if (!isEmpty(s)) {
+        return s-&gt;items[s-&gt;top];
+    }
+    return -1; // Error
+}
+
+bool isEmpty(Stack* s) {
+    return s-&gt;top == -1;
+}
+
+int size(Stack* s) {
+    return s-&gt;top + 1;
+}
+
+// Usage
+int main() {
+    Stack stack;
+    init(&amp;stack);
+    push(&amp;stack, 10);
+    push(&amp;stack, 20);
+    printf("%d", pop(&amp;stack)); // 20
+    return 0;
+}</code></pre>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/stack.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/code-tabs.js') }}"></script>
+    <script>lucide.createIcons();</script>
+     <footer class="footer" > 
+        &copy; Created By Abdullah Mahfouz
+    </footer>
 </body>
 </html>
