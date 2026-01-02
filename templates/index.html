@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 DSA Visualizer</h1>
+        <p>Learn Data Structures & Algorithms through interactive visualizations!</p>
+        
+        <div class="card-grid">
+            <!-- Stack Card -->
+            <a href="/stack" class="card">
+                <div class="card-icon">📚</div>
+                <h2>Stack</h2>
+                <p>Last In, First Out (LIFO)</p>
+                <span class="status learning">Start Learning</span>
+            </a>
+            
+            <!-- Coming Soon Cards -->
+            <div class="card disabled">
+                <div class="card-icon">🔗</div>
+                <h2>Queue</h2>
+                <p>First In, First Out (FIFO)</p>
+                <span class="status">Coming Soon</span>
+            </div>
+            
+            <div class="card disabled">
+                <div class="card-icon">🔗</div>
+                <h2>Linked List</h2>
+                <p>Sequential node connections</p>
+                <span class="status">Coming Soon</span>
+            </div>
+            
+            <div class="card disabled">
+                <div class="card-icon">🌳</div>
+                <h2>Binary Tree</h2>
+                <p>Hierarchical data structure</p>
+                <span class="status">Coming Soon</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
