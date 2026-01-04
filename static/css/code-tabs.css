@@ -119,6 +119,7 @@
     border: 1px solid rgba(0, 255, 0, 0.2);
     border-radius: var(--radius-md);
     padding: 1.25rem;
+    padding-top: 2.5rem;
     overflow-x: auto;
     margin: 0;
     position: relative;
@@ -129,10 +130,57 @@
     content: '// code';
     position: absolute;
     top: 0.5rem;
-    right: 0.75rem;
+    left: 0.75rem;
     font-size: 0.7rem;
     color: #006600;
     opacity: 0.5;
+}
+
+/* Copy Button */
+.copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    border-radius: var(--radius-sm);
+    color: #00cc00;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.copy-btn [data-lucide] {
+    width: 14px;
+    height: 14px;
+    stroke: #00cc00;
+}
+
+.copy-btn:hover {
+    background: rgba(0, 255, 0, 0.2);
+    border-color: #00ff00;
+    color: #00ff00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.copy-btn:hover [data-lucide] {
+    stroke: #00ff00;
+}
+
+.copy-btn.copied {
+    background: rgba(0, 255, 0, 0.3);
+    border-color: #00ff00;
+    color: #00ff00;
+}
+
+.copy-btn.copied [data-lucide] {
+    stroke: #00ff00;
 }
 
 .code-panel code {

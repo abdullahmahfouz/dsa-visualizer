@@ -54,16 +54,48 @@
                 <!-- Message Display -->
                 <div id="message" class="message"></div>
 
-                <!-- Learning Section -->
-                <div class="learn-section">
-                    <h3><i data-lucide="book-open" class="icon-sm"></i> Learn</h3>
-                    <p><strong>Stack</strong> is a LIFO structure:</p>
-                    <ul>
-                        <li><strong>Push O(1):</strong> Add to top</li>
-                        <li><strong>Pop O(1):</strong> Remove from top</li>
-                        <li><strong>Peek O(1):</strong> View top element</li>
-                    </ul>
-                    <p class="example">Example: Browser back button, Undo feature</p>
+                <!-- What is a Stack? Box -->
+                <div class="concept-box">
+                    <div class="concept-header">
+                        <i data-lucide="help-circle" class="icon-sm"></i>
+                        <span>What is a Stack?</span>
+                    </div>
+                    <div class="concept-content">
+                        <p>A <strong>Stack</strong> is a linear data structure that follows the <strong>LIFO</strong> (Last In, First Out) principle.</p>
+                        
+                        <div class="concept-analogy">
+                            <i data-lucide="lightbulb"></i>
+                            <span>Think of a stack of plates - you can only add or remove from the <strong>top</strong>!</span>
+                        </div>
+                        
+                        <div class="concept-operations">
+                            <div class="op-item">
+                                <span class="op-name">Push</span>
+                                <span class="op-desc">Add to top</span>
+                                <span class="op-complexity">O(1)</span>
+                            </div>
+                            <div class="op-item">
+                                <span class="op-name">Pop</span>
+                                <span class="op-desc">Remove from top</span>
+                                <span class="op-complexity">O(1)</span>
+                            </div>
+                            <div class="op-item">
+                                <span class="op-name">Peek</span>
+                                <span class="op-desc">View top element</span>
+                                <span class="op-complexity">O(1)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="concept-uses">
+                            <strong>Common Uses:</strong>
+                            <ul>
+                                <li>Browser back/forward buttons</li>
+                                <li>Undo/Redo functionality</li>
+                                <li>Function call stack</li>
+                                <li>Expression evaluation</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -110,34 +142,42 @@
             <div class="code-panels">
                 <!-- Python -->
                 <div class="code-panel active" data-lang="python">
-                    <pre><code>class Stack:
-    def __init__(self):
-        self.items = []
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>class Stack:
+    def __init__(self, capacity=100):
+        self.capacity = capacity
+        self.items = [None] * capacity  # Fixed-size array
+        self.top = -1  # Index of top element
     
     def push(self, item):
         """Add item to top - O(1)"""
-        self.items.append(item)
+        if self.top >= self.capacity - 1:
+            raise OverflowError("Stack is full")
+        self.top += 1
+        self.items[self.top] = item
     
     def pop(self):
         """Remove and return top item - O(1)"""
-        if not self.is_empty():
-            return self.items.pop()
-        raise IndexError("Stack is empty")
+        if self.is_empty():
+            raise IndexError("Stack is empty")
+        item = self.items[self.top]
+        self.items[self.top] = None
+        self.top -= 1
+        return item
     
     def peek(self):
         """View top item without removing - O(1)"""
-        if not self.is_empty():
-            return self.items[-1]
-        return None
+        if self.is_empty():
+            return None
+        return self.items[self.top]
     
     def is_empty(self):
-        return len(self.items) == 0
+        return self.top == -1
     
     def size(self):
-        return len(self.items)
+        return self.top + 1
 
 # Usage
-stack = Stack()
+stack = Stack(100)
 stack.push(10)
 stack.push(20)
 print(stack.pop())  # 20</code></pre>
@@ -145,43 +185,52 @@ print(stack.pop())  # 20</code></pre>
 
                 <!-- JavaScript -->
                 <div class="code-panel" data-lang="javascript">
-                    <pre><code>class Stack {
-    constructor() {
-        this.items = [];
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>class Stack {
+    constructor(capacity = 100) {
+        this.capacity = capacity;
+        this.items = new Array(capacity);  // Fixed-size array
+        this.top = -1;  // Index of top element
     }
     
     push(item) {
         // Add item to top - O(1)
-        this.items.push(item);
+        if (this.top >= this.capacity - 1) {
+            throw new Error("Stack is full");
+        }
+        this.top++;
+        this.items[this.top] = item;
     }
     
     pop() {
         // Remove and return top item - O(1)
-        if (!this.isEmpty()) {
-            return this.items.pop();
+        if (this.isEmpty()) {
+            throw new Error("Stack is empty");
         }
-        throw new Error("Stack is empty");
+        const item = this.items[this.top];
+        this.items[this.top] = undefined;
+        this.top--;
+        return item;
     }
     
     peek() {
         // View top item without removing - O(1)
-        if (!this.isEmpty()) {
-            return this.items[this.items.length - 1];
+        if (this.isEmpty()) {
+            return null;
         }
-        return null;
+        return this.items[this.top];
     }
     
     isEmpty() {
-        return this.items.length === 0;
+        return this.top === -1;
     }
     
     size() {
-        return this.items.length;
+        return this.top + 1;
     }
 }
 
 // Usage
-const stack = new Stack();
+const stack = new Stack(100);
 stack.push(10);
 stack.push(20);
 console.log(stack.pop()); // 20</code></pre>
@@ -189,47 +238,52 @@ console.log(stack.pop()); // 20</code></pre>
 
                 <!-- Java -->
                 <div class="code-panel" data-lang="java">
-                    <pre><code>import java.util.ArrayList;
-
-public class Stack&lt;T&gt; {
-    private ArrayList&lt;T&gt; items;
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>public class Stack {
+    private int[] items;  // Fixed-size array
+    private int top;      // Index of top element
+    private int capacity;
     
-    public Stack() {
-        this.items = new ArrayList&lt;&gt;();
+    public Stack(int capacity) {
+        this.capacity = capacity;
+        this.items = new int[capacity];
+        this.top = -1;
     }
     
     // Add item to top - O(1)
-    public void push(T item) {
-        items.add(item);
+    public void push(int item) {
+        if (top >= capacity - 1) {
+            throw new RuntimeException("Stack is full");
+        }
+        items[++top] = item;
     }
     
     // Remove and return top item - O(1)
-    public T pop() {
-        if (!isEmpty()) {
-            return items.remove(items.size() - 1);
+    public int pop() {
+        if (isEmpty()) {
+            throw new RuntimeException("Stack is empty");
         }
-        throw new RuntimeException("Stack is empty");
+        return items[top--];
     }
     
     // View top item without removing - O(1)
-    public T peek() {
-        if (!isEmpty()) {
-            return items.get(items.size() - 1);
+    public int peek() {
+        if (isEmpty()) {
+            throw new RuntimeException("Stack is empty");
         }
-        return null;
+        return items[top];
     }
     
     public boolean isEmpty() {
-        return items.isEmpty();
+        return top == -1;
     }
     
     public int size() {
-        return items.size();
+        return top + 1;
     }
 }
 
 // Usage
-Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+Stack stack = new Stack(100);
 stack.push(10);
 stack.push(20);
 System.out.println(stack.pop()); // 20</code></pre>
@@ -237,42 +291,45 @@ System.out.println(stack.pop()); // 20</code></pre>
 
                 <!-- C# -->
                 <div class="code-panel" data-lang="csharp">
-                    <pre><code>using System;
-using System.Collections.Generic;
-
-public class Stack&lt;T&gt; {
-    private List&lt;T&gt; items = new List&lt;T&gt;();
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>public class Stack {
+    private int[] items;  // Fixed-size array
+    private int top;      // Index of top element
+    private int capacity;
+    
+    public Stack(int capacity) {
+        this.capacity = capacity;
+        this.items = new int[capacity];
+        this.top = -1;
+    }
     
     // Add item to top - O(1)
-    public void Push(T item) {
-        items.Add(item);
+    public void Push(int item) {
+        if (top >= capacity - 1)
+            throw new InvalidOperationException("Stack is full");
+        items[++top] = item;
     }
     
     // Remove and return top item - O(1)
-    public T Pop() {
-        if (!IsEmpty()) {
-            T item = items[items.Count - 1];
-            items.RemoveAt(items.Count - 1);
-            return item;
-        }
-        throw new InvalidOperationException("Stack is empty");
+    public int Pop() {
+        if (IsEmpty())
+            throw new InvalidOperationException("Stack is empty");
+        return items[top--];
     }
     
     // View top item without removing - O(1)
-    public T Peek() {
-        if (!IsEmpty()) {
-            return items[items.Count - 1];
-        }
-        return default(T);
+    public int Peek() {
+        if (IsEmpty())
+            throw new InvalidOperationException("Stack is empty");
+        return items[top];
     }
     
-    public bool IsEmpty() =&gt; items.Count == 0;
+    public bool IsEmpty() => top == -1;
     
-    public int Size() =&gt; items.Count;
+    public int Size() => top + 1;
 }
 
 // Usage
-var stack = new Stack&lt;int&gt;();
+var stack = new Stack(100);
 stack.Push(10);
 stack.Push(20);
 Console.WriteLine(stack.Pop()); // 20</code></pre>
@@ -280,65 +337,67 @@ Console.WriteLine(stack.Pop()); // 20</code></pre>
 
                 <!-- C++ -->
                 <div class="code-panel" data-lang="cpp">
-                    <pre><code>#include &lt;vector&gt;
-#include &lt;stdexcept&gt;
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>#include &lt;stdexcept&gt;
 
-template &lt;typename T&gt;
 class Stack {
 private:
-    std::vector&lt;T&gt; items;
+    int* items;    // Fixed-size array
+    int top;       // Index of top element
+    int capacity;
 
 public:
+    Stack(int cap = 100) : capacity(cap), top(-1) {
+        items = new int[capacity];
+    }
+    
+    ~Stack() { delete[] items; }
+    
     // Add item to top - O(1)
-    void push(T item) {
-        items.push_back(item);
+    void push(int item) {
+        if (top >= capacity - 1)
+            throw std::overflow_error("Stack is full");
+        items[++top] = item;
     }
     
     // Remove and return top item - O(1)
-    T pop() {
-        if (!isEmpty()) {
-            T item = items.back();
-            items.pop_back();
-            return item;
-        }
-        throw std::runtime_error("Stack is empty");
+    int pop() {
+        if (isEmpty())
+            throw std::underflow_error("Stack is empty");
+        return items[top--];
     }
     
     // View top item without removing - O(1)
-    T peek() {
-        if (!isEmpty()) {
-            return items.back();
-        }
-        throw std::runtime_error("Stack is empty");
+    int peek() {
+        if (isEmpty())
+            throw std::underflow_error("Stack is empty");
+        return items[top];
     }
     
-    bool isEmpty() {
-        return items.empty();
-    }
+    bool isEmpty() { return top == -1; }
     
-    int size() {
-        return items.size();
-    }
+    int size() { return top + 1; }
 };
 
 // Usage
-Stack&lt;int&gt; stack;
-stack.push(10);
-stack.push(20);
-std::cout &lt;&lt; stack.pop(); // 20</code></pre>
+int main() {
+    Stack stack(100);
+    stack.push(10);
+    stack.push(20);
+    std::cout &lt;&lt; stack.pop(); // 20
+    return 0;
+}</code></pre>
                 </div>
 
                 <!-- C -->
                 <div class="code-panel" data-lang="c">
-                    <pre><code>#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>#include &lt;stdio.h&gt;
 #include &lt;stdbool.h&gt;
 
 #define MAX_SIZE 100
 
 typedef struct {
-    int items[MAX_SIZE];
-    int top;
+    int items[MAX_SIZE];  // Fixed-size array
+    int top;              // Index of top element
 } Stack;
 
 void init(Stack* s) {
@@ -346,26 +405,25 @@ void init(Stack* s) {
 }
 
 // Add item to top - O(1)
-void push(Stack* s, int item) {
-    if (s-&gt;top &lt; MAX_SIZE - 1) {
-        s-&gt;items[++s-&gt;top] = item;
-    }
+bool push(Stack* s, int item) {
+    if (s-&gt;top >= MAX_SIZE - 1)
+        return false;  // Stack overflow
+    s-&gt;items[++s-&gt;top] = item;
+    return true;
 }
 
 // Remove and return top item - O(1)
 int pop(Stack* s) {
-    if (!isEmpty(s)) {
-        return s-&gt;items[s-&gt;top--];
-    }
-    return -1; // Error
+    if (isEmpty(s))
+        return -1;  // Stack underflow
+    return s-&gt;items[s-&gt;top--];
 }
 
 // View top item without removing - O(1)
 int peek(Stack* s) {
-    if (!isEmpty(s)) {
-        return s-&gt;items[s-&gt;top];
-    }
-    return -1; // Error
+    if (isEmpty(s))
+        return -1;
+    return s-&gt;items[s-&gt;top];
 }
 
 bool isEmpty(Stack* s) {

@@ -27,3 +27,9 @@ def stack_page():
 def queue_page():
     """Queue visualizer page."""
     return render_template("queue.html")
+
+
+@pages_bp.route("/linkedlist")
+def linkedlist_page():
+    """Singly Linked List visualizer page."""
+    return render_template("linkedlist.html")

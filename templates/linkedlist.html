@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked List Visualizer - DSA Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="/" class="nav-brand"><i data-lucide="target"></i> DSA Visualizer</a>
+            <span class="nav-current"><i data-lucide="link"></i> Singly Linked List</span>
+        </nav>
+
+        <div class="visualizer-layout">
+            <!-- Left Panel: Controls -->
+            <div class="control-panel">
+                <h2>Linked List Operations</h2>
+                
+                <!-- Insert at Head -->
+                <div class="operation-group">
+                    <label for="insertHeadValue">Insert at Head</label>
+                    <div class="input-group">
+                        <input type="number" id="insertHeadValue" placeholder="Enter a number">
+                        <button onclick="insertAtHead()" class="btn btn-insert">Insert Head</button>
+                    </div>
+                </div>
+
+                <!-- Insert at Tail -->
+                <div class="operation-group">
+                    <label for="insertTailValue">Insert at Tail</label>
+                    <div class="input-group">
+                        <input type="number" id="insertTailValue" placeholder="Enter a number">
+                        <button onclick="insertAtTail()" class="btn btn-insert">Insert Tail</button>
+                    </div>
+                </div>
+
+                <!-- Insert at Index -->
+                <div class="operation-group">
+                    <label>Insert at Index</label>
+                    <div class="input-group">
+                        <input type="number" id="insertIndexValue" placeholder="Value" style="flex: 1;">
+                        <input type="number" id="insertIndex" placeholder="Index" min="0" style="max-width: 80px;">
+                        <button onclick="insertAtIndex()" class="btn btn-insert">Insert</button>
+                    </div>
+                </div>
+
+                <!-- Delete Operations -->
+                <div class="operation-group">
+                    <label>Delete Operations</label>
+                    <div class="btn-group">
+                        <button onclick="deleteAtHead()" class="btn btn-delete">Delete Head</button>
+                        <button onclick="deleteAtTail()" class="btn btn-delete">Delete Tail</button>
+                    </div>
+                </div>
+
+                <!-- Delete at Index -->
+                <div class="operation-group">
+                    <label for="deleteIndex">Delete at Index</label>
+                    <div class="input-group">
+                        <input type="number" id="deleteIndex" placeholder="Index" min="0">
+                        <button onclick="deleteAtIndex()" class="btn btn-delete">Delete</button>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="operation-group">
+                    <label for="searchValue">Search Value</label>
+                    <div class="input-group">
+                        <input type="number" id="searchValue" placeholder="Enter a number">
+                        <button onclick="searchValue()" class="btn btn-search">Search</button>
+                    </div>
+                </div>
+
+                <!-- Clear -->
+                <div class="operation-group">
+                    <button onclick="clearList()" class="btn btn-clear" style="width: 100%;">Clear All</button>
+                </div>
+
+                <!-- Info Display -->
+                <div class="info-panel">
+                    <div class="info-item">
+                        <span class="info-label">Size:</span>
+                        <span id="listSize" class="info-value">0</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Head:</span>
+                        <span id="listHead" class="info-value">Empty</span>
+                    </div>
+                </div>
+
+                <!-- Message Display -->
+                <div id="message" class="message"></div>
+
+                <!-- What is a Linked List? Box -->
+                <div class="concept-box">
+                    <div class="concept-header">
+                        <i data-lucide="help-circle" class="icon-sm"></i>
+                        <span>What is a Singly Linked List?</span>
+                    </div>
+                    <div class="concept-content">
+                        <p>A <strong>Singly Linked List</strong> is a linear data structure where each element (node) contains data and a pointer to the next node.</p>
+                        
+                        <div class="concept-analogy">
+                            <i data-lucide="lightbulb"></i>
+                            <span>Think of a treasure hunt - each clue points to the <strong>next location</strong>!</span>
+                        </div>
+                        
+                        <div class="concept-operations">
+                            <div class="op-item">
+                                <span class="op-name">Insert Head</span>
+                                <span class="op-desc">Add at beginning</span>
+                                <span class="op-complexity">O(1)</span>
+                            </div>
+                            <div class="op-item">
+                                <span class="op-name">Insert Tail</span>
+                                <span class="op-desc">Add at end</span>
+                                <span class="op-complexity">O(n)</span>
+                            </div>
+                            <div class="op-item">
+                                <span class="op-name">Delete Head</span>
+                                <span class="op-desc">Remove first</span>
+                                <span class="op-complexity">O(1)</span>
+                            </div>
+                            <div class="op-item">
+                                <span class="op-name">Search</span>
+                                <span class="op-desc">Find element</span>
+                                <span class="op-complexity">O(n)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="concept-uses">
+                            <strong>Common Uses:</strong>
+                            <ul>
+                                <li>Dynamic memory allocation</li>
+                                <li>Implementation of stacks/queues</li>
+                                <li>Undo functionality</li>
+                                <li>Hash table chaining</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Visualization -->
+            <div class="visual-panel">
+                <h2>Linked List Visualization</h2>
+                <div class="linkedlist-container">
+                    <div id="linkedlistVisual" class="linkedlist-visual">
+                        <!-- Linked list nodes will be rendered here -->
+                        <div class="linkedlist-empty">List is empty. Insert some nodes!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Implementation Section -->
+        <div class="code-section">
+            <h2><i data-lucide="code-2"></i> Implementation</h2>
+            
+            <div class="code-tabs">
+                <button class="tab-btn active" data-lang="python">
+                    <i data-lucide="file-code"></i> Python
+                </button>
+                <button class="tab-btn" data-lang="javascript">
+                    <i data-lucide="file-code"></i> JavaScript
+                </button>
+                <button class="tab-btn" data-lang="java">
+                    <i data-lucide="file-code"></i> Java
+                </button>
+                <button class="tab-btn" data-lang="cpp">
+                    <i data-lucide="file-code"></i> C++
+                </button>
+                <button class="tab-btn" data-lang="c">
+                    <i data-lucide="file-code"></i> C
+                </button>
+            </div>
+
+            <div class="code-panels">
+                <!-- Python -->
+                <div class="code-panel active" data-lang="python">
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.size = 0
+    
+    def insert_at_head(self, data):
+        """Insert at beginning - O(1)"""
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+        self.size += 1
+    
+    def insert_at_tail(self, data):
+        """Insert at end - O(n)"""
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            return
+        current = self.head
+        while current.next:
+            current = current.next
+        current.next = new_node
+        self.size += 1
+    
+    def delete_at_head(self):
+        """Delete first node - O(1)"""
+        if not self.head:
+            return None
+        data = self.head.data
+        self.head = self.head.next
+        self.size -= 1
+        return data
+    
+    def search(self, data):
+        """Search for value - O(n)"""
+        current = self.head
+        index = 0
+        while current:
+            if current.data == data:
+                return index
+            current = current.next
+            index += 1
+        return -1
+
+# Usage
+ll = SinglyLinkedList()
+ll.insert_at_head(10)
+ll.insert_at_tail(20)
+print(ll.search(20))  # 1</code></pre>
+                </div>
+
+                <!-- JavaScript -->
+                <div class="code-panel" data-lang="javascript">
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>class Node {
+    constructor(data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class SinglyLinkedList {
+    constructor() {
+        this.head = null;
+        this.size = 0;
+    }
+    
+    insertAtHead(data) {
+        // Insert at beginning - O(1)
+        const newNode = new Node(data);
+        newNode.next = this.head;
+        this.head = newNode;
+        this.size++;
+    }
+    
+    insertAtTail(data) {
+        // Insert at end - O(n)
+        const newNode = new Node(data);
+        if (!this.head) {
+            this.head = newNode;
+            return;
+        }
+        let current = this.head;
+        while (current.next) {
+            current = current.next;
+        }
+        current.next = newNode;
+        this.size++;
+    }
+    
+    deleteAtHead() {
+        // Delete first node - O(1)
+        if (!this.head) return null;
+        const data = this.head.data;
+        this.head = this.head.next;
+        this.size--;
+        return data;
+    }
+    
+    search(data) {
+        // Search for value - O(n)
+        let current = this.head;
+        let index = 0;
+        while (current) {
+            if (current.data === data) return index;
+            current = current.next;
+            index++;
+        }
+        return -1;
+    }
+}
+
+// Usage
+const ll = new SinglyLinkedList();
+ll.insertAtHead(10);
+ll.insertAtTail(20);
+console.log(ll.search(20)); // 1</code></pre>
+                </div>
+
+                <!-- Java -->
+                <div class="code-panel" data-lang="java">
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>class Node {
+    int data;
+    Node next;
+    
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class SinglyLinkedList {
+    Node head;
+    int size;
+    
+    SinglyLinkedList() {
+        head = null;
+        size = 0;
+    }
+    
+    // Insert at beginning - O(1)
+    void insertAtHead(int data) {
+        Node newNode = new Node(data);
+        newNode.next = head;
+        head = newNode;
+        size++;
+    }
+    
+    // Insert at end - O(n)
+    void insertAtTail(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+        Node current = head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = newNode;
+        size++;
+    }
+    
+    // Delete first node - O(1)
+    int deleteAtHead() {
+        if (head == null) return -1;
+        int data = head.data;
+        head = head.next;
+        size--;
+        return data;
+    }
+    
+    // Search for value - O(n)
+    int search(int data) {
+        Node current = head;
+        int index = 0;
+        while (current != null) {
+            if (current.data == data) return index;
+            current = current.next;
+            index++;
+        }
+        return -1;
+    }
+}
+
+// Usage
+SinglyLinkedList ll = new SinglyLinkedList();
+ll.insertAtHead(10);
+ll.insertAtTail(20);
+System.out.println(ll.search(20)); // 1</code></pre>
+                </div>
+
+                <!-- C++ -->
+                <div class="code-panel" data-lang="cpp">
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>#include &lt;iostream&gt;
+
+struct Node {
+    int data;
+    Node* next;
+    Node(int d) : data(d), next(nullptr) {}
+};
+
+class SinglyLinkedList {
+private:
+    Node* head;
+    int size;
+    
+public:
+    SinglyLinkedList() : head(nullptr), size(0) {}
+    
+    // Insert at beginning - O(1)
+    void insertAtHead(int data) {
+        Node* newNode = new Node(data);
+        newNode-&gt;next = head;
+        head = newNode;
+        size++;
+    }
+    
+    // Insert at end - O(n)
+    void insertAtTail(int data) {
+        Node* newNode = new Node(data);
+        if (!head) {
+            head = newNode;
+            return;
+        }
+        Node* current = head;
+        while (current-&gt;next)
+            current = current-&gt;next;
+        current-&gt;next = newNode;
+        size++;
+    }
+    
+    // Delete first node - O(1)
+    int deleteAtHead() {
+        if (!head) return -1;
+        int data = head-&gt;data;
+        Node* temp = head;
+        head = head-&gt;next;
+        delete temp;
+        size--;
+        return data;
+    }
+    
+    // Search for value - O(n)
+    int search(int data) {
+        Node* current = head;
+        int index = 0;
+        while (current) {
+            if (current-&gt;data == data) return index;
+            current = current-&gt;next;
+            index++;
+        }
+        return -1;
+    }
+};
+
+// Usage
+int main() {
+    SinglyLinkedList ll;
+    ll.insertAtHead(10);
+    ll.insertAtTail(20);
+    std::cout &lt;&lt; ll.search(20); // 1
+    return 0;
+}</code></pre>
+                </div>
+
+                <!-- C -->
+                <div class="code-panel" data-lang="c">
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+typedef struct {
+    Node* head;
+    int size;
+} SinglyLinkedList;
+
+void init(SinglyLinkedList* list) {
+    list-&gt;head = NULL;
+    list-&gt;size = 0;
+}
+
+// Insert at beginning - O(1)
+void insertAtHead(SinglyLinkedList* list, int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode-&gt;data = data;
+    newNode-&gt;next = list-&gt;head;
+    list-&gt;head = newNode;
+    list-&gt;size++;
+}
+
+// Insert at end - O(n)
+void insertAtTail(SinglyLinkedList* list, int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode-&gt;data = data;
+    newNode-&gt;next = NULL;
+    
+    if (!list-&gt;head) {
+        list-&gt;head = newNode;
+        return;
+    }
+    Node* current = list-&gt;head;
+    while (current-&gt;next)
+        current = current-&gt;next;
+    current-&gt;next = newNode;
+    list-&gt;size++;
+}
+
+// Delete first node - O(1)
+int deleteAtHead(SinglyLinkedList* list) {
+    if (!list-&gt;head) return -1;
+    int data = list-&gt;head-&gt;data;
+    Node* temp = list-&gt;head;
+    list-&gt;head = list-&gt;head-&gt;next;
+    free(temp);
+    list-&gt;size--;
+    return data;
+}
+
+// Search for value - O(n)
+int search(SinglyLinkedList* list, int data) {
+    Node* current = list-&gt;head;
+    int index = 0;
+    while (current) {
+        if (current-&gt;data == data) return index;
+        current = current-&gt;next;
+        index++;
+    }
+    return -1;
+}
+
+// Usage
+int main() {
+    SinglyLinkedList list;
+    init(&amp;list);
+    insertAtHead(&amp;list, 10);
+    insertAtTail(&amp;list, 20);
+    printf("%d", search(&amp;list, 20)); // 1
+    return 0;
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/linkedlist.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/code-tabs.js') }}"></script>
+    <script>lucide.createIcons();</script>
+    <footer class="footer"> 
+        &copy; Created By Abdullah Mahfouz
+    </footer>
+</body>
+</html>

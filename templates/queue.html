@@ -54,23 +54,47 @@
                 <!-- Message Display -->
                 <div id="message" class="message"></div>
 
-                <!-- Learning Section -->
-                <div class="learn-section">
-                    <h3><i data-lucide="book-open" class="icon-sm"></i> Learn</h3>
-                    <p><strong>Queue</strong> is a FIFO structure:</p>
-                    <ul>
-                        <li><strong>Enqueue O(1):</strong> Add to back</li>
-                        <li><strong>Dequeue O(n):</strong> Remove from front</li>
-                        <li><strong>Peek O(1):</strong> View front element</li>
-                    </ul>
-                    <p class="example">Example: Print queue, waiting lines</p>
-                    
-                    <div class="comparison">
-                        <p><strong>Stack vs Queue:</strong></p>
-                        <ul>
-                            <li>Stack = LIFO (plates)</li>
-                            <li>Queue = FIFO (line at store)</li>
-                        </ul>
+                <!-- What is a Queue? Box -->
+                <div class="concept-box">
+                    <div class="concept-header">
+                        <i data-lucide="help-circle" class="icon-sm"></i>
+                        <span>What is a Queue?</span>
+                    </div>
+                    <div class="concept-content">
+                        <p>A <strong>Queue</strong> is a linear data structure that follows the <strong>FIFO</strong> (First In, First Out) principle.</p>
+                        
+                        <div class="concept-analogy">
+                            <i data-lucide="lightbulb"></i>
+                            <span>Think of a line at a store - first person in line gets served <strong>first</strong>!</span>
+                        </div>
+                        
+                        <div class="concept-operations">
+                            <div class="op-item">
+                                <span class="op-name">Enqueue</span>
+                                <span class="op-desc">Add to back</span>
+                                <span class="op-complexity">O(1)</span>
+                            </div>
+                            <div class="op-item">
+                                <span class="op-name">Dequeue</span>
+                                <span class="op-desc">Remove from front</span>
+                                <span class="op-complexity">O(1)</span>
+                            </div>
+                            <div class="op-item">
+                                <span class="op-name">Peek</span>
+                                <span class="op-desc">View front element</span>
+                                <span class="op-complexity">O(1)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="concept-uses">
+                            <strong>Common Uses:</strong>
+                            <ul>
+                                <li>Print job scheduling</li>
+                                <li>Task scheduling (CPU)</li>
+                                <li>Breadth-First Search</li>
+                                <li>Message queues</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -127,34 +151,46 @@
             <div class="code-panels">
                 <!-- Python -->
                 <div class="code-panel active" data-lang="python">
-                    <pre><code>class Queue:
-    def __init__(self):
-        self.items = []
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>class Queue:
+    def __init__(self, capacity=100):
+        self.capacity = capacity
+        self.items = [None] * capacity  # Fixed-size array
+        self.front = 0   # Index of front element
+        self.rear = -1   # Index of rear element
+        self.count = 0   # Number of elements
     
     def enqueue(self, item):
         """Add item to back - O(1)"""
-        self.items.append(item)
+        if self.count >= self.capacity:
+            raise OverflowError("Queue is full")
+        self.rear = (self.rear + 1) % self.capacity
+        self.items[self.rear] = item
+        self.count += 1
     
     def dequeue(self):
-        """Remove and return front item - O(n)"""
-        if not self.is_empty():
-            return self.items.pop(0)
-        raise IndexError("Queue is empty")
+        """Remove and return front item - O(1)"""
+        if self.is_empty():
+            raise IndexError("Queue is empty")
+        item = self.items[self.front]
+        self.items[self.front] = None
+        self.front = (self.front + 1) % self.capacity
+        self.count -= 1
+        return item
     
     def peek(self):
         """View front item without removing - O(1)"""
-        if not self.is_empty():
-            return self.items[0]
-        return None
+        if self.is_empty():
+            return None
+        return self.items[self.front]
     
     def is_empty(self):
-        return len(self.items) == 0
+        return self.count == 0
     
     def size(self):
-        return len(self.items)
+        return self.count
 
 # Usage
-queue = Queue()
+queue = Queue(100)
 queue.enqueue(10)
 queue.enqueue(20)
 print(queue.dequeue())  # 10 (FIFO!)</code></pre>
@@ -162,43 +198,56 @@ print(queue.dequeue())  # 10 (FIFO!)</code></pre>
 
                 <!-- JavaScript -->
                 <div class="code-panel" data-lang="javascript">
-                    <pre><code>class Queue {
-    constructor() {
-        this.items = [];
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>class Queue {
+    constructor(capacity = 100) {
+        this.capacity = capacity;
+        this.items = new Array(capacity);  // Fixed-size array
+        this.front = 0;   // Index of front element
+        this.rear = -1;   // Index of rear element
+        this.count = 0;   // Number of elements
     }
     
     enqueue(item) {
         // Add item to back - O(1)
-        this.items.push(item);
+        if (this.count >= this.capacity) {
+            throw new Error("Queue is full");
+        }
+        this.rear = (this.rear + 1) % this.capacity;
+        this.items[this.rear] = item;
+        this.count++;
     }
     
     dequeue() {
-        // Remove and return front item - O(n)
-        if (!this.isEmpty()) {
-            return this.items.shift();
+        // Remove and return front item - O(1)
+        if (this.isEmpty()) {
+            throw new Error("Queue is empty");
         }
-        throw new Error("Queue is empty");
+        const item = this.items[this.front];
+        this.items[this.front] = undefined;
+        this.front = (this.front + 1) % this.capacity;
+        this.count--;
+        return item;
     }
     
     peek() {
         // View front item without removing - O(1)
-        if (!this.isEmpty()) {
-            return this.items[0];
+        if (this.isEmpty()) {
+            return null;
         }
-        return null;
+        return this.items[this.front];
     }
     
     isEmpty() {
-        return this.items.length === 0;
+        return this.count === 0;
     }
     
     size() {
-        return this.items.length;
+        return this.count;
     }
 }
 
 // Usage
-const queue = new Queue();
+const queue = new Queue(100);
 queue.enqueue(10);
 queue.enqueue(20);
 console.log(queue.dequeue()); // 10 (FIFO!)</code></pre>
@@ -206,47 +255,61 @@ console.log(queue.dequeue()); // 10 (FIFO!)</code></pre>
 
                 <!-- Java -->
                 <div class="code-panel" data-lang="java">
-                    <pre><code>import java.util.LinkedList;
-
-public class Queue&lt;T&gt; {
-    private LinkedList&lt;T&gt; items;
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>public class Queue {
+    private int[] items;   // Fixed-size array
+    private int front;     // Index of front element
+    private int rear;      // Index of rear element
+    private int count;     // Number of elements
+    private int capacity;
     
-    public Queue() {
-        this.items = new LinkedList&lt;&gt;();
+    public Queue(int capacity) {
+        this.capacity = capacity;
+        this.items = new int[capacity];
+        this.front = 0;
+        this.rear = -1;
+        this.count = 0;
     }
     
     // Add item to back - O(1)
-    public void enqueue(T item) {
-        items.addLast(item);
+    public void enqueue(int item) {
+        if (count >= capacity) {
+            throw new RuntimeException("Queue is full");
+        }
+        rear = (rear + 1) % capacity;
+        items[rear] = item;
+        count++;
     }
     
     // Remove and return front item - O(1)
-    public T dequeue() {
-        if (!isEmpty()) {
-            return items.removeFirst();
+    public int dequeue() {
+        if (isEmpty()) {
+            throw new RuntimeException("Queue is empty");
         }
-        throw new RuntimeException("Queue is empty");
+        int item = items[front];
+        front = (front + 1) % capacity;
+        count--;
+        return item;
     }
     
     // View front item without removing - O(1)
-    public T peek() {
-        if (!isEmpty()) {
-            return items.getFirst();
+    public int peek() {
+        if (isEmpty()) {
+            throw new RuntimeException("Queue is empty");
         }
-        return null;
+        return items[front];
     }
     
     public boolean isEmpty() {
-        return items.isEmpty();
+        return count == 0;
     }
     
     public int size() {
-        return items.size();
+        return count;
     }
 }
 
 // Usage
-Queue&lt;Integer&gt; queue = new Queue&lt;&gt;();
+Queue queue = new Queue(100);
 queue.enqueue(10);
 queue.enqueue(20);
 System.out.println(queue.dequeue()); // 10</code></pre>
@@ -254,42 +317,54 @@ System.out.println(queue.dequeue()); // 10</code></pre>
 
                 <!-- C# -->
                 <div class="code-panel" data-lang="csharp">
-                    <pre><code>using System;
-using System.Collections.Generic;
-
-public class Queue&lt;T&gt; {
-    private LinkedList&lt;T&gt; items = new LinkedList&lt;T&gt;();
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>public class Queue {
+    private int[] items;   // Fixed-size array
+    private int front;     // Index of front element
+    private int rear;      // Index of rear element
+    private int count;     // Number of elements
+    private int capacity;
+    
+    public Queue(int capacity) {
+        this.capacity = capacity;
+        this.items = new int[capacity];
+        this.front = 0;
+        this.rear = -1;
+        this.count = 0;
+    }
     
     // Add item to back - O(1)
-    public void Enqueue(T item) {
-        items.AddLast(item);
+    public void Enqueue(int item) {
+        if (count >= capacity)
+            throw new InvalidOperationException("Queue is full");
+        rear = (rear + 1) % capacity;
+        items[rear] = item;
+        count++;
     }
     
     // Remove and return front item - O(1)
-    public T Dequeue() {
-        if (!IsEmpty()) {
-            T item = items.First.Value;
-            items.RemoveFirst();
-            return item;
-        }
-        throw new InvalidOperationException("Queue is empty");
+    public int Dequeue() {
+        if (IsEmpty())
+            throw new InvalidOperationException("Queue is empty");
+        int item = items[front];
+        front = (front + 1) % capacity;
+        count--;
+        return item;
     }
     
     // View front item without removing - O(1)
-    public T Peek() {
-        if (!IsEmpty()) {
-            return items.First.Value;
-        }
-        return default(T);
+    public int Peek() {
+        if (IsEmpty())
+            throw new InvalidOperationException("Queue is empty");
+        return items[front];
     }
     
-    public bool IsEmpty() =&gt; items.Count == 0;
+    public bool IsEmpty() => count == 0;
     
-    public int Size() =&gt; items.Count;
+    public int Size() => count;
 }
 
 // Usage
-var queue = new Queue&lt;int&gt;();
+var queue = new Queue(100);
 queue.Enqueue(10);
 queue.Enqueue(20);
 Console.WriteLine(queue.Dequeue()); // 10</code></pre>
@@ -297,67 +372,76 @@ Console.WriteLine(queue.Dequeue()); // 10</code></pre>
 
                 <!-- C++ -->
                 <div class="code-panel" data-lang="cpp">
-                    <pre><code>#include &lt;queue&gt;
-#include &lt;stdexcept&gt;
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>#include &lt;stdexcept&gt;
 
-template &lt;typename T&gt;
 class Queue {
 private:
-    std::queue&lt;T&gt; items;
+    int* items;     // Fixed-size array
+    int front;      // Index of front element
+    int rear;       // Index of rear element
+    int count;      // Number of elements
+    int capacity;
 
 public:
+    Queue(int cap = 100) : capacity(cap), front(0), rear(-1), count(0) {
+        items = new int[capacity];
+    }
+    
+    ~Queue() { delete[] items; }
+    
     // Add item to back - O(1)
-    void enqueue(T item) {
-        items.push(item);
+    void enqueue(int item) {
+        if (count >= capacity)
+            throw std::overflow_error("Queue is full");
+        rear = (rear + 1) % capacity;
+        items[rear] = item;
+        count++;
     }
     
     // Remove and return front item - O(1)
-    T dequeue() {
-        if (!isEmpty()) {
-            T item = items.front();
-            items.pop();
-            return item;
-        }
-        throw std::runtime_error("Queue is empty");
+    int dequeue() {
+        if (isEmpty())
+            throw std::underflow_error("Queue is empty");
+        int item = items[front];
+        front = (front + 1) % capacity;
+        count--;
+        return item;
     }
     
     // View front item without removing - O(1)
-    T peek() {
-        if (!isEmpty()) {
-            return items.front();
-        }
-        throw std::runtime_error("Queue is empty");
+    int peek() {
+        if (isEmpty())
+            throw std::underflow_error("Queue is empty");
+        return items[front];
     }
     
-    bool isEmpty() {
-        return items.empty();
-    }
+    bool isEmpty() { return count == 0; }
     
-    int size() {
-        return items.size();
-    }
+    int size() { return count; }
 };
 
 // Usage
-Queue&lt;int&gt; queue;
-queue.enqueue(10);
-queue.enqueue(20);
-std::cout &lt;&lt; queue.dequeue(); // 10</code></pre>
+int main() {
+    Queue queue(100);
+    queue.enqueue(10);
+    queue.enqueue(20);
+    std::cout &lt;&lt; queue.dequeue(); // 10
+    return 0;
+}</code></pre>
                 </div>
 
                 <!-- C -->
                 <div class="code-panel" data-lang="c">
-                    <pre><code>#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
+                    <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>#include &lt;stdio.h&gt;
 #include &lt;stdbool.h&gt;
 
 #define MAX_SIZE 100
 
 typedef struct {
-    int items[MAX_SIZE];
-    int front;
-    int rear;
-    int count;
+    int items[MAX_SIZE];  // Fixed-size array
+    int front;            // Index of front element
+    int rear;             // Index of rear element
+    int count;            // Number of elements
 } Queue;
 
 void init(Queue* q) {
@@ -367,35 +451,38 @@ void init(Queue* q) {
 }
 
 // Add item to back - O(1)
-void enqueue(Queue* q, int item) {
-    if (q-&gt;count &lt; MAX_SIZE) {
-        q-&gt;rear = (q-&gt;rear + 1) % MAX_SIZE;
-        q-&gt;items[q-&gt;rear] = item;
-        q-&gt;count++;
-    }
+bool enqueue(Queue* q, int item) {
+    if (q-&gt;count >= MAX_SIZE)
+        return false;  // Queue overflow
+    q-&gt;rear = (q-&gt;rear + 1) % MAX_SIZE;
+    q-&gt;items[q-&gt;rear] = item;
+    q-&gt;count++;
+    return true;
 }
 
 // Remove and return front item - O(1)
 int dequeue(Queue* q) {
-    if (!isEmpty(q)) {
-        int item = q-&gt;items[q-&gt;front];
-        q-&gt;front = (q-&gt;front + 1) % MAX_SIZE;
-        q-&gt;count--;
-        return item;
-    }
-    return -1; // Error
+    if (isEmpty(q))
+        return -1;  // Queue underflow
+    int item = q-&gt;items[q-&gt;front];
+    q-&gt;front = (q-&gt;front + 1) % MAX_SIZE;
+    q-&gt;count--;
+    return item;
 }
 
 // View front item - O(1)
 int peek(Queue* q) {
-    if (!isEmpty(q)) {
-        return q-&gt;items[q-&gt;front];
-    }
-    return -1;
+    if (isEmpty(q))
+        return -1;
+    return q-&gt;items[q-&gt;front];
 }
 
 bool isEmpty(Queue* q) {
     return q-&gt;count == 0;
+}
+
+int size(Queue* q) {
+    return q-&gt;count;
 }
 
 // Usage

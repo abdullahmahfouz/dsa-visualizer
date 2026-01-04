@@ -23,6 +23,7 @@
 
 .input-group input {
     flex: 1;
+    min-width: 0;
     padding: 0.875rem 1rem;
     border: 2px solid var(--border-color);
     border-radius: var(--radius-md);
@@ -31,6 +32,11 @@
     font-size: 1rem;
     font-family: var(--font-mono);
     transition: all 0.3s ease;
+}
+
+.input-group .btn {
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 .input-group input:focus {
@@ -128,4 +134,38 @@
     background: var(--bg-hover);
     border-color: var(--text-muted);
     color: var(--text-primary);
+}
+
+/* Linked List Buttons */
+.btn-insert {
+    background: var(--accent-gradient);
+    color: white;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+}
+
+.btn-insert:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+.btn-search {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-search:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
 }

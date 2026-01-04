@@ -1,0 +1,290 @@
+/**
+ * Linked List Visualizer Styles
+ * =============================
+ */
+
+/* ============ Container ============ */
+
+.linkedlist-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 300px;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-color);
+}
+
+.linkedlist-visual {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 3rem 2rem;
+    width: 100%;
+}
+
+.linkedlist-empty {
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--border-color);
+}
+
+
+/* ============ Node Styles ============ */
+
+.node-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    animation: nodeSlideIn 0.3s ease-out forwards;
+    opacity: 0;
+    margin: 1.5rem 0;
+}
+
+@keyframes nodeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.node {
+    display: flex;
+    flex-direction: row;
+    border: 3px solid var(--accent-primary);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-primary);
+    min-width: 100px;
+    box-shadow: var(--shadow-lg), 0 0 15px rgba(99, 102, 241, 0.2);
+    transition: all 0.3s ease;
+}
+
+.node:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-lg), 0 0 25px rgba(99, 102, 241, 0.3);
+}
+
+.node-head {
+    border-color: var(--success);
+    box-shadow: var(--shadow-lg), 0 0 15px rgba(16, 185, 129, 0.3);
+}
+
+.node-head:hover {
+    box-shadow: var(--shadow-lg), 0 0 25px rgba(16, 185, 129, 0.4);
+}
+
+.node-tail {
+    border-color: var(--warning);
+    box-shadow: var(--shadow-lg), 0 0 15px rgba(245, 158, 11, 0.3);
+}
+
+.node-tail:hover {
+    box-shadow: var(--shadow-lg), 0 0 25px rgba(245, 158, 11, 0.4);
+}
+
+.node-highlight {
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 35px rgba(168, 85, 247, 0.7);
+    }
+}
+
+.node-data {
+    padding: 1rem 1.25rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-align: center;
+    background: var(--accent-gradient);
+    color: white;
+    min-width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.node-next {
+    padding: 1rem 0.75rem;
+    font-size: 0.65rem;
+    text-align: center;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    border-left: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+}
+
+
+/* ============ Node Labels ============ */
+
+.node-label {
+    position: absolute;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    box-shadow: var(--shadow-sm);
+}
+
+.head-label {
+    top: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--success);
+    color: white;
+}
+
+.tail-label {
+    bottom: -28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--warning);
+    color: var(--bg-primary);
+}
+
+
+/* ============ Arrow/Line Between Nodes ============ */
+
+.node-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.25rem;
+    position: relative;
+}
+
+.node-arrow::before {
+    content: '';
+    width: 30px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+}
+
+.node-arrow svg {
+    width: 28px;
+    height: 28px;
+    stroke-width: 3;
+    color: var(--accent-secondary);
+    filter: drop-shadow(0 0 4px rgba(168, 85, 247, 0.5));
+}
+
+/* Null pointer at end */
+.null-pointer {
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+    position: relative;
+}
+
+.null-pointer::before {
+    content: '';
+    width: 20px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--warning), transparent);
+    border-radius: 2px;
+}
+
+.null-pointer span {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-left: 0.25rem;
+    background: var(--bg-tertiary);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+}
+
+
+/* ============ Index Input ============ */
+
+.input-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.input-row input {
+    flex: 1;
+}
+
+.input-row input.input-small {
+    max-width: 80px;
+    flex: none;
+}
+
+
+/* ============ Responsive ============ */
+
+@media (max-width: 768px) {
+    .linkedlist-visual {
+        padding: 2rem 1rem;
+    }
+    
+    .node {
+        min-width: 80px;
+    }
+    
+    .node-data {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .node-next {
+        padding: 0.75rem 0.5rem;
+        min-width: 30px;
+    }
+    
+    .node-arrow::before {
+        width: 20px;
+    }
+    
+    .node-arrow svg {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .node-label {
+        font-size: 0.6rem;
+    }
+    
+    .head-label {
+        top: -24px;
+    }
+    
+    .tail-label {
+        bottom: -24px;
+    }
+    
+    .null-pointer span {
+        font-size: 0.7rem;
+    }
+}
