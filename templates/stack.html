@@ -15,11 +15,54 @@
             <span class="nav-current"><i data-lucide="layers"></i> Stack</span>
         </nav>
 
+
+
+
+        <!-- What is a Stack? Box (Explanation & Complexity) -->
+        <div class="concept-box">
+            <div class="concept-header">
+                <i data-lucide="help-circle" class="icon-sm"></i>
+                <span>What is a Stack?</span>
+            </div>
+            <div class="concept-content">
+                <p>A <strong>Stack</strong> is a linear data structure that follows the <strong>LIFO</strong> (Last In, First Out) principle.</p>
+                <div class="concept-analogy">
+                    <i data-lucide="lightbulb"></i>
+                    <span>Think of a stack of plates - you can only add or remove from the <strong>top</strong>!</span>
+                </div>
+                <div class="concept-operations">
+                    <div class="op-item">
+                        <span class="op-name">Push</span>
+                        <span class="op-desc">Add to top</span>
+                        <span class="op-complexity">O(1)</span>
+                    </div>
+                    <div class="op-item">
+                        <span class="op-name">Pop</span>
+                        <span class="op-desc">Remove from top</span>
+                        <span class="op-complexity">O(1)</span>
+                    </div>
+                    <div class="op-item">
+                        <span class="op-name">Peek</span>
+                        <span class="op-desc">View top element</span>
+                        <span class="op-complexity">O(1)</span>
+                    </div>
+                </div>
+                <div class="concept-uses">
+                    <strong>Common Uses:</strong>
+                    <ul>
+                        <li>Browser back/forward buttons</li>
+                        <li>Undo/Redo functionality</li>
+                        <li>Function call stack</li>
+                        <li>Expression evaluation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <div class="visualizer-layout">
             <!-- Left Panel: Controls -->
             <div class="control-panel">
                 <h2>Stack Operations</h2>
-                
                 <!-- Push Operation -->
                 <div class="operation-group">
                     <label for="pushValue">Push (Add to top)</label>
@@ -28,7 +71,6 @@
                         <button onclick="pushItem()" class="btn btn-push">Push</button>
                     </div>
                 </div>
-
                 <!-- Other Operations -->
                 <div class="operation-group">
                     <label>Other Operations</label>
@@ -38,7 +80,6 @@
                         <button onclick="clearStack()" class="btn btn-clear">Clear</button>
                     </div>
                 </div>
-
                 <!-- Info Display -->
                 <div class="info-panel">
                     <div class="info-item">
@@ -49,54 +90,13 @@
                         <span class="info-label">Top:</span>
                         <span id="stackTop" class="info-value">Empty</span>
                     </div>
+                    <div class="info-item">
+                        <span class="info-label">Max Size:</span>
+                        <span id="stackMaxSize" class="info-value">10</span>
+                    </div>
                 </div>
-
                 <!-- Message Display -->
                 <div id="message" class="message"></div>
-
-                <!-- What is a Stack? Box -->
-                <div class="concept-box">
-                    <div class="concept-header">
-                        <i data-lucide="help-circle" class="icon-sm"></i>
-                        <span>What is a Stack?</span>
-                    </div>
-                    <div class="concept-content">
-                        <p>A <strong>Stack</strong> is a linear data structure that follows the <strong>LIFO</strong> (Last In, First Out) principle.</p>
-                        
-                        <div class="concept-analogy">
-                            <i data-lucide="lightbulb"></i>
-                            <span>Think of a stack of plates - you can only add or remove from the <strong>top</strong>!</span>
-                        </div>
-                        
-                        <div class="concept-operations">
-                            <div class="op-item">
-                                <span class="op-name">Push</span>
-                                <span class="op-desc">Add to top</span>
-                                <span class="op-complexity">O(1)</span>
-                            </div>
-                            <div class="op-item">
-                                <span class="op-name">Pop</span>
-                                <span class="op-desc">Remove from top</span>
-                                <span class="op-complexity">O(1)</span>
-                            </div>
-                            <div class="op-item">
-                                <span class="op-name">Peek</span>
-                                <span class="op-desc">View top element</span>
-                                <span class="op-complexity">O(1)</span>
-                            </div>
-                        </div>
-                        
-                        <div class="concept-uses">
-                            <strong>Common Uses:</strong>
-                            <ul>
-                                <li>Browser back/forward buttons</li>
-                                <li>Undo/Redo functionality</li>
-                                <li>Function call stack</li>
-                                <li>Expression evaluation</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- Right Panel: Visualization -->
@@ -143,44 +143,42 @@
                 <!-- Python -->
                 <div class="code-panel active" data-lang="python">
                     <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>class Stack:
-    def __init__(self, capacity=100):
-        self.capacity = capacity
-        self.items = [None] * capacity  # Fixed-size array
-        self.top = -1  # Index of top element
+    """Stack using Python's dynamic list - simple and Pythonic!"""
+    
+    def __init__(self):
+        self.items = []  # Dynamic list, no fixed size
     
     def push(self, item):
-        """Add item to top - O(1)"""
-        if self.top >= self.capacity - 1:
-            raise OverflowError("Stack is full")
-        self.top += 1
-        self.items[self.top] = item
+        """Add item to top - O(1) amortized"""
+        self.items.append(item)
     
     def pop(self):
         """Remove and return top item - O(1)"""
         if self.is_empty():
-            raise IndexError("Stack is empty")
-        item = self.items[self.top]
-        self.items[self.top] = None
-        self.top -= 1
-        return item
+            raise IndexError("Cannot pop from empty stack")
+        return self.items.pop()
     
     def peek(self):
         """View top item without removing - O(1)"""
         if self.is_empty():
             return None
-        return self.items[self.top]
+        return self.items[-1]
     
     def is_empty(self):
-        return self.top == -1
+        """Check if stack is empty - O(1)"""
+        return len(self.items) == 0
     
     def size(self):
-        return self.top + 1
+        """Get number of items - O(1)"""
+        return len(self.items)
 
 # Usage
-stack = Stack(100)
+stack = Stack()
 stack.push(10)
 stack.push(20)
-print(stack.pop())  # 20</code></pre>
+stack.push(30)
+print(stack.pop())   # 30
+print(stack.peek())  # 20</code></pre>
                 </div>
 
                 <!-- JavaScript -->
@@ -451,8 +449,16 @@ int main() {
     <script src="{{ url_for('static', filename='js/stack.js') }}"></script>
     <script src="{{ url_for('static', filename='js/code-tabs.js') }}"></script>
     <script>lucide.createIcons();</script>
-     <footer class="footer" > 
-        &copy; Created By Abdullah Mahfouz
+    <footer class="footer">
+        <p>&copy; Created By Abdullah Mahfouz</p>
+        <div class="social-links">
+            <a href="https://github.com/abdullahmahfouz" target="_blank" rel="noopener noreferrer" title="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/in/abdullah-mahfouz-5188b1306/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+        </div>
     </footer>
 </body>
 </html>

@@ -9,7 +9,7 @@ Queue = FIFO (First In, First Out)
 """
 
 from flask import Blueprint, jsonify, request
-from data_structures.queues import Queue
+from data_structures.queue import Queue
 
 # Create Blueprint with /api/queue prefix
 queue_bp = Blueprint('queue', __name__, url_prefix='/api/queue')

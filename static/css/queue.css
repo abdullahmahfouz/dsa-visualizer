@@ -1,0 +1,192 @@
+/* ============================================
+   Queue Visualizer Styles
+   ============================================ */
+
+/* Queue Container */
+.queue-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 180px;
+    padding: 1rem;
+}
+
+.queue-visual {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 80px;
+    justify-content: center;
+    padding: 1rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/* Queue Labels */
+.queue-label {
+    text-align: center;
+    margin: 0.5rem 0;
+}
+
+.front-marker,
+.back-marker {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.front-marker {
+    color: var(--success);
+}
+
+.back-marker {
+    color: var(--warning);
+}
+
+/* Empty State */
+.queue-empty {
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--border-color);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Queue Item */
+.queue-item {
+    padding: 1.25rem 1.5rem;
+    background: var(--accent-gradient);
+    border-radius: var(--radius-md);
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: white;
+    position: relative;
+    animation: queueEnqueue 0.3s ease-out forwards;
+    box-shadow: var(--shadow-md), 0 0 15px rgba(99, 102, 241, 0.3);
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.queue-item:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: var(--shadow-lg), 0 0 25px rgba(99, 102, 241, 0.4);
+}
+
+@keyframes queueEnqueue {
+    from {
+        opacity: 0;
+        transform: translateX(30px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Front Item Styling */
+.queue-front {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    box-shadow: var(--shadow-md), 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+.queue-front:hover {
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(16, 185, 129, 0.5);
+}
+
+/* Back Item Styling */
+.queue-back {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    box-shadow: var(--shadow-md), 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+.queue-back:hover {
+    box-shadow: var(--shadow-lg), 0 0 30px rgba(245, 158, 11, 0.5);
+}
+
+/* When item is both front and back (single item) */
+.queue-front.queue-back {
+    background: linear-gradient(135deg, #10b981 0%, #f59e0b 100%);
+}
+
+/* Item Labels */
+.front-label,
+.back-label {
+    position: absolute;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
+.front-label {
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--success);
+    background: rgba(16, 185, 129, 0.2);
+}
+
+.back-label {
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--warning);
+    background: rgba(245, 158, 11, 0.2);
+}
+
+/* Highlight Animation */
+.queue-highlight {
+    animation: queueHighlight 1s ease-in-out infinite;
+}
+
+@keyframes queueHighlight {
+    0%, 100% {
+        box-shadow: var(--shadow-md), 0 0 15px rgba(168, 85, 247, 0.4);
+    }
+    50% {
+        box-shadow: var(--shadow-lg), 0 0 35px rgba(168, 85, 247, 0.7);
+    }
+}
+
+/* Queue Value */
+.queue-value {
+    font-family: var(--font-mono);
+}
+
+/* Flow Diagram */
+.flow-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.flow-item {
+    color: var(--text-secondary);
+}
+
+.flow-box {
+    padding: 0.5rem 1rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--accent-primary);
+}

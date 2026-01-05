@@ -33,3 +33,9 @@ def queue_page():
 def linkedlist_page():
     """Singly Linked List visualizer page."""
     return render_template("linkedlist.html")
+
+
+@pages_bp.route("/hashtable_linear")
+def Linear_hashtable_page():
+    """Linear Probing Hash Table visualizer page."""
+    return render_template("hashtable_linear.html")

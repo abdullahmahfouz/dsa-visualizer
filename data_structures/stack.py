@@ -14,16 +14,23 @@ Operations:
 
 
 class Stack:
-    def __init__(self):
-        """Initialize an empty stack using a Python list."""
-        self._items = []  # Using underscore prefix for "private" attribute
+    def __init__(self, max_size=10):
+        """Initialize an empty stack with a maximum size (default 10)."""
+        self._items = []
+        self._max_size = max_size
     
     def push(self, item):
         """
         Add an item to the top of the stack.
         Time Complexity: O(1) - constant time
+        Raises OverflowError if stack is at max size.
         """
+        if len(self._items) >= self._max_size:
+            raise OverflowError(f"Stack limit reached: {self._max_size} items")
         self._items.append(item)
+        def max_size(self):
+            """Return the maximum allowed size of the stack."""
+            return self._max_size
     
     def pop(self):
         """

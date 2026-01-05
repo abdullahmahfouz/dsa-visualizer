@@ -17,7 +17,7 @@ from data_structures.stack import Stack
 stack_bp = Blueprint('stack', __name__, url_prefix='/api/stack')
 
 # Create stack instance for this blueprint
-stack = Stack()
+stack = Stack(max_size=10)
 
 
 @stack_bp.route("", methods=["GET"])
@@ -29,7 +29,8 @@ def get_stack():
     return jsonify({
         "items": stack.to_list(),
         "size": stack.size(),
-        "top": stack.peek()
+        "top": stack.peek(),
+        "max_size": stack.max_size()
     })
 
 
@@ -42,16 +43,18 @@ def push_to_stack():
     """
     data = request.json
     value = data.get("value")
-    
     if value is None:
         return jsonify({"error": "No value provided"}), 400
-    
-    stack.push(value)
-    return jsonify({
-        "message": f"Pushed {value}",
-        "items": stack.to_list(),
-        "size": stack.size()
-    })
+    try:
+        stack.push(value)
+        return jsonify({
+            "message": f"Pushed {value}",
+            "items": stack.to_list(),
+            "size": stack.size(),
+            "max_size": stack.max_size()
+        })
+    except OverflowError as e:
+        return jsonify({"error": str(e)}), 400
 
 
 @stack_bp.route("/pop", methods=["POST"])
