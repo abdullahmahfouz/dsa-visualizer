@@ -90,25 +90,30 @@ class HashTable:
             key: The key
             value: The value to store
             skip_rehash: Internal flag to skip rehashing during rehash operation
+            
+        Returns:
+            A tuple of (start_index, final_index)
         """
         # Check if we need to rehash
         if not skip_rehash and self._load_factor() >= self.load_factor_threshold:
             self._rehash()
         
         index = self._hash(key)
+        start_index = index
         
         # Linear probing: find next available slot
         while self.table[index] is not None:
             # If key already exists, update the value
             if self.table[index] != "DELETED" and self.table[index][0] == key:
                 self.table[index] = (key, value)
-                return
+                return start_index, index
             # Move to next slot
             index = (index + 1) % self.capacity
         
         # Found an empty slot
         self.table[index] = (key, value)
         self.size += 1
+        return start_index, index
     
     def get(self, key):
         """
@@ -202,6 +207,15 @@ class HashTable:
             if item is not None and item != "DELETED":
                 result[item[0]] = item[1]
         return result
+    
+    def to_list(self):
+        """
+        Convert hash table to a list of its internal array (for visualization).
+        
+        Returns:
+            list: List representation of the table
+        """
+        return self.table
     
     def clear(self):
         """Remove all key-value pairs from the hash table."""

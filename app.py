@@ -16,6 +16,8 @@ from routes.pages import pages_bp
 from routes.stack_routes import stack_bp
 from routes.queue_routes import queue_bp
 from routes.singly_linkedlist_routes import linkedlist_bp
+from routes.hashtable_routes import hashtable_bp
+
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
@@ -25,7 +27,7 @@ app.register_blueprint(pages_bp)       # Page routes: /, /stack, /queue, /linked
 app.register_blueprint(stack_bp)       # API routes: /api/stack/*
 app.register_blueprint(queue_bp)       # API routes: /api/queue/*
 app.register_blueprint(linkedlist_bp)  # API routes: /api/linkedlist/*
-
+app.register_blueprint(hashtable_bp)
 
 if __name__ == "__main__":
     app.run(debug=False)

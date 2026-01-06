@@ -93,13 +93,12 @@ async function clearFromServer() {
  * @param {number} capacity - Total number of slots in the hash table
  * @param {string|null} highlightKey - Optional key to highlight (for search results)
  */
-function renderHashtable(items, capacity, highlightKey = null) {
+function renderHashtable(table, capacity, highlightKey = null, probePath = []) {
     // Get the HTML element where we'll display the hash table
     const container = document.getElementById('hashtableVisual');
     
     // Check if hash table is empty
-    // Object.keys() returns an array of all keys, .length tells us how many
-    if (Object.keys(items).length === 0) {
+    if (!table) {
         // If empty, show a message and exit early
         container.innerHTML = '<div class="hashtable-empty">Hash table is empty. Insert some key-value pairs!</div>';
         return;  // Exit function early
@@ -110,33 +109,38 @@ function renderHashtable(items, capacity, highlightKey = null) {
     
     // Loop through each slot in the hash table (0 to capacity-1)
     for (let i = 0; i < capacity; i++) {
-        // Get arrays of all keys and values from the items object
-        const keys = Object.keys(items);      // ["apple", "banana"]
-        const values = Object.values(items);  // [10, 20]
-        
-        // Check if this slot has a key-value pair
-        // If i is less than number of items, show the item at position i
-        // Otherwise, show -1 to indicate empty slot
-        const pairIndex = i < keys.length ? i : -1;
-        
-        // Determine if this slot is empty
-        const isEmpty = pairIndex === -1;
+        const item = table[i];
+
+        const isEmpty = item === null;
+        const isDeleted = item === 'DELETED';
+        const isFilled = !isEmpty && !isDeleted;
+
+        let key = null;
+        let value = null;
+
+        if (isFilled) {
+            key = item[0];
+            value = item[1];
+        }
         
         // Check if this key should be highlighted (for search results)
-        // pairIndex !== -1 means slot has data, and keys[pairIndex] === highlightKey means it's the one we're looking for
-        const isHighlighted = pairIndex !== -1 && keys[pairIndex] === highlightKey;
+        const isHighlighted = isFilled && key === highlightKey;
+        const isProbed = probePath.includes(i);
         
         // Build HTML for this slot using template literal (backticks)
         html += `
-            <div class="hashtable-slot ${isEmpty ? 'slot-empty' : 'slot-filled'} ${isHighlighted ? 'slot-highlight' : ''}">
+            <div class="hashtable-slot ${isEmpty ? 'slot-empty' : isDeleted ? 'slot-deleted' : 'slot-filled'} ${isHighlighted ? 'slot-highlight' : ''} ${isProbed ? 'slot-probed' : ''}">
                 <div class="slot-index">${i}</div>
-                ${!isEmpty ? `
+                ${isFilled ? `
                     <div class="slot-content">
-                        <div class="slot-key">${keys[pairIndex]}</div>
+                        <div class="slot-key">${key}</div>
                         <div class="slot-arrow">→</div>
-                        <div class="slot-value">${values[pairIndex]}</div>
+                        <div class="slot-value">${value}</div>
                     </div>
-                ` : '<div class="slot-empty-text">Empty</div>'}
+                ` : isDeleted 
+                    ? '<div class="slot-deleted-text">DELETED</div>'
+                    : '<div class="slot-empty-text">Empty</div>'
+                }
             </div>
         `;
     }
@@ -167,6 +171,7 @@ function renderHashtableSimple(items, highlightKey = null) {
     
     // Start building HTML
     let html = '<div class="hashtable-items">';
+    let i = 0;
     
     // Loop through each key-value pair in the items object
     // Object.entries() returns [["apple", 10], ["banana", 20]]
@@ -180,12 +185,13 @@ function renderHashtableSimple(items, highlightKey = null) {
         // animation-delay creates a staggered animation effect
         html += `
             <div class="hashtable-item ${isHighlighted ? 'item-highlight' : ''}" 
-                 style="animation-delay: ${Object.keys(items).indexOf(key) * 0.1}s">
+                 style="animation-delay: ${i * 0.1}s">
                 <div class="item-key">${key}</div>
                 <div class="item-arrow">→</div>
                 <div class="item-value">${value}</div>
             </div>
         `;
+        i++;
     }
     
     // Close container and insert into page
@@ -281,6 +287,12 @@ async function insertItem() {
         showMessage('Please enter both key and value!', 'error');
         return;  // Exit early if validation fails
     }
+
+    const currentHashtable = await getHashtable();
+    if (currentHashtable.size >= 20) {
+        showMessage('Hash table is full! Cannot add more than 20 items.', 'error');
+        return;
+    }
     
     // try/catch handles errors gracefully
     try {
@@ -294,11 +306,22 @@ async function insertItem() {
         }
         
         // Update the visualization with new data
-        // Highlight the key we just inserted
-        renderHashtableSimple(result.items, key);
+        const hashtable = await getHashtable();
+        
+        let probePath = [];
+        if (result.start_index !== result.final_index) {
+            showMessage('Collision detected! Linear probing was used.', 'info');
+            let i = result.start_index;
+            while (i !== result.final_index) {
+                probePath.push(i);
+                i = (i + 1) % hashtable.capacity;
+            }
+        }
+
+        renderHashtable(hashtable.table, hashtable.capacity, key, probePath);
         
         // Update the info panel with new statistics
-        updateInfo(result.size, result.capacity, result.load_factor);
+        updateInfo(hashtable.size, hashtable.capacity, hashtable.load_factor);
         
         // Show success message
         showMessage(`Inserted ${key}: ${value}!`, 'success');
@@ -339,13 +362,13 @@ async function getItem() {
             showMessage(result.error, 'error');
             // Refresh visualization to show current state
             const hashtable = await getHashtable();
-            renderHashtableSimple(hashtable.items);
+            renderHashtable(hashtable.table, hashtable.capacity);
             return;
         }
         
         // Get current hash table state and highlight the found key
         const hashtable = await getHashtable();
-        renderHashtableSimple(hashtable.items, key);  // Highlight the key
+        renderHashtable(hashtable.table, hashtable.capacity, key);  // Highlight the key
         showMessage(`Found ${key}: ${result.value}`, 'success');
         keyInput.value = '';  // Clear input
     } catch (error) {
@@ -378,10 +401,11 @@ async function deleteItem() {
         }
         
         // Update visualization with remaining items
-        renderHashtableSimple(result.items);
+        const hashtable = await getHashtable();
+        renderHashtable(hashtable.table, hashtable.capacity);
         
         // Update info panel
-        updateInfo(result.size, result.capacity, result.load_factor);
+        updateInfo(hashtable.size, hashtable.capacity, hashtable.load_factor);
         
         showMessage(`Deleted ${key}!`, 'success');
         keyInput.value = '';  // Clear input
@@ -400,10 +424,11 @@ async function clearHashtable() {
         await clearFromServer();
         
         // Update visualization with empty hash table
-        renderHashtableSimple({});  // {} is an empty object
+        const hashtable = await getHashtable();
+        renderHashtable(hashtable.table, hashtable.capacity);
         
         // Reset info panel to initial values
-        updateInfo(0, 11, 0);
+        updateInfo(hashtable.size, hashtable.capacity, hashtable.load_factor);
         
         showMessage('Hash table cleared!', 'success');
     } catch (error) {
@@ -426,7 +451,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const hashtable = await getHashtable();
         
         // Display the hash table
-        renderHashtableSimple(hashtable.items);
+        renderHashtable(hashtable.table, hashtable.capacity);
         
         // Update the info panel
         updateInfo(hashtable.size, hashtable.capacity, hashtable.load_factor);

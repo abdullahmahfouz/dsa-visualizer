@@ -1,0 +1,137 @@
+/**
+ * Hash Table Visualizer Styles
+ * =============================
+ */
+
+/* ============ Container ============ */
+
+.hashtable-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-color);
+    width: 100%;
+    min-height: 200px;
+}
+
+/* ============ Slot Styles ============ */
+
+.hashtable-slot {
+    position: relative;
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    min-height: 80px;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+}
+
+.slot-index {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    background: var(--accent-primary);
+    color: white;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 2px solid var(--bg-primary);
+}
+
+.slot-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 0.5rem 0.5rem 0.5rem;
+    text-align: center;
+    word-break: break-all;
+}
+
+.slot-key {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.slot-value {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* ============ Slot States ============ */
+
+.slot-empty .slot-content {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.slot-filled {
+    border-color: var(--accent-secondary);
+}
+
+.slot-deleted {
+    border-color: var(--danger);
+    background: repeating-linear-gradient(
+        45deg,
+        var(--bg-tertiary),
+        var(--bg-tertiary) 10px,
+        rgba(239, 68, 68, 0.1) 10px,
+        rgba(239, 68, 68, 0.1) 20px
+    );
+}
+
+.slot-deleted .slot-content {
+    color: var(--danger);
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.slot-probed {
+    background-color: var(--accent-primary-muted);
+}
+
+/* ============ Animations & Highlights ============ */
+
+.slot-highlight {
+    animation: hashTablePulse 1.2s infinite;
+    border-color: var(--warning) !important;
+}
+
+@keyframes hashTablePulse {
+    0%, 100% {
+        box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 24px rgba(245, 158, 11, 0.6);
+    }
+}
+
+.slot-flash {
+    animation: flash 0.6s ease-out;
+}
+
+@keyframes flash {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.08);
+        opacity: 0.8;
+        background-color: var(--accent-primary-muted);
+    }
+}

@@ -24,6 +24,7 @@ def get_hashtable():
     """
     return jsonify({
         "items": hashtable.to_dict(),
+        "table": hashtable.to_list(),
         "size": len(hashtable),
         "capacity": hashtable.capacity,
         "load_factor": hashtable._load_factor()
@@ -44,12 +45,14 @@ def insert_item():
     if key is None or value is None:
         return jsonify({"error": "Both key and value required"}), 400
     
-    hashtable.insert(key, value)
+    start_index, final_index = hashtable.insert(key, value)
     return jsonify({
         "message": f"Inserted {key}: {value}",
         "items": hashtable.to_dict(),
         "size": len(hashtable),
-        "capacity": hashtable.capacity
+        "capacity": hashtable.capacity,
+        "start_index": start_index,
+        "final_index": final_index
     })
 
 
