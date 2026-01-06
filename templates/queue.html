@@ -15,19 +15,32 @@
             <span class="nav-current"><i data-lucide="arrow-right-left"></i> Queue</span>
         </nav>
 
-
-
-        <!-- What is a Queue? Box (Explanation & Complexity) -->
+        <!-- What is a Queue? Box (Detailed Explanation) -->
         <div class="concept-box">
             <div class="concept-header">
                 <i data-lucide="help-circle" class="icon-sm"></i>
                 <span>What is a Queue?</span>
             </div>
             <div class="concept-content">
-                <p>A <strong>Queue</strong> is a linear data structure that follows the <strong>FIFO</strong> (First In, First Out) principle.</p>
+                <p>A <strong>Queue</strong> is a linear data structure that follows the <strong>FIFO</strong> (First In, First Out) principle. Elements are added at the <strong>back</strong> and removed from the <strong>front</strong>. This structure is ideal for scenarios where order matters and the first element added should be the first one removed.</p>
                 <div class="concept-analogy">
                     <i data-lucide="lightbulb"></i>
-                    <span>Think of a line at a store - first person in line gets served <strong>first</strong>!</span>
+                    <span>Think of a line at a store – the first person in line gets served <strong>first</strong>!</span>
+                </div>
+                <div class="concept-operations">
+                    <div class="op-item"><span class="op-name">Enqueue</span> <span class="op-desc">Add to the back</span> <span class="op-complexity">O(1)</span></div>
+                    <div class="op-item"><span class="op-name">Dequeue</span> <span class="op-desc">Remove from the front</span> <span class="op-complexity">O(1)</span></div>
+                    <div class="op-item"><span class="op-name">Peek</span> <span class="op-desc">View the front element</span> <span class="op-complexity">O(1)</span></div>
+                    <div class="op-item"><span class="op-name">Clear</span> <span class="op-desc">Remove all elements</span> <span class="op-complexity">O(1)</span></div>
+                </div>
+                <div class="concept-uses">
+                    <strong>Common Uses:</strong>
+                    <ul>
+                        <li>Printer job scheduling</li>
+                        <li>Order processing systems</li>
+                        <li>Breadth-first search in graphs</li>
+                        <li>Task scheduling in operating systems</li>
+                    </ul>
                 </div>
             </div>
         </div>

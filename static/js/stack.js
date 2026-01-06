@@ -34,6 +34,7 @@ async function pushToServer(value) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: value })  // Send value as JSON
     });
+    
     return await response.json();
 }
 

@@ -45,14 +45,23 @@ def insert_item():
     if key is None or value is None:
         return jsonify({"error": "Both key and value required"}), 400
     
-    start_index, final_index = hashtable.insert(key, value)
+    result = hashtable.insert(key, value)
+    # insert now returns (start_index, final_index, rehash_needed) when using the visualizer
+    if isinstance(result, tuple) and len(result) == 3:
+        start_index, final_index, rehash_needed = result
+    else:
+        # fallback for safety
+        start_index, final_index = result
+        rehash_needed = False
+
     return jsonify({
         "message": f"Inserted {key}: {value}",
         "items": hashtable.to_dict(),
         "size": len(hashtable),
         "capacity": hashtable.capacity,
         "start_index": start_index,
-        "final_index": final_index
+        "final_index": final_index,
+        "rehash_needed": rehash_needed
     })
 
 

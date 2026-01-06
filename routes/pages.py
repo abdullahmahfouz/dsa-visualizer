@@ -35,7 +35,20 @@ def linkedlist_page():
     return render_template("linkedlist.html")
 
 
-@pages_bp.route("/hashtable_linear")
+@pages_bp.route("/hashtable")
 def Linear_hashtable_page():
     """Linear Probing Hash Table visualizer page."""
-    return render_template("hashtable_linear.html")
+    return render_template("hashtable_linear.html", default_mode='linear')
+
+
+@pages_bp.route("/hashtable/quadratic")
+def quadratic_hashtable_page():
+    """Quadratic Probing Hash Table visualizer page (same template, quadratic mode)."""
+    return render_template("hashtable_linear.html", default_mode='quadratic')
+
+
+@pages_bp.route("/hashtable_linear")
+def hashtable_linear_alias():
+    """Alias route for backward compatibility with /hashtable_linear."""
+    return render_template("hashtable_linear.html", default_mode='linear')
+

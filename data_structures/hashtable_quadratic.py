@@ -1,25 +1,145 @@
 """
-Hash Table with Linear Probing
-===============================
-A hash table (hash map) is a data structure that implements an associative array.
-It uses a hash function to map keys to array indices.
+Quadratic probing Hash Table implementation for the visualizer.
 
-Features:
-- Linear probing for collision resolution
-- Automatic rehashing when load factor reaches 0.7
-- Dynamic resizing
+Mirrors the API of hashtable_linear.HashTable but uses quadratic probing:
+index = (hash + i*i) % capacity
 
-Operations:
-- insert(key, value): Insert or update a key-value pair
-- get(key): Retrieve value by key
-- delete(key): Remove a key-value pair
-- contains(key): Check if key exists
-- size(): Get number of key-value pairs
+Supports:
+- insert(key, value) -> (start_index, final_index, rehash_needed)
+- get(key)
+- delete(key)
+- to_dict(), to_list(), clear()
+
+Has the same visualizer hard cap behavior as the linear version.
 """
 
-
-class HashTable:
+class QuadraticHashTable:
     def __init__(self, initial_capacity=7):
+        self.capacity = initial_capacity
+        self.size = 0
+        self.load_factor_threshold = 0.5
+        self.table = [None] * self.capacity
+        self.max_capacity = 7
+        self._rehash_needed = False
+
+    def _hash(self, key):
+        return hash(key) % self.capacity
+
+    def _is_prime(self, n):
+        if n < 2:
+            return False
+        for i in range(2, int(n ** 0.5) + 1):
+            if n % i == 0:
+                return False
+        return True
+
+    def _next_prime(self, n):
+        while not self._is_prime(n):
+            n += 1
+        return n
+
+    def _rehash(self):
+        old_table = self.table
+        new_capacity = self._next_prime(self.capacity * 2)
+        if new_capacity > self.max_capacity:
+            self._rehash_needed = True
+            return
+
+        self.capacity = new_capacity
+        self.table = [None] * self.capacity
+        self.size = 0
+
+        for item in old_table:
+            if item is not None and item != "DELETED":
+                self.insert(item[0], item[1], skip_rehash=True)
+
+    def _load_factor(self):
+        return self.size / self.capacity if self.capacity else 0
+
+    def insert(self, key, value, skip_rehash=False):
+        self._rehash_needed = False
+        if not skip_rehash and self._load_factor() >= self.load_factor_threshold:
+            self._rehash()
+
+        index = self._hash(key)
+        start_index = index
+        i = 0
+
+        while True:
+            probe_idx = (index + i * i) % self.capacity
+            slot = self.table[probe_idx]
+
+            if slot is None or slot == "DELETED":
+                self.table[probe_idx] = (key, value)
+                self.size += 1
+                return start_index, probe_idx, self._rehash_needed
+
+            if slot[0] == key:
+                self.table[probe_idx] = (key, value)
+                return start_index, probe_idx, self._rehash_needed
+
+            i += 1
+            if i >= self.capacity:
+                raise RuntimeError("HashTable is full")
+
+    def get(self, key):
+        index = self._hash(key)
+        i = 0
+        checked = 0
+        while checked < self.capacity:
+            probe_idx = (index + i * i) % self.capacity
+            slot = self.table[probe_idx]
+            if slot is None:
+                return None
+            if slot != "DELETED" and slot[0] == key:
+                return slot[1]
+            i += 1
+            checked += 1
+        return None
+
+    def delete(self, key):
+        index = self._hash(key)
+        i = 0
+        checked = 0
+        while checked < self.capacity:
+            probe_idx = (index + i * i) % self.capacity
+            slot = self.table[probe_idx]
+            if slot is None:
+                return False
+            if slot != "DELETED" and slot[0] == key:
+                self.table[probe_idx] = "DELETED"
+                self.size -= 1
+                return True
+            i += 1
+            checked += 1
+        return False
+
+    def to_dict(self):
+        result = {}
+        for item in self.table:
+            if item is not None and item != "DELETED":
+                result[item[0]] = item[1]
+        return result
+
+    def to_list(self):
+        return self.table
+
+    def clear(self):
+        self.table = [None] * self.capacity
+        self.size = 0
+
+    def __len__(self):
+        return self.size
+
+
+if __name__ == "__main__":
+    # Quick sanity check
+    ht = QuadraticHashTable(initial_capacity=7)
+    ht.insert('a', 1)
+    ht.insert('b', 2)
+    print(ht.to_dict())
+class HashtableQuadratic:
+    def __init__(self, initial_capacity=11):
         """
         Initialize the hash table.
         
@@ -28,10 +148,8 @@ class HashTable:
         """
         self.capacity = initial_capacity
         self.size = 0  # Number of key-value pairs
-        self.load_factor_threshold = 0.7
+        self.load_factor_threshold = 0.5
         self.table = [None] * self.capacity  # Array to store key-value pairs
-        self.max_capacity = 7  # Hard cap for this visualizer (do not physically rehash beyond this)
-        self._rehash_needed = False
         
     def _hash(self, key):
         """
@@ -69,18 +187,11 @@ class HashTable:
         old_table = self.table
         old_capacity = self.capacity
         
-        # Decide new capacity (double, then next prime)
-        new_capacity = self._next_prime(self.capacity * 2)
-        # If new capacity would exceed the visualizer's hard cap, mark rehash needed and skip
-        if new_capacity > self.max_capacity:
-            self._rehash_needed = True
-            return
-
-        # Perform rehash
-        self.capacity = new_capacity
+        # Double the capacity and find next prime
+        self.capacity = self._next_prime(self.capacity * 2)
         self.table = [None] * self.capacity
         self.size = 0
-
+        
         # Reinsert all existing key-value pairs
         for item in old_table:
             if item is not None and item != "DELETED":
@@ -103,12 +214,8 @@ class HashTable:
         Returns:
             A tuple of (start_index, final_index)
         """
-        # Reset rehash_needed flag for this operation
-        self._rehash_needed = False
-
         # Check if we need to rehash
         if not skip_rehash and self._load_factor() >= self.load_factor_threshold:
-            # Attempt to rehash; _rehash will set _rehash_needed if it cannot proceed
             self._rehash()
         
         index = self._hash(key)
@@ -126,7 +233,7 @@ class HashTable:
         # Found an empty slot
         self.table[index] = (key, value)
         self.size += 1
-        return start_index, index, self._rehash_needed
+        return start_index, index
     
     def get(self, key):
         """
@@ -238,7 +345,7 @@ class HashTable:
 
 # Example usage
 if __name__ == "__main__":
-    ht = HashTable(initial_capacity=7)
+    ht = HashtableQuadratic(initial_capacity=7)
     
     print("=== Hash Table Demo ===\n")
     
@@ -279,3 +386,4 @@ if __name__ == "__main__":
     print(f"Size: {len(ht)}")
     print(f"Capacity: {ht.capacity}")
     print(f"Load factor: {ht._load_factor():.2f}")
+    

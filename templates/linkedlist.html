@@ -15,18 +15,35 @@
             <span class="nav-current"><i data-lucide="link"></i> Singly Linked List</span>
         </nav>
 
-
-        <!-- What is a Linked List? Box (Explanation & Complexity) -->
+        <!-- What is a Linked List? Box (Detailed Explanation) -->
         <div class="concept-box">
             <div class="concept-header">
                 <i data-lucide="help-circle" class="icon-sm"></i>
                 <span>What is a Singly Linked List?</span>
             </div>
             <div class="concept-content">
-                <p>A <strong>Singly Linked List</strong> is a linear data structure where each element (node) contains data and a pointer to the next node.</p>
+                <p>A <strong>Singly Linked List</strong> is a linear data structure where each element (called a <strong>node</strong>) contains data and a pointer to the <strong>next node</strong> in the sequence. Unlike arrays, linked lists do not store elements in contiguous memory locations, making insertions and deletions efficient at any position.</p>
                 <div class="concept-analogy">
                     <i data-lucide="lightbulb"></i>
-                    <span>Think of a treasure hunt - each clue points to the <strong>next location</strong>!</span>
+                    <span>Think of a treasure hunt – each clue (node) points to the <strong>next location</strong>!</span>
+                </div>
+                <div class="concept-operations">
+                    <div class="op-item"><span class="op-name">Insert at Head</span> <span class="op-desc">Add a new node at the start</span> <span class="op-complexity">O(1)</span></div>
+                    <div class="op-item"><span class="op-name">Insert at Tail</span> <span class="op-desc">Add a new node at the end</span> <span class="op-complexity">O(n)</span></div>
+                    <div class="op-item"><span class="op-name">Insert at Index</span> <span class="op-desc">Add a new node at a specific position</span> <span class="op-complexity">O(n)</span></div>
+                    <div class="op-item"><span class="op-name">Delete Head</span> <span class="op-desc">Remove the first node</span> <span class="op-complexity">O(1)</span></div>
+                    <div class="op-item"><span class="op-name">Delete Tail</span> <span class="op-desc">Remove the last node</span> <span class="op-complexity">O(n)</span></div>
+                    <div class="op-item"><span class="op-name">Delete at Index</span> <span class="op-desc">Remove a node at a specific position</span> <span class="op-complexity">O(n)</span></div>
+                    <div class="op-item"><span class="op-name">Search</span> <span class="op-desc">Find a node by value</span> <span class="op-complexity">O(n)</span></div>
+                </div>
+                <div class="concept-uses">
+                    <strong>Common Uses:</strong>
+                    <ul>
+                        <li>Implementing stacks and queues</li>
+                        <li>Navigation in web browsers (forward/backward history)</li>
+                        <li>Dynamic memory allocation</li>
+                        <li>Undo functionality in editors</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -58,8 +75,8 @@
                 <div class="operation-group">
                     <label>Insert at Index</label>
                     <div class="input-group">
-                        <input type="number" id="insertIndexValue" placeholder="Value" style="flex: 1;">
-                        <input type="number" id="insertIndex" placeholder="Index" min="0" style="max-width: 80px;">
+                        <input type="number" id="insertIndexValue" placeholder="Value" class="input-flex">
+                        <input type="number" id="insertIndex" placeholder="Index" min="0" class="input-small">
                         <button onclick="insertAtIndex()" class="btn btn-insert">Insert</button>
                     </div>
                 </div>
@@ -93,7 +110,7 @@
 
                 <!-- Clear -->
                 <div class="operation-group">
-                    <button onclick="clearList()" class="btn btn-clear" style="width: 100%;">Clear All</button>
+                    <button onclick="clearList()" class="btn btn-clear full-width">Clear All</button>
                 </div>
 
                 <!-- Info Display -->

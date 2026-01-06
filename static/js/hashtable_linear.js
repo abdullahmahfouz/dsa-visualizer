@@ -104,9 +104,13 @@ function renderHashtable(table, capacity, highlightKey = null, probePath = []) {
         return;  // Exit function early
     }
     
-    // Start building the HTML string
-    let html = '<div class="hashtable-grid">';
-    
+    // Ensure the container uses the horizontal grid class (avoid nested grid conflicts)
+    container.classList.remove('hashtable-container');
+    container.classList.add('hashtable-grid');
+
+    // Start building HTML for slots (we'll render slots directly inside the container)
+    let html = '';
+
     // Loop through each slot in the hash table (0 to capacity-1)
     for (let i = 0; i < capacity; i++) {
         const item = table[i];
@@ -127,7 +131,7 @@ function renderHashtable(table, capacity, highlightKey = null, probePath = []) {
         const isHighlighted = isFilled && key === highlightKey;
         const isProbed = probePath.includes(i);
         
-        // Build HTML for this slot using template literal (backticks)
+        // Build HTML for this slot using template literal
         html += `
             <div class="hashtable-slot ${isEmpty ? 'slot-empty' : isDeleted ? 'slot-deleted' : 'slot-filled'} ${isHighlighted ? 'slot-highlight' : ''} ${isProbed ? 'slot-probed' : ''}">
                 <div class="slot-index">${i}</div>
@@ -144,10 +148,7 @@ function renderHashtable(table, capacity, highlightKey = null, probePath = []) {
             </div>
         `;
     }
-    
-    // Close the container div
-    html += '</div>';
-    // Insert the HTML into the page (replaces any existing content)
+    // Insert the slots HTML directly into the container
     container.innerHTML = html;
     // Re-initialize Lucide icons (for any icons in the HTML)
     lucide.createIcons();
@@ -241,6 +242,42 @@ function updateInfo(size, capacity, loadFactor) {
     // toFixed(2) formats number to 2 decimal places
     // If loadFactor is falsy (null/undefined/0), show '0.00'
     document.getElementById('hashtableLoadFactor').textContent = loadFactor ? loadFactor.toFixed(2) : '0.00';
+    // Show or hide persistent rehash recommendation note when load factor passes threshold
+    try {
+        const lf = loadFactor || 0;
+        manageRehashNote(lf, false);
+    } catch (e) {
+        console.warn('Could not update rehash note', e);
+    }
+}
+
+/**
+ * Create or toggle a persistent note recommending rehash when load factor is high
+ * @param {number} loadFactor
+ * @param {boolean} serverRequested - true if server reported rehash_needed
+ */
+function manageRehashNote(loadFactor, serverRequested = false) {
+    const panel = document.querySelector('.visual-panel');
+    if (!panel) return;
+    let note = document.getElementById('rehashNote');
+    const shouldShow = serverRequested || (loadFactor >= 0.7);
+    if (!note && shouldShow) {
+        note = document.createElement('div');
+        note.id = 'rehashNote';
+        note.className = 'note-box rehash-note';
+        note.innerHTML = `<i data-lucide="info"></i><div class="note-content"><strong>Recommendation:</strong> Load factor is ${(loadFactor||0).toFixed(2)} — it's time to <em>rehash</em> to a larger table for better performance. (This visualizer will not automatically rehash.)</div>`;
+        panel.appendChild(note);
+        lucide.createIcons();
+        return;
+    }
+    if (note) {
+        if (shouldShow) {
+            note.style.display = 'flex';
+            note.querySelector('.note-content').innerHTML = `<strong>Recommendation:</strong> Load factor is ${(loadFactor||0).toFixed(2)} — it's time to <em>rehash</em> to a larger table for better performance. (This visualizer will not automatically rehash.)`;
+        } else {
+            note.style.display = 'none';
+        }
+    }
 }
 
 /**
@@ -289,8 +326,8 @@ async function insertItem() {
     }
 
     const currentHashtable = await getHashtable();
-    if (currentHashtable.size >= 20) {
-        showMessage('Hash table is full! Cannot add more than 20 items.', 'error');
+    if (currentHashtable.size >= 7) {
+        showMessage('Hash table is full! Cannot add more than 7 items.', 'error');
         return;
     }
     
@@ -310,15 +347,22 @@ async function insertItem() {
         
         let probePath = [];
         if (result.start_index !== result.final_index) {
-            showMessage('Collision detected! Linear probing was used.', 'info');
+            // Show detailed collision message with indices
+            showMessage(`Collision for "${key}": hashed to index ${result.start_index}, placed at ${result.final_index}.`, 'info');
             let i = result.start_index;
             while (i !== result.final_index) {
                 probePath.push(i);
                 i = (i + 1) % hashtable.capacity;
             }
         }
-
         renderHashtable(hashtable.table, hashtable.capacity, key, probePath);
+        // If server indicates a rehash would have occurred but was prevented by the visualizer cap,
+        // show an explanatory note to the user (no server-side resizing performed).
+        if (result.rehash_needed) {
+            showMessage('Table reached resize threshold — would rehash, but max capacity (7) is enforced in this visualizer.', 'info');
+            // also show the persistent recommendation note
+            manageRehashNote(hashtable.load_factor || hashtable.loadFactor || 0, true);
+        }
         
         // Update the info panel with new statistics
         updateInfo(hashtable.size, hashtable.capacity, hashtable.load_factor);

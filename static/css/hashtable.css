@@ -1,3 +1,152 @@
+/* Modern Hash Function Visualization */
+.hash-process-vis-modern {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+    margin: 24px 0 16px 0;
+}
+/* Mode tabs */
+.mode-tabs { display:flex; gap:8px; margin-top:6px; }
+.mode-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); padding: 6px 10px; border-radius:6px; cursor:pointer; }
+.mode-btn.active { background: var(--accent-primary); color: white; border-color: var(--accent-primary); }
+.mode-panels { margin-top:12px; }
+.mode-panel { display:none; }
+.mode-panel.active { display:block; }
+.hash-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.hash-seq {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.hash-box {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    background: #181f2a;
+    color: #fff;
+    border: 2px solid #2d3748;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.07);
+    position: relative;
+    min-width: 90px;
+    text-align: center;
+}
+.hash-box.key { background: #1e293b; border-color: #3b82f6; }
+.hash-box.func { background: #292524; border-color: #facc15; }
+.hash-box.idx { background: #1e293b; border-color: #22c55e; }
+.hash-box.idx.collision { border-color: #ef4444; background: #2b1a1a; }
+.hash-label {
+    font-size: 0.8rem;
+    color: #a3a3a3;
+    margin-top: 4px;
+}
+.hash-arrow {
+    font-size: 2rem;
+    color: #64748b;
+    margin: 0 8px;
+}
+
+/* Modern Collision Visualization */
+.collision-table-modern {
+    margin: 32px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+.collision-row {
+    display: flex;
+    gap: 12px;
+}
+.collision-key {
+    padding: 8px 18px;
+    background: #1e293b;
+    color: #fff;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    border: 2px solid #3b82f6;
+}
+.collision-arrow {
+    font-size: 2rem;
+    color: #64748b;
+    margin: 0 8px;
+}
+.collision-hash {
+    padding: 8px 18px;
+    background: #292524;
+    color: #fff;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    border: 2px solid #facc15;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.collision-label {
+    font-size: 0.85rem;
+    color: #a3a3a3;
+    margin-left: 8px;
+}
+.collision-table {
+    display: flex;
+    border: 1.5px solid #334155;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.collision-cell {
+    width: 60px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    background: #181f2a;
+    color: #fff;
+    border-right: 1.5px solid #334155;
+}
+.collision-cell:last-child { border-right: none; }
+.collision-cell.occupied { background: #3b82f6; color: #fff; font-weight: bold; }
+.collision-cell.occupied.highlight { background: #ef4444; color: #fff; font-weight: bold; }
+
+/* Note box */
+.note-box {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, rgba(255,245,230,0.03), rgba(255,237,213,0.02));
+    border: 1px solid rgba(255, 200, 120, 0.08);
+    color: #f1e7d0;
+}
+.note-box .note-content { color: #d9c9a6; font-size: 0.95rem; }
+
+/* Persistent rehash recommendation note */
+.rehash-note { margin-top: 12px; display: none; }
+.rehash-note i[data-lucide] { color: var(--accent-primary); }
+.rehash-note .note-content { color: var(--text-secondary); }
+
+/* Important note styling for code section */
+.important-note {
+    margin-top: 20px;
+    padding: 10px 14px;
+    background: #fff6f6;
+    border: 1.5px solid #ff4d4f;
+    color: #7a1a1a;
+    border-radius: 8px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.important-note span { color: #6b221f; }
 /**
  * Hash Table Visualizer Styles
  * =============================
@@ -134,4 +283,123 @@
         opacity: 0.8;
         background-color: var(--accent-primary-muted);
     }
+}
+
+/* Hash Function Visualization */
+.hash-process-vis, .hash-collision-vis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Horizontal hashtable grid for visualization */
+.hashtable-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    background: transparent;
+}
+.hashtable-slot {
+    min-width: 120px;
+    max-width: 220px;
+    flex: 0 0 auto;
+}
+.hashtable-slot .slot-content {
+    padding: 1rem 0.75rem;
+}
+.hashtable-grid::-webkit-scrollbar { height: 10px; }
+.hashtable-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 8px; }
+
+@media (max-width: 800px) {
+    .hashtable-slot { min-width: 96px; }
+    .hash-box, .box-key, .box-function, .box-index { font-size: 0.85rem; }
+}
+
+.hash-step {
+    text-align: center;
+}
+
+.box-key, .box-function, .box-index {
+    padding: 10px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--background-color);
+    font-family: var(--font-mono);
+    min-width: 80px;
+    text-align: center;
+}
+
+.box-key {
+    background-color: var(--blue-light);
+    border-color: var(--blue);
+}
+
+.box-function {
+    background-color: var(--yellow-light);
+    border-color: var(--yellow);
+}
+
+.box-index {
+    background-color: var(--green-light);
+    border-color: var(--green);
+}
+
+.hash-step .label {
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: var(--text-color-secondary);
+}
+
+.arrow {
+    font-size: 2rem;
+    color: var(--text-color-secondary);
+    margin: 0 10px;
+}
+
+/* Collision Visualization */
+.key-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.mini-table {
+    display: flex;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+}
+
+.mini-cell {
+    width: 60px;
+    height: 40px;
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    background-color: #f9f9f9;
+}
+
+.mini-cell:last-child {
+    border-right: none;
+}
+
+.mini-cell.occupied {
+    background-color: var(--blue-light);
+    font-weight: bold;
+}
+
+.hash-collision-vis .label {
+     margin-top: 5px;
+    font-size: 0.8rem;
+    color: var(--text-color-secondary);
+    text-align: center;
 }

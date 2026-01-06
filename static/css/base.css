@@ -78,6 +78,13 @@ code {
     color: white;
 }
 
+/* Utility classes used across templates */
+.concept-operations { margin-top: 1rem; }
+.concept-uses { margin-top: 1rem; }
+.input-flex { flex: 1; }
+.input-small { max-width: 80px; }
+.full-width { width: 100%; }
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
     width: 8px;

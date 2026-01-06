@@ -16,23 +16,111 @@
             <span class="nav-current"><i data-lucide="box"></i> Hash Table (Linear Probing)</span>
         </nav>
 
-        <!-- What is a Hash Table? Box -->
+        <!-- What is a Hash Table? Box (Detailed Explanation) -->
         <div class="concept-box">
             <div class="concept-header">
                 <i data-lucide="help-circle" class="icon-sm"></i>
                 <span>What is a Hash Table with Linear Probing?</span>
             </div>
             <div class="concept-content">
-                <p>A <strong>Hash Table</strong> is a data structure that stores key-value pairs. It uses a hash function to compute an index into an array, allowing for fast lookups.</p>
+                <p>A <strong>Hash Table</strong> 
+                    is a data structure that stores key-value pairs. It uses a <strong>hash function</strong> 
+                    to compute an index into an array, allowing for fast lookups, insertions, and deletions. 
+                    
+                    <strong>Linear Probing</strong> 
+                    is a collision resolution technique where, if a slot is occupied, 
+                    the algorithm checks the next slot in the array until an empty one is found.</p>
                 <div class="concept-analogy">
                     <i data-lucide="lightbulb"></i>
                     <span>Think of a library where books are sorted by genre (the hash) for faster retrieval.</span>
+                </div>
+                <div class="concept-operations">
+                    <div class="op-item"><span class="op-name">Insert</span> <span class="op-desc">Add a key-value pair</span> <span class="op-complexity">O(1) avg</span></div>
+                    <div class="op-item"><span class="op-name">Search</span> <span class="op-desc">Find a value by key</span> <span class="op-complexity">O(1) avg</span></div>
+                    <div class="op-item"><span class="op-name">Delete</span> <span class="op-desc">Remove a key-value pair</span> <span class="op-complexity">O(1) avg</span></div>
+                    <div class="op-item"><span class="op-name">Clear</span> <span class="op-desc">Remove all entries</span> <span class="op-complexity">O(n)</span></div>
+                </div>
+                <div class="concept-uses">
+                     <strong>Common Uses:</strong>
+                    <ul>
+                        <li>Database indexing</li>
+                        <li>Implementing sets and maps</li>
+                        <li>Caching (e.g., DNS cache)</li>
+                        <li>Counting frequencies of items</li>
+                    </ul>
                 </div>
                 <hr>
                 <h4>Collisions and Linear Probing</h4>
                 <p>A <strong>collision</strong> occurs when two different keys hash to the same index. <strong>Linear Probing</strong> is a simple way to resolve collisions. If a collision occurs, it checks the next available slot in the array and places the new key there. This process continues until an empty slot is found.</p>
             </div>
         </div>
+
+        <!-- Hash Function Visualization -->
+        <div class="concept-box">
+            <div class="concept-header">
+                <i data-lucide="arrow-right-circle" class="icon-sm"></i>
+                <span>How the Hash Function Works</span>
+            </div>
+            <div class="concept-content">
+                <p>The hash function takes a key and converts it into an array index. A good hash function distributes keys evenly to minimize collisions.</p>
+                
+                <div class="hash-process-vis-modern">
+                    <div class="hash-row">
+                        <div class="hash-seq">
+                            <div class="hash-box key">"apple"<div class="hash-label">Key</div></div>
+                            <div class="hash-arrow">→</div>
+                            <div class="hash-box func">hash("apple")<div class="hash-label">Hash</div></div>
+                            <div class="hash-arrow">→</div>
+                            <div class="hash-box idx">2<div class="hash-label">Index</div></div>
+                        </div>
+                        <div class="hash-seq">
+                            <div class="hash-box key">"banana"<div class="hash-label">Key</div></div>
+                            <div class="hash-arrow">→</div>
+                            <div class="hash-box func">hash("banana")<div class="hash-label">Hash</div></div>
+                            <div class="hash-arrow">→</div>
+                            <div class="hash-box idx collision">2<div class="hash-label">Index (collision!)</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h4>Handling Collisions with Linear Probing</h4>
+                <p>When two keys hash to the same index (a "collision"), linear probing finds the next empty slot.</p>
+
+                <div class="hash-collision-vis">
+                    <div class="collision-table-modern">
+                        <div class="collision-row">
+                            <div class="collision-key">"apple"</div>
+                            <div class="collision-key">"banana"</div>
+                        </div>
+                        <div class="collision-arrow">→</div>
+                        <div class="collision-hash">hash(key) % 5 <span class="collision-label">Both hash to index 2</span></div>
+                        <div class="collision-arrow">→</div>
+                        <div class="collision-table">
+                            <div class="collision-cell"></div>
+                            <div class="collision-cell"></div>
+                            <div class="collision-cell occupied">"apple"</div>
+                            <div class="collision-cell"></div>
+                            <div class="collision-cell"></div>
+                        </div>
+                        <div class="collision-label">Index: 2 is taken</div>
+                        <div class="collision-arrow">→</div>
+                        <div class="collision-table">
+                            <div class="collision-cell"></div>
+                            <div class="collision-cell"></div>
+                            <div class="collision-cell occupied">"apple"</div>
+                            <div class="collision-cell occupied highlight">"banana"</div>
+                            <div class="collision-cell"></div>
+                        </div>
+                        <div class="collision-label">"banana" goes to next slot (3)</div>
+                    </div>
+                </div>
+                <div class="note-box">
+                    <i data-lucide="key" class="icon-sm"></i>
+                    <div class="note-content"><strong>Note:</strong> Keys in a hash table must be <u>unique</u>. Inserting an existing key will update its value rather than create a duplicate.</div>
+                </div>
+            </div>
+        </div>
+                    
 
         <div class="visualizer-layout">
             <!-- Left Panel: Controls -->
@@ -69,7 +157,7 @@
 
                 <!-- Clear -->
                 <div class="operation-group">
-                    <button onclick="clearHashtable()" class="btn btn-clear" style="width: 100%;">Clear Table</button>
+                    <button onclick="clearHashtable()" class="btn btn-clear">Clear Table</button>
                 </div>
 
                 <!-- Info Display -->
@@ -102,8 +190,12 @@
         <!-- Code Implementation Section -->
         <div class="code-section">
             <h2><i data-lucide="code-2"></i> Implementation</h2>
-            
-            <div class="code-tabs">
+                <!-- Unique Key Rule Box -->
+                <div class="important-note">
+                    <i data-lucide="alert-triangle"></i>
+                    <span><strong>Important:</strong> Keys in a hash table must be <u>unique</u>. You cannot insert the same key twice. If you try, the value will be updated, not duplicated.</span>
+                </div>
+                <div class="code-tabs">
                 <button class="tab-btn active" data-lang="python">
                     <i data-lucide="file-code"></i> Python
                 </button>
@@ -124,59 +216,187 @@
                 </button>
             </div>
 
-            <div class="code-panels">
+                <div class="code-panels">
                 <!-- Python -->
                 <div class="code-panel active" data-lang="python">
                     <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>class HashTable:
-    def __init__(self, size=10):
+    DELETED = object()
+
+    def __init__(self, size=11):
         self.size = size
         self.table = [None] * self.size
         self.count = 0
 
+    @staticmethod
+    def is_prime(n):
+        if n &lt;= 1:
+            return False
+        if n &lt;= 3:
+            return True
+        if n % 2 == 0 or n % 3 == 0:
+            return False
+        i = 5
+        while i * i &lt;= n:
+            if n % i == 0 or n % (i + 2) == 0:
+                return False
+            i += 6
+        return True
+
+    @staticmethod
+    def next_prime(n):
+        while not HashTable.is_prime(n):
+            n += 1
+        return n
+
     def _hash(self, key):
         return hash(key) % self.size
 
+    def load_factor(self):
+        return self.count / self.size
+
+    def rehash(self):
+        old_items = [item for item in self.table if item and item is not HashTable.DELETED]
+        new_size = HashTable.next_prime(self.size * 2)
+        self.size = new_size
+        self.table = [None] * self.size
+        self.count = 0
+        for key, value in old_items:
+            self.insert(key, value)
+
     def insert(self, key, value):
-        # Implementation for insert with linear probing
-        pass
-    
+        if self.load_factor() &gt; 0.7:
+            self.rehash()
+        idx = self._hash(key)
+        start = idx
+        while True:
+            slot = self.table[idx]
+            if slot is None or slot is HashTable.DELETED:
+                self.table[idx] = (key, value)
+                self.count += 1
+                return
+            if slot[0] == key:
+                self.table[idx] = (key, value)  # update
+                return
+            idx = (idx + 1) % self.size
+            if idx == start:
+                raise RuntimeError('HashTable is full')
+
     def search(self, key):
-        # Implementation for search with linear probing
-        pass
+        idx = self._hash(key)
+        start = idx
+        while True:
+            slot = self.table[idx]
+            if slot is None:
+                return None
+            if slot is not HashTable.DELETED and slot[0] == key:
+                return slot[1]
+            idx = (idx + 1) % self.size
+            if idx == start:
+                return None
 
     def delete(self, key):
-        # Implementation for delete with linear probing
-        pass
+        idx = self._hash(key)
+        start = idx
+        while True:
+            slot = self.table[idx]
+            if slot is None:
+                return
+            if slot is not HashTable.DELETED and slot[0] == key:
+                self.table[idx] = HashTable.DELETED
+                self.count -= 1
+                return
+            idx = (idx + 1) % self.size
+            if idx == start:
+                return
 </code></pre>
                 </div>
 
                 <!-- JavaScript -->
                 <div class="code-panel" data-lang="javascript">
                     <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>class HashTable {
-    constructor(size = 10) {
+    constructor(size = 11) {
         this.size = size;
         this.table = new Array(size).fill(null);
         this.count = 0;
     }
 
-    _hash(key) {
-        let hash = 0;
-        for (let i = 0; i < key.length; i++) {
-            hash = (hash + key.charCodeAt(i) * i) % this.size;
+    static isPrime(n) {
+        if (n <= 1) return false;
+        if (n <= 3) return true;
+        if (n % 2 === 0 || n % 3 === 0) return false;
+        for (let i = 5; i * i <= n; i += 6) {
+            if (n % i === 0 || n % (i + 2) === 0) return false;
         }
-        return hash;
+        return true;
+    }
+
+    static nextPrime(n) {
+        while (!HashTable.isPrime(n)) n++;
+        return n;
+    }
+
+    _hash(key) {
+        let h = 0;
+        const s = String(key);
+        for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % this.size;
+        return h;
+    }
+
+    rehash() {
+        const items = this.table.filter(x =&gt; x !== null && x !== 'DELETED');
+        const newSize = HashTable.nextPrime(this.size * 2);
+        this.size = newSize;
+        this.table = new Array(this.size).fill(null);
+        this.count = 0;
+        for (const [k, v] of items) this.insert(k, v);
     }
 
     insert(key, value) {
-        // Implementation for insert with linear probing
+        if (this.count / this.size &gt; 0.7) this.rehash();
+        let idx = this._hash(key);
+        const start = idx;
+        while (true) {
+            const slot = this.table[idx];
+            if (slot === null || slot === 'DELETED') {
+                this.table[idx] = [key, value];
+                this.count++;
+                return;
+            }
+            if (slot[0] === key) {
+                this.table[idx][1] = value; // update
+                return;
+            }
+            idx = (idx + 1) % this.size;
+            if (idx === start) throw new Error('HashTable full');
+        }
     }
 
     search(key) {
-        // Implementation for search with linear probing
+        let idx = this._hash(key);
+        const start = idx;
+        while (true) {
+            const slot = this.table[idx];
+            if (slot === null) return null;
+            if (slot !== 'DELETED' && slot[0] === key) return slot[1];
+            idx = (idx + 1) % this.size;
+            if (idx === start) return null;
+        }
     }
 
     delete(key) {
-        // Implementation for delete with linear probing
+        let idx = this._hash(key);
+        const start = idx;
+        while (true) {
+            const slot = this.table[idx];
+            if (slot === null) return;
+            if (slot !== 'DELETED' && slot[0] === key) {
+                this.table[idx] = 'DELETED';
+                this.count--;
+                return;
+            }
+            idx = (idx + 1) % this.size;
+            if (idx === start) return;
+        }
     }
 }
 </code></pre>
@@ -266,6 +486,7 @@ class HashTable {
                 <!-- C# -->
                 <div class="code-panel" data-lang="csharp">
                     <pre><button class="copy-btn"><i data-lucide="copy"></i> Copy</button><code>using System;
+using System.Linq;
 
 public class HashTable
 {
@@ -273,78 +494,56 @@ public class HashTable
     {
         public object Key;
         public object Value;
-        public bool IsDeleted;
-
-        public Entry(object key, object value)
-        {
-            Key = key;
-            Value = value;
-            IsDeleted = false;
-        }
+        public bool IsDeleted = false;
+        public Entry(object k, object v) { Key = k; Value = v; }
     }
 
     private Entry[] _table;
-    private int _size;
+    private int _count = 0;
 
-    public HashTable(int capacity = 10)
-    {
-        _table = new Entry[capacity];
-        _size = 0;
+    public HashTable(int capacity = 11) { _table = new Entry[capacity]; }
+
+    private int Hash(object key) => Math.Abs(key.GetHashCode() % _table.Length);
+
+    private static bool IsPrime(int n) {
+        if (n <= 1) return false; if (n <= 3) return true; if (n % 2 == 0 || n % 3 == 0) return false;
+        for (int i = 5; i * i <= n; i += 6) if (n % i == 0 || n % (i + 2) == 0) return false;
+        return true;
     }
 
-    private int Hash(object key)
-    {
-        return Math.Abs(key.GetHashCode() % _table.Length);
+    private static int NextPrime(int n) { while (!IsPrime(n)) n++; return n; }
+
+    private void Rehash() {
+        var old = _table.Where(e =&gt; e != null && !e.IsDeleted).ToArray();
+        _table = new Entry[NextPrime(_table.Length * 2)]; _count = 0;
+        foreach (var e in old) Insert(e.Key, e.Value);
     }
 
-    public void Insert(object key, object value)
-    {
-        int index = Hash(key);
-        int startIndex = index;
-        while (_table[index] != null && !_table[index].IsDeleted)
-        {
-            if (_table[index].Key.Equals(key))
-            {
-                _table[index].Value = value; // Update
-                return;
-            }
-            index = (index + 1) % _table.Length;
-            if (index == startIndex) throw new InvalidOperationException("Hash table is full.");
+    public void Insert(object key, object value) {
+        if ((double)_count / _table.Length &gt; 0.7) Rehash();
+        int idx = Hash(key), start = idx;
+        while (true) {
+            var e = _table[idx];
+            if (e == null || e.IsDeleted) { _table[idx] = new Entry(key, value); _count++; return; }
+            if (e.Key.Equals(key)) { e.Value = value; return; }
+            idx = (idx + 1) % _table.Length; if (idx == start) throw new InvalidOperationException("Full");
         }
-        _table[index] = new Entry(key, value);
-        _size++;
     }
 
-    public object Search(object key)
-    {
-        int index = Hash(key);
-        int startIndex = index;
-        while (_table[index] != null)
-        {
-            if (!_table[index].IsDeleted && _table[index].Key.Equals(key))
-            {
-                return _table[index].Value;
-            }
-            index = (index + 1) % _table.Length;
-            if (index == startIndex) break;
+    public object Search(object key) {
+        int idx = Hash(key), start = idx;
+        while (_table[idx] != null) {
+            var e = _table[idx]; if (!e.IsDeleted && e.Key.Equals(key)) return e.Value;
+            idx = (idx + 1) % _table.Length; if (idx == start) break;
         }
         return null;
     }
 
-    public void Delete(object key)
-    {
-        int index = Hash(key);
-        int startIndex = index;
-        while (_table[index] != null)
-        {
-            if (!_table[index].IsDeleted && _table[index].Key.Equals(key))
-            {
-                _table[index].IsDeleted = true;
-                _size--;
-                return;
-            }
-            index = (index + 1) % _table.Length;
-            if (index == startIndex) break;
+    public void Delete(object key) {
+        int idx = Hash(key), start = idx;
+        while (_table[idx] != null) {
+            var e = _table[idx]; if (!e.IsDeleted && e.Key.Equals(key)) { e.IsDeleted = true; _count--; return; }
+            idx = (idx + 1) % _table.Length; if (idx == start) break;
         }
     }
 }
