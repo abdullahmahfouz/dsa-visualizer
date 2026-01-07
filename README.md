@@ -1,3 +1,10 @@
+# DSA Visualizer
+
+A web-based tool to visualize common data structures and algorithms. This project provides an interactive way to learn about data structures by seeing their operations in action.
+
+## Project Status
+
+This project is currently under active development. While the core features for the implemented data structures are functional, the hash table visualization is still being refined to improve its accuracy and visual feedback.
 
 # DSA Visualizer
 
