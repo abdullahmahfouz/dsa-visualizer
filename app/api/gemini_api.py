@@ -2,7 +2,7 @@
 import os
 from flask import Blueprint, request, jsonify
 from dotenv import load_dotenv
-import google.genai as genai
+import google.generativeai as genai
 import traceback
 
 # Load environment variables
@@ -12,7 +12,7 @@ load_dotenv()
 api_bp = Blueprint('api', __name__)
 
 # Configure Gemini API
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 
 @api_bp.route('/api/ask-ai', methods=['POST'])
@@ -35,10 +35,8 @@ def ask_ai():
     """
 
     try:
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
-        )
+        model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        response = model.generate_content(prompt)
         return jsonify({'answer': response.text})
 
     except Exception as e:
