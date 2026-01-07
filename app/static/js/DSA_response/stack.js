@@ -181,9 +181,9 @@ async function pushItem() {
     
     // try/catch handles errors
     try {
-        // Send value to server
-        // Number(value) converts string to number
-        const result = await pushToServer(Number(value));
+        // Send value to server - preserve string values, convert to number if purely numeric
+        const processedValue = value !== '' && !isNaN(Number(value)) && value.trim() === value ? Number(value) : value;
+        const result = await pushToServer(processedValue);
         
         // Check if server returned an error (e.g., stack is full)
         if (result.error) {

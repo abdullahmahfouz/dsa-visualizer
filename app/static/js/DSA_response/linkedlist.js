@@ -245,9 +245,9 @@ async function insertAtHead() {
     }
     
     try {
-        // Send value to server
-        // Number(value) converts string to number
-        const result = await insertHeadToServer(Number(value));
+        // Send value to server - preserve string values, convert to number if purely numeric
+        const processedValue = isNaN(value) || value === '' ? value : (value.trim() === value && !isNaN(Number(value)) ? Number(value) : value);
+        const result = await insertHeadToServer(processedValue);
         
         // Update visualization
         // Highlight index 0 (the head, where we just inserted)
@@ -285,8 +285,9 @@ async function insertAtTail() {
     }
     
     try {
-        // Send value to server
-        const result = await insertTailToServer(Number(value));
+        // Send value to server - preserve string values, convert to number if purely numeric
+        const processedValue = isNaN(value) || value === '' ? value : (value.trim() === value && !isNaN(Number(value)) ? Number(value) : value);
+        const result = await insertTailToServer(processedValue);
         
         // Update visualization
         // Highlight the last item (the tail, where we just inserted)
@@ -324,8 +325,10 @@ async function insertAtIndex() {
     
     try {
         // Send both index and value to server
-        // Number() converts strings to numbers
-        const result = await insertAtIndexToServer(Number(index), Number(value));
+        // Index must be a number, but value can be string or number
+        const indexNum = Number(index);
+        const processedValue = isNaN(value) || value === '' ? value : (value.trim() === value && !isNaN(Number(value)) ? Number(value) : value);
+        const result = await insertAtIndexToServer(indexNum, processedValue);
         
         // Check for errors (e.g., invalid index)
         if (result.error) {
@@ -459,8 +462,9 @@ async function searchValue() {
     }
     
     try {
-        // Search for the value on the server
-        const result = await searchFromServer(Number(value));
+        // Search for the value on the server - preserve string values, convert to number if purely numeric
+        const processedValue = isNaN(value) || value === '' ? value : (value.trim() === value && !isNaN(Number(value)) ? Number(value) : value);
+        const result = await searchFromServer(processedValue);
         
         // Get current linked list state
         const data = await getLinkedList();

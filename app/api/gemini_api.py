@@ -12,11 +12,19 @@ load_dotenv()
 api_bp = Blueprint('api', __name__)
 
 # Configure Gemini API
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+api_key = os.getenv("GEMINI_API_KEY")
+if api_key:
+    genai.configure(api_key=api_key)
+else:
+    print("Warning: GEMINI_API_KEY not set. AI assistant will not work.")
 
 
 @api_bp.route('/api/ask-ai', methods=['POST'])
 def ask_ai():
+    # Check if API key is configured
+    if not api_key:
+        return jsonify({'error': 'AI assistant is not configured. Please set GEMINI_API_KEY.'}), 503
+    
     data = request.json
     user_question = data.get('question', '')
     code_context = data.get('code', '')
@@ -35,9 +43,11 @@ def ask_ai():
     """
 
     try:
-        model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         response = model.generate_content(prompt)
-        return jsonify({'answer': response.text})
+        # Extract text from response - response.text should work, but handle if it's different
+        answer_text = response.text if hasattr(response, 'text') else str(response)
+        return jsonify({'answer': answer_text})
 
     except Exception as e:
         # Log detailed traceback server-side

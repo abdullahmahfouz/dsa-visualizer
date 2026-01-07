@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linked List Visualizer - DSA Visualizer</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/homepage.css') }}">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -144,7 +145,7 @@
                 <div class="operation-group">
                     <label for="insertHeadValue">Insert at Head</label>
                     <div class="input-group">
-                        <input type="number" id="insertHeadValue" placeholder="Enter a number">
+                        <input type="text" id="insertHeadValue" placeholder="Enter a value">
                         <button onclick="insertAtHead()" class="btn btn-insert">Insert Head</button>
                     </div>
                 </div>
@@ -153,7 +154,7 @@
                 <div class="operation-group">
                     <label for="insertTailValue">Insert at Tail</label>
                     <div class="input-group">
-                        <input type="number" id="insertTailValue" placeholder="Enter a number">
+                        <input type="text" id="insertTailValue" placeholder="Enter a value">
                         <button onclick="insertAtTail()" class="btn btn-insert">Insert Tail</button>
                     </div>
                 </div>
@@ -162,7 +163,7 @@
                 <div class="operation-group">
                     <label>Insert at Index</label>
                     <div class="input-group">
-                        <input type="number" id="insertIndexValue" placeholder="Value" class="input-flex">
+                        <input type="text" id="insertIndexValue" placeholder="Value" class="input-flex">
                         <input type="number" id="insertIndex" placeholder="Index" min="0" class="input-small">
                         <button onclick="insertAtIndex()" class="btn btn-insert">Insert</button>
                     </div>
@@ -190,7 +191,7 @@
                 <div class="operation-group">
                     <label for="searchValue">Search Value</label>
                     <div class="input-group">
-                        <input type="number" id="searchValue" placeholder="Enter a number">
+                        <input type="text" id="searchValue" placeholder="Enter a value">
                         <button onclick="searchValue()" class="btn btn-search">Search</button>
                     </div>
                 </div>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="brainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6366F1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Brain shape -->
+  <path d="M50 20 C35 20, 25 30, 25 45 C25 50, 28 55, 32 58 C28 62, 25 68, 25 75 C25 85, 35 90, 45 88 C48 92, 52 95, 55 95 C58 95, 62 92, 65 88 C75 90, 85 85, 85 75 C85 68, 82 62, 78 58 C82 55, 85 50, 85 45 C85 30, 75 20, 60 20 C58 18, 55 17, 52 17 C49 17, 46 18, 44 20 C42 18, 46 20, 50 20 Z" fill="url(#brainGradient)"/>
+  
+  <!-- Circuit lines -->
+  <path d="M35 40 L45 40 M55 40 L65 40 M40 50 L60 50 M35 60 L45 60 M55 60 L65 60" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  
+  <!-- Circuit nodes -->
+  <circle cx="40" cy="40" r="3" fill="#FFFFFF"/>
+  <circle cx="60" cy="40" r="3" fill="#FFFFFF"/>
+  <circle cx="50" cy="50" r="3" fill="#FFFFFF"/>
+  <circle cx="40" cy="60" r="3" fill="#FFFFFF"/>
+  <circle cx="60" cy="60" r="3" fill="#FFFFFF"/>
+</svg>
+

@@ -180,9 +180,9 @@ async function enqueueItem() {
     
     // try/catch handles errors
     try {
-        // Send value to server
-        // Number(value) converts string to number
-        const result = await enqueueToServer(Number(value));
+        // Send value to server - preserve string values, convert to number if purely numeric
+        const processedValue = value !== '' && !isNaN(Number(value)) && value.trim() === value ? Number(value) : value;
+        const result = await enqueueToServer(processedValue);
         
         // Update visualization
         // Highlight the last item (the one we just added)

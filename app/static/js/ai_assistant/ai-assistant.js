@@ -90,10 +90,11 @@ class AIAssistant {
         this.askButton.disabled = false;
         this.askButton.textContent = originalBtnText || 'Ask';
     }
-}
+
     _wait(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
+}
 
 
 // Initialize AI Assistant when DOM is loaded
