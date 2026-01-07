@@ -8,7 +8,7 @@ url_prefix = All routes here start with /api/linkedlist
 """
 
 from flask import Blueprint, jsonify, request
-from data_structures.singly_linkedlist import SinglyLinkedList
+from ..models.singly_linkedlist import SinglyLinkedList
 
 # Create a Blueprint
 linkedlist_bp = Blueprint('singly_linkedlist', __name__, url_prefix='/api/linkedlist')

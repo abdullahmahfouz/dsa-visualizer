@@ -8,7 +8,7 @@ url_prefix = All routes here start with /api/stack
 """
 
 from flask import Blueprint, jsonify, request
-from data_structures.stack import Stack
+from ..models.stack import Stack
 
 # Create a Blueprint - like a mini Flask app
 # 'stack' = name of blueprint

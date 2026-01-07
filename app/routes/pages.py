@@ -52,3 +52,21 @@ def hashtable_linear_alias():
     """Alias route for backward compatibility with /hashtable_linear."""
     return render_template("hashtable_linear.html", default_mode='linear')
 
+
+@pages_bp.route("/contact")
+def contact_page():
+    """Contact page."""
+    return render_template("contact.html")
+
+
+@pages_bp.route("/contributions")
+def contributions_page():
+    """Contributions page."""
+    return render_template("contributions.html")
+
+
+@pages_bp.route("/algorithms")
+def algorithms_page():
+    """Algorithms page - shows all available and coming soon algorithms."""
+    return render_template("algorithms.html")
+

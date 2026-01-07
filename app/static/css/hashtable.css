@@ -322,6 +322,282 @@
     .hash-box, .box-key, .box-function, .box-index { font-size: 0.85rem; }
 }
 
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 0.5rem;
+    }
+    
+    .nav {
+        padding: 0.5rem 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .nav-brand {
+        font-size: 0.9rem;
+    }
+    
+    .nav-current {
+        font-size: 0.75rem;
+        flex: 1 1 100%;
+        text-align: center;
+    }
+    
+    .intro-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .concept-box {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .concept-header {
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .concept-content p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+    
+    .hash-process-vis-modern {
+        gap: 16px;
+        margin: 16px 0;
+    }
+    
+    .hash-seq {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .hash-box {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        min-width: 70px;
+    }
+    
+    .hash-arrow {
+        font-size: 1.5rem;
+        margin: 0 4px;
+    }
+    
+    .hash-label {
+        font-size: 0.7rem;
+    }
+    
+    .collision-table-modern {
+        margin: 20px 0;
+        gap: 8px;
+    }
+    
+    .collision-key,
+    .collision-hash {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .collision-cell {
+        width: 45px;
+        height: 35px;
+        font-size: 0.75rem;
+    }
+    
+    .visualizer-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .control-panel {
+        padding: 1rem;
+    }
+    
+    .control-panel h2 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .operation-group {
+        margin-bottom: 1rem;
+    }
+    
+    .operation-group label {
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .input-group input {
+        width: 100%;
+        padding: 0.6rem 0.75rem;
+        font-size: 0.9rem;
+    }
+    
+    .input-group button {
+        width: 100%;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .info-panel {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.75rem;
+    }
+    
+    .info-item {
+        text-align: left;
+    }
+    
+    .info-label {
+        font-size: 0.6rem;
+    }
+    
+    .info-value {
+        font-size: 1rem;
+    }
+    
+    .visual-panel {
+        padding: 1rem;
+    }
+    
+    .visual-panel h2 {
+        font-size: 1rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .hashtable-container {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+    
+    .hashtable-grid {
+        padding: 0.5rem 4px;
+        gap: 8px;
+    }
+    
+    .hashtable-slot {
+        min-width: 80px;
+        max-width: 120px;
+    }
+    
+    .slot-index {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+        top: -8px;
+        left: -8px;
+    }
+    
+    .slot-content {
+        padding: 0.75rem 0.5rem 0.5rem 0.5rem;
+    }
+    
+    .slot-key {
+        font-size: 0.85rem;
+    }
+    
+    .slot-value {
+        font-size: 0.75rem;
+    }
+    
+    .slot-empty-text,
+    .slot-deleted-text {
+        font-size: 0.75rem;
+    }
+    
+    .ai-assistant {
+        max-width: 100%;
+        margin: 1rem 0;
+        padding: 1rem;
+        position: static;
+    }
+    
+    .code-section {
+        padding: 1rem 0.5rem;
+    }
+    
+    .code-section h2 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+    
+    .code-tabs {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .tab-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    .code-panel {
+        font-size: 0.75rem;
+    }
+    
+    .important-note {
+        padding: 0.75rem;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0.25rem;
+    }
+    
+    .nav {
+        padding: 0.5rem;
+    }
+    
+    .nav-brand {
+        font-size: 0.8rem;
+    }
+    
+    .nav-current {
+        font-size: 0.7rem;
+    }
+    
+    .concept-box {
+        padding: 0.75rem;
+    }
+    
+    .hash-box {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        min-width: 60px;
+    }
+    
+    .hashtable-slot {
+        min-width: 70px;
+        max-width: 100px;
+    }
+    
+    .slot-content {
+        padding: 0.5rem 0.25rem 0.25rem 0.25rem;
+    }
+    
+    .control-panel,
+    .visual-panel {
+        padding: 0.75rem;
+    }
+    
+    .input-group input,
+    .input-group button {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+    }
+}
+
 .hash-step {
     text-align: center;
 }

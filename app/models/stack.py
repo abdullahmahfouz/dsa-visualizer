@@ -28,9 +28,10 @@ class Stack:
         if len(self._items) >= self._max_size:
             raise OverflowError(f"Stack limit reached: {self._max_size} items")
         self._items.append(item)
-        def max_size(self):
-            """Return the maximum allowed size of the stack."""
-            return self._max_size
+    
+    def max_size(self):
+        """Return the maximum allowed size of the stack."""
+        return self._max_size
     
     def pop(self):
         """

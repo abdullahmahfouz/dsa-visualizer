@@ -66,6 +66,28 @@
     }
 }
 
+/* Intro layout: concept/explanation + AI assistant side-by-side */
+.intro-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 1.25rem;
+    align-items: start;
+    margin-bottom: 1.5rem;
+}
+
+.intro-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+@media (max-width: 900px) {
+    .intro-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
 /* Control Panel (Left Side) */
 .control-panel {
     background: var(--bg-secondary);

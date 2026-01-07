@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dsa-visualizer"
+version = "0.1.0"
+description = "A Flask application for visualizing data structures"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "flask",
+    "flask-cors>=3.0.0",
+    "gunicorn"
+]
+
+[tool.setuptools]
+packages = ["app"]
