@@ -98,10 +98,21 @@ function renderHashtable(table, capacity, highlightKey = null, probePath = []) {
     const container = document.getElementById('hashtableVisual');
     
     // Check if hash table is empty
+    // If table is falsy show message
     if (!table) {
-        // If empty, show a message and exit early
         container.innerHTML = '<div class="hashtable-empty">Hash table is empty. Insert some key-value pairs!</div>';
-        return;  // Exit function early
+        return;
+    }
+
+    // If table is an array and every slot is empty or deleted, show empty message
+    if (Array.isArray(table)) {
+        const allEmpty = table.every(item => item === null || item === 'DELETED');
+        if (allEmpty) {
+            container.classList.remove('hashtable-grid');
+            container.classList.add('hashtable-container');
+            container.innerHTML = '<div class="hashtable-empty">Hash table is empty. Insert some key-value pairs!</div>';
+            return;
+        }
     }
     
     // Ensure the container uses the horizontal grid class (avoid nested grid conflicts)
@@ -281,6 +292,17 @@ function manageRehashNote(loadFactor, serverRequested = false) {
 }
 
 /**
+ * Show or hide the introductory concept box that explains linear probing.
+ * The box is hidden by default and appears only when the table has at least one item.
+ * @param {boolean} show
+ */
+function toggleIntroBox(show) {
+    const box = document.getElementById('introBox');
+    if (!box) return;
+    box.style.display = show ? 'block' : 'none';
+}
+
+/**
  * Displays a temporary message to the user
  * @param {string} text - The message to display
  * @param {string} type - Message type: 'info', 'success', or 'error'
@@ -366,6 +388,8 @@ async function insertItem() {
         
         // Update the info panel with new statistics
         updateInfo(hashtable.size, hashtable.capacity, hashtable.load_factor);
+        // Show intro box now that an item has been added
+        try { toggleIntroBox(hashtable.size > 0); } catch (e) {}
         
         // Show success message
         showMessage(`Inserted ${key}: ${value}!`, 'success');
@@ -450,6 +474,8 @@ async function deleteItem() {
         
         // Update info panel
         updateInfo(hashtable.size, hashtable.capacity, hashtable.load_factor);
+        // Hide intro box if table is now empty
+        try { toggleIntroBox(hashtable.size > 0); } catch (e) {}
         
         showMessage(`Deleted ${key}!`, 'success');
         keyInput.value = '';  // Clear input
@@ -473,6 +499,8 @@ async function clearHashtable() {
         
         // Reset info panel to initial values
         updateInfo(hashtable.size, hashtable.capacity, hashtable.load_factor);
+        // Hide the intro box on clear
+        try { toggleIntroBox(hashtable.size > 0); } catch (e) {}
         
         showMessage('Hash table cleared!', 'success');
     } catch (error) {
@@ -496,6 +524,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         // Display the hash table
         renderHashtable(hashtable.table, hashtable.capacity);
+        // Show intro box only if table has items
+        try { toggleIntroBox(hashtable.size > 0); } catch (e) {}
         
         // Update the info panel
         updateInfo(hashtable.size, hashtable.capacity, hashtable.load_factor);

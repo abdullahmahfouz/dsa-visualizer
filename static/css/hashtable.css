@@ -403,3 +403,21 @@
     color: var(--text-color-secondary);
     text-align: center;
 }
+
+/* Empty state styling to match Stack visualizer's dashed box */
+.hashtable-empty {
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: left;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--border-color);
+    width: 100%;
+    min-height: 120px;
+    box-sizing: border-box;
+}
+
+.hashtable-container.hashtable-grid {
+    padding: 0.75rem;
+}
