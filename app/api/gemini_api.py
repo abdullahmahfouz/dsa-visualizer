@@ -1,12 +1,8 @@
 
 import os
 from flask import Blueprint, request, jsonify
-from dotenv import load_dotenv
 import google.generativeai as genai
 import traceback
-
-# Load environment variables
-load_dotenv()
 
 # Create blueprint
 api_bp = Blueprint('api', __name__)

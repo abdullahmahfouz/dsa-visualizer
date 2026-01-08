@@ -8,6 +8,9 @@ Blueprint = A way to organize routes in separate files
 register_blueprint() = Connect a blueprint to the main app
 """
 
+from dotenv import load_dotenv
+load_dotenv()  # Load environment variables before anything else
+
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 
