@@ -1,0 +1,357 @@
+/* ============================================
+   Binary Tree Visualizer Styles
+   ============================================ */
+
+/* Warning Box */
+.warning-box {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: start;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.warning-box strong {
+    color: var(--text-primary);
+}
+
+.warning-box [data-lucide] {
+    color: #f59e0b; /* Orange */
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* Tree Container */
+.tree-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    padding: 2rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--border-color);
+    overflow: auto;
+}
+
+.tree-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 300px;
+}
+
+/* Empty State */
+.tree-empty {
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--border-color);
+}
+
+/* Tree SVG */
+.tree-svg {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+}
+
+.tree-svg line {
+    transition: stroke 0.3s ease;
+}
+
+.tree-svg circle {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.tree-svg circle:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+.tree-svg text {
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Traversal Buttons */
+.traversal-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.btn-traversal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-traversal:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-traversal:active {
+    transform: translateY(0);
+}
+
+.btn-traversal i {
+    width: 16px;
+    height: 16px;
+}
+
+/* Traversal Output */
+.traversal-output {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-color);
+}
+
+.traversal-output label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.traversal-result {
+    min-height: 60px;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.traversal-header {
+    font-weight: 700;
+    color: var(--accent-purple);
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.traversal-sequence {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.traversal-value {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    min-width: 40px;
+    text-align: center;
+}
+
+.traversal-value.highlighted {
+    background: var(--accent-gradient);
+    border-color: var(--accent-purple);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    animation: traversalHighlight 0.5s ease;
+}
+
+@keyframes traversalHighlight {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(245, 158, 11, 0);
+    }
+}
+
+.traversal-sequence .arrow {
+    color: var(--accent-purple);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.empty-message {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Hint Text */
+.hint-text {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Full Width Button */
+.full-width {
+    width: 100%;
+}
+
+/* Secondary Button */
+.btn-secondary {
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--accent-purple);
+    color: var(--accent-purple);
+}
+
+/* Message Styles */
+.message {
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    animation: slideIn 0.3s ease-out;
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.message-success {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.4);
+    color: #10b981;
+}
+
+.message-error {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #ef4444;
+}
+
+.message-warning {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+}
+
+.message-info {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #3b82f6;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .traversal-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .tree-container {
+        padding: 1rem;
+        min-height: 300px;
+    }
+    
+    .tree-svg {
+        min-height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .tree-container {
+        padding: 0.5rem;
+        min-height: 250px;
+    }
+    
+    .traversal-result {
+        font-size: 0.85rem;
+    }
+    
+    .traversal-value {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.85rem;
+        min-width: 35px;
+    }
+    
+    .btn-traversal {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85rem;
+    }
+
+    .warning-box {
+        padding: 0.6rem;
+        font-size: 0.8rem;
+    }
+}
+

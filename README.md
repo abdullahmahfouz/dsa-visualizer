@@ -1,6 +1,6 @@
-# DSA Visualizer
+#  DSA Visualizer
 
-A free, interactive web-based learning tool designed to help students master Data Structures & Algorithms (DSA) concepts through hands-on visualizations. Built with Flask and modern web technologies, this project provides step-by-step visualizations to make DSA learning accessible and engaging.
+A free, interactive web-based learning tool designed to help students master Data Structures & Algorithms (DSA) concepts through hands-on visualizations. Built with React and Flask, this project provides step-by-step visualizations with in-depth explanations to make DSA learning accessible and engaging.
 
 ## Project Overview
 
@@ -14,92 +14,140 @@ Check out the live demo to see the visualizers in action:
 
 The demo includes all currently available visualizers - Stack, Queue, Linked List, and Hash Table - each with interactive controls and step-by-step explanations. Or if you prefer to run it locally, follow the installation steps below.
 
-## Features
+##  Features
 
 Here's what makes this tool helpful for students:
 
-- **Interactive Visualizations**: See data structures in action with real-time animations. No more guessing what happens when you push or pop - you'll see it happen right in front of you.
-- **Step-by-Step Explanations**: Each operation comes with detailed explanations. We break down what's happening so you actually understand the "why" behind each action.
-- **AI Study Assistant**: Stuck on a concept? Ask our AI assistant powered by Google Gemini API. It's like having a tutor available 24/7 (though with a limit of 20 requests per day to keep costs manageable).
+- **Interactive Visualizations**: See data structures in action with real-time animations. Watch nodes change colors during traversals, see collision detection in hash tables, and observe data flow in real-time.
+- **In-Depth Explanations**: Each data structure includes comprehensive explanations with key terminology, real-world analogies, complexity analysis, and use cases.
+- **Animated Tree Traversals**: Binary tree traversals (Inorder, Preorder, Postorder, Level-order) with animated node highlighting and detailed step-by-step output.
+- **Collision Detection**: Hash table visualization shows collision detection, linear probing, and load factor warnings in real-time.
+- **AI Study Assistant**: Stuck on a concept? Ask our context-aware AI assistant powered by Google Gemini API. It provides relevant examples based on which page you're on.
 - **Multiple Language Examples**: See implementations in Python, JavaScript, Java, C#, C++, and C. Because let's face it, different courses use different languages.
-- **Responsive Design**: Works on your laptop, tablet, or phone. Study wherever you're comfortable.
-- **Modern UI**: Clean, dark-themed interface that's easy on the eyes during those late-night study sessions.
+- **Fully Responsive**: Mobile-optimized design that works perfectly on phones, tablets, and desktops. Study wherever you're comfortable.
+- **Modern React UI**: Fast, smooth interactions with a clean, dark-themed interface that's easy on the eyes during those late-night study sessions.
+- **Custom Logo & Branding**: Professional design with custom SVG logo representing data structures and algorithms.
 
-## Implemented Data Structures
+##  Implemented Data Structures
 
-### Currently Available
-- **Stack** - Last In, First Out (LIFO) visualization
-- **Queue** - First In, First Out (FIFO) visualization
-- **Linked List** - Dynamic sequential data structure
-- **Hash Table** - Linear probing collision resolution
+###  Currently Available
 
-### Coming Soon
-- Binary Tree
+#### Linear Data Structures
+- **Stack** - LIFO operations with visual stack building
+- **Queue** - FIFO operations with horizontal flow visualization
+- **Linked List** - Singly linked list with insert, delete, and search operations
+
+#### Hash-Based Structures
+- **Hash Table** - Linear probing with collision detection, visual highlighting, and load factor tracking
+
+#### Tree Structures
+- **Binary Tree Traversals** - Complete implementation with:
+  - Inorder Traversal (Left → Root → Right)
+  - Preorder Traversal (Root → Left → Right)
+  - Postorder Traversal (Left → Right → Root)
+  - Level Order Traversal (BFS)
+  - Animated node highlighting during traversal
+  - Real-time sequence output
+  - Complexity analysis
+
+###  Coming Soon
+- Channing for hashtables
 - Binary Search Tree (BST)
-- AVL Tree
+- AVL Tree (Self-balancing)
 - Splay Tree
-- Min Heap
-- Max Heap
-- BFS (Breadth-First Search)
-- DFS (Depth-First Search)
+- Min Heap & Max Heap
+- Graph Algorithms (BFS, DFS)
+- Sorting Algorithms Visualizer
 
 ## Tech Stack
 
-- **Backend**: Flask (Python)
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-- **AI Integration**: Google Gemini API (via `google-generativeai`)
-- **Icons**: Lucide Icons
-- **Deployment**: Compatible with Gunicorn
+### Frontend
+- **Framework**: React 18+ with Vite
+- **Routing**: React Router v6
+- **Styling**: Modular CSS with responsive design
+- **Icons**: Lucide React
+- **Build Tool**: Vite (fast HMR and optimized builds)
 
-## Project Structure
+### Backend
+- **Framework**: Flask (Python 3.8+)
+- **API**: RESTful endpoints with Flask blueprints
+- **CORS**: Flask-CORS for cross-origin requests
+- **AI Integration**: Google Gemini API via `google-generativeai`
+
+### Development & Deployment
+- **Package Manager**: npm (frontend), pip (backend)
+- **Environment**: python-dotenv for configuration
+- **Server**: Compatible with Gunicorn for production
+- **Version Control**: Git with comprehensive .gitignore
+
+##  Project Structure
 
 ```
 dsa-visualizer/
-├── app/
-│   ├── __init__.py              # Flask app initialization
+├── frontend/                          # React frontend
+│   ├── public/
+│   │   ├── logo.svg                   # Main logo
+│   │   ├── logo-full.svg              # Full logo with text
+│   │   └── favicon.svg                # Browser icon
+│   ├── src/
+│   │   ├── components/                # Reusable React components
+│   │   │   ├── Sidebar.jsx            # Navigation sidebar
+│   │   │   ├── Footer.jsx             # Footer component
+│   │   │   ├── AIAssistant.jsx        # AI chat component
+│   │   │   └── CodeTabs.jsx           # Code example tabs
+│   │   ├── pages/                     # Page components
+│   │   │   ├── Home.jsx
+│   │   │   ├── Algorithms.jsx         # Categorized algorithms page
+│   │   │   ├── Contact.jsx
+│   │   │   └── Contributions.jsx
+│   │   ├── visualizers/               # Data structure visualizers
+│   │   │   ├── linear/                # Linear data structures
+│   │   │   │   ├── StackVisualizer.jsx
+│   │   │   │   ├── QueueVisualizer.jsx
+│   │   │   │   └── LinkedListVisualizer.jsx
+│   │   │   ├── hash/                  # Hash-based structures
+│   │   │   │   └── HashTableVisualizer.jsx
+│   │   │   └── binarytrees/           # Tree structures
+│   │   │       └── BinaryTreeTarversals.jsx
+│   │   ├── styles/                    # Modular CSS
+│   │   │   ├── base/                  # Base styles
+│   │   │   │   ├── variables.css
+│   │   │   │   ├── base.css
+│   │   │   │   ├── layout.css
+│   │   │   │   └── responsive.css     # Mobile responsive
+│   │   │   ├── components/            # Component styles
+│   │   │   ├── pages/                 # Page styles
+│   │   │   ├── visualizers/           # Visualizer styles
+│   │   │   └── main.css               # Main CSS entry
+│   │   ├── App.jsx                    # Main app component
+│   │   └── main.jsx                   # React entry point
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js                 # Vite configuration
+│
+├── app/                               # Flask backend
+│   ├── __init__.py                    # Flask app initialization
 │   ├── api/
-│   │   ├── gemini_api.py        # Gemini AI API integration
-│   │   └── gemini_models.py     # AI model configurations
-│   ├── models/                  # Data structure implementations
+│   │   └── gemini_api.py              # Gemini AI integration
+│   ├── models/                        # Data structure implementations
 │   │   ├── stack.py
 │   │   ├── queue.py
 │   │   ├── singly_linkedlist.py
 │   │   ├── hashtable_linear.py
-│   │   └── hashtable_quadratic.py
-│   ├── routes/                  # Flask route handlers
-│   │   ├── pages.py             # Page routes (/, /algorithms, /contact, etc.)
-│   │   ├── stack_routes.py      # Stack API endpoints
-│   │   ├── queue_routes.py      # Queue API endpoints
+│   │   └── binary_tree.py             # Binary tree with traversals
+│   ├── routes/                        # API endpoints
+│   │   ├── pages.py                   # Serves React app
+│   │   ├── stack_routes.py
+│   │   ├── queue_routes.py
 │   │   ├── singly_linkedlist_routes.py
-│   │   └── hashtable_routes.py
-│   ├── static/
-│   │   ├── css/                 # Stylesheets
-│   │   │   ├── style.css
-│   │   │   ├── homepage.css
-│   │   │   ├── layout.css
-│   │   │   ├── cards.css
-│   │   │   └── hashtable.css
-│   │   └── js/                  # JavaScript files
-│   │       ├── DSA_response/    # Visualizer scripts
-│   │       │   ├── stack.js
-│   │       │   ├── queue.js
-│   │       │   ├── linkedlist.js
-│   │       │   ├── hashtable_linear.js
-│   │       │   └── code-tabs.js
-│   │       └── ai_assistant/
-│   │           └── ai-assistant.js
-│   └── templates/               # HTML templates
-│       ├── index.html           # Home page
-│       ├── algorithms.html      # Algorithms listing page
-│       ├── stack.html
-│       ├── queue.html
-│       ├── linkedlist.html
-│       ├── hashtable_linear.html
-│       ├── contact.html
-│       └── contributions.html
-├── app.py                       # Application entry point
-├── requirements.txt              # Python dependencies
-└── README.md                     # This file
+│   │   ├── hashtable_routes.py
+│   │   └── binary_tree_routes.py
+│   └── static/
+│       └── react-build/               # React production build
+│
+├── app.py                             # Application entry point
+├── requirements.txt                   # Python dependencies
+└── README.md                          # This file
 ```
 
 ## Getting Started
@@ -109,7 +157,8 @@ Ready to dive in? Here's how to get it running on your machine.
 ### Prerequisites
 
 You'll need:
-- Python 3.8 or higher (check with `python3 --version`)
+- **Python 3.8 or higher** (check with `python3 --version`)
+- **Node.js 16+ and npm** (check with `node --version` and `npm --version`)
 - pip (usually comes with Python)
 
 ### Installation
@@ -120,33 +169,68 @@ git clone https://github.com/abdullahmahfouz/dsa-visualizer.git
 cd dsa-visualizer
 ```
 
-2. **Create and activate a virtual environment** (trust me, you'll want to do this):
+2. **Set up the Backend (Flask)**:
 ```bash
+# Create and activate virtual environment
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
 
-3. **Install dependencies**:
-```bash
+# Install Python dependencies
 pip install -r requirements.txt
 ```
 
+3. **Set up the Frontend (React)**:
+```bash
+cd frontend
+npm install
+cd ..
+```
+
 4. **Set up Gemini API (Optional - for AI Assistant)**:
-   - If you want to use the AI assistant, get a free API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Get a free API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
    - Create a `.env` file in the project root:
    ```bash
    GEMINI_API_KEY=your_api_key_here
    ```
-   - The AI assistant has a limit of 20 requests per day (it's free, so we have to be reasonable with usage)
 
-5. **Run the application**:
-```bash
-python app.py
-```
+5. **Run the Application**:
 
-6. **Open it up**:
-   - Fire up your browser and go to `http://127.0.0.1:5001` (or whatever port it shows in the terminal)
-   - You should see the homepage - you're all set!
+   **Option 1: Development Mode (Recommended for development)**
+   
+   Open two terminals:
+   
+   Terminal 1 (Flask backend):
+   ```bash
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   python app.py
+   # Runs on http://127.0.0.1:5001
+   ```
+   
+   Terminal 2 (React frontend with hot reload):
+   ```bash
+   cd frontend
+   npm run dev
+   # Runs on http://localhost:3000
+   ```
+   
+   Then open `http://localhost:3000` in your browser.
+
+   **Option 2: Production Mode**
+   
+   Build and run:
+   ```bash
+   # Build the React app
+   cd frontend
+   npm run build
+   cd ..
+   
+   # Run Flask (serves the built React app)
+   source venv/bin/activate
+   python app.py
+   # Open http://127.0.0.1:5001
+   ```
+
+6. **You're all set!** The app should now be running with all visualizers available.
 
 ## How to Use
 
@@ -175,24 +259,68 @@ Just type your question in the AI assistant panel on any visualizer page. It's l
 - It can explain concepts, help with code, and answer DSA-related questions
 - For DSA learning questions, use the AI assistant rather than emailing - it's faster and designed for that!
 
-## API Endpoints
+## 🔌 API Endpoints
 
-### Data Structure APIs
+### Stack APIs
 - `GET /api/stack` - Get current stack state
-- `POST /api/stack/push` - Push item to stack
+- `POST /api/stack/push` - Push item to stack (body: `{value}`)
 - `POST /api/stack/pop` - Pop item from stack
-- Similar endpoints for Queue, Linked List, and Hash Table
+- `GET /api/stack/peek` - Peek at top item
+- `POST /api/stack/clear` - Clear the stack
+
+### Queue APIs
+- `GET /api/queue` - Get current queue state
+- `POST /api/queue/enqueue` - Add item to queue (body: `{value}`)
+- `POST /api/queue/dequeue` - Remove item from queue
+- `GET /api/queue/peek` - Peek at front item
+- `POST /api/queue/clear` - Clear the queue
+
+### Linked List APIs
+- `GET /api/linkedlist` - Get current list state
+- `POST /api/linkedlist/insert/head` - Insert at head (body: `{value}`)
+- `POST /api/linkedlist/insert/tail` - Insert at tail (body: `{value}`)
+- `POST /api/linkedlist/insert/index` - Insert at index (body: `{value, index}`)
+- `POST /api/linkedlist/delete/head` - Delete from head
+- `POST /api/linkedlist/delete/tail` - Delete from tail
+- `POST /api/linkedlist/search` - Search for value (body: `{value}`)
+- `POST /api/linkedlist/clear` - Clear the list
+
+### Hash Table APIs
+- `GET /api/hashtable` - Get current table state
+- `POST /api/hashtable/insert` - Insert key-value pair (body: `{key, value}`)
+- `POST /api/hashtable/delete` - Delete by key (body: `{key}`)
+- `GET /api/hashtable/get` - Get value by key (query: `?key=`)
+- `POST /api/hashtable/clear` - Clear the table
+
+### Binary Tree APIs
+- `GET /api/binarytree` - Get current tree state
+- `POST /api/binarytree/insert` - Insert node (body: `{value}`)
+- `POST /api/binarytree/delete` - Delete node (body: `{value}`)
+- `POST /api/binarytree/search` - Search for node (body: `{value}`)
+- `GET /api/binarytree/inorder` - Perform inorder traversal
+- `GET /api/binarytree/preorder` - Perform preorder traversal
+- `GET /api/binarytree/postorder` - Perform postorder traversal
+- `GET /api/binarytree/levelorder` - Perform level-order traversal
+- `POST /api/binarytree/clear` - Clear the tree
 
 ### AI API
-- `POST /api/ask-ai` - Ask the AI assistant a question (20 requests/day limit)
+- `POST /api/ask-ai` - Ask the AI assistant (body: `{question, code}`)
 
 ## Design Features
 
 - **Modern Dark Theme**: Easy on the eyes for extended learning sessions
-- **Responsive Layout**: Works on all devices (desktop, tablet, mobile)
-- **Smooth Animations**: Engaging visual feedback for all operations
-- **Sidebar Navigation**: Easy access to all features
-- **Category Organization**: Algorithms organized by type (Linear, Non-Linear, etc.)
+- **Fully Responsive**: Mobile-optimized with breakpoints for phones (480px), tablets (768px), and desktops
+- **Touch-Friendly**: Larger tap targets (44px minimum) and iOS-optimized inputs
+- **Smooth Animations**: 
+  - Real-time node highlighting during tree traversals
+  - Color transitions for visited/visiting/not-visited states
+  - Collision detection animations in hash tables
+  - Smooth data structure operations
+- **Custom Branding**: Professional SVG logo combining stack and tree elements
+- **Sidebar Navigation**: Collapsible menu with hamburger icon on mobile
+- **Category Organization**: Algorithms grouped by type (Linear, Hash-Based, Trees, Heaps)
+- **Modular CSS Architecture**: Organized by base, components, pages, and visualizers
+- **Loading States**: Visual feedback during API calls and AI responses
 
 ## Contributing
 

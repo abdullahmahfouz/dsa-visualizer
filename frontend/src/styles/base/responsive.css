@@ -1,0 +1,371 @@
+/* Mobile Responsive Styles */
+
+/* Tablet and below (1024px) */
+@media (max-width: 1024px) {
+    .visualizer-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .intro-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+/* Mobile devices (768px and below) */
+@media (max-width: 768px) {
+    /* Sidebar mobile */
+    .sidebar {
+        width: 80vw;
+        max-width: 320px;
+    }
+    
+    .hamburger-menu {
+        position: fixed;
+        top: 1rem;
+        left: 1rem;
+        z-index: 101;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        padding: 0.75rem;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .hamburger-menu:hover {
+        background: var(--bg-tertiary);
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding-top: 4rem;
+    }
+    
+    /* Container adjustments */
+    .container {
+        padding: 0.75rem;
+    }
+    
+    /* Typography scaling */
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    h2 {
+        font-size: 1.25rem;
+    }
+    
+    h3 {
+        font-size: 1.1rem;
+    }
+    
+    /* Layout adjustments */
+    .visualizer-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .intro-layout {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    /* Control panel */
+    .control-panel {
+        padding: 1rem;
+    }
+    
+    .operation-group {
+        margin-bottom: 1rem;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .input-group input,
+    .input-group button {
+        width: 100%;
+    }
+    
+    /* Visual panel */
+    .visual-panel {
+        padding: 1rem;
+    }
+    
+    /* Buttons */
+    .btn-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Info panel */
+    .info-panel {
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+    
+    .info-item {
+        text-align: left;
+        width: 100%;
+    }
+    
+    /* Concept boxes */
+    .concept-box {
+        padding: 1rem;
+    }
+    
+    .concept-header {
+        font-size: 0.95rem;
+    }
+    
+    .concept-content p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+    
+    /* Stack visualization */
+    .stack-items {
+        min-height: 150px;
+    }
+    
+    /* Queue visualization */
+    .queue-items {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .queue-item {
+        width: 100%;
+    }
+    
+    /* Linked List */
+    .linkedlist-container {
+        padding: 1rem 0.5rem;
+    }
+    
+    .linkedlist-node {
+        min-width: 60px;
+        padding: 0.5rem;
+    }
+    
+    /* Hash Table */
+    .hashtable-grid {
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+    
+    .hashtable-slot {
+        min-width: 80px;
+    }
+    
+    /* Binary Tree */
+    .tree-container {
+        overflow-x: auto;
+    }
+    
+    .tree-svg {
+        min-width: 100%;
+    }
+    
+    /* Traversal output */
+    .traversal-output-panel {
+        padding: 1rem !important;
+    }
+    
+    .traversal-legend {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    /* AI Assistant */
+    .ai-assistant {
+        max-width: 100%;
+    }
+    
+    /* Code tabs */
+    .code-tabs {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .tab-btn {
+        flex: 1 1 45%;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+    }
+    
+    pre {
+        font-size: 0.75rem;
+        padding: 0.75rem;
+    }
+}
+
+/* Small mobile devices (480px and below) */
+@media (max-width: 480px) {
+    .container {
+        padding: 0.5rem;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    h2 {
+        font-size: 1.1rem;
+    }
+    
+    .control-panel,
+    .visual-panel {
+        padding: 0.75rem;
+    }
+    
+    .btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+    }
+    
+    .btn-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .concept-box {
+        padding: 0.75rem;
+    }
+    
+    .concept-content p,
+    .concept-content li {
+        font-size: 0.8rem;
+    }
+    
+    /* Stack items */
+    .stack-item {
+        min-height: 40px;
+        font-size: 0.9rem;
+    }
+    
+    /* Queue items */
+    .queue-item {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Linked list nodes */
+    .linkedlist-node {
+        min-width: 50px;
+        padding: 0.4rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Hash table slots */
+    .hashtable-slot {
+        min-width: 70px;
+    }
+    
+    .slot-key {
+        font-size: 0.85rem;
+    }
+    
+    .slot-value {
+        font-size: 0.75rem;
+    }
+    
+    /* Info panel values */
+    .info-value {
+        font-size: 1.25rem;
+    }
+    
+    .info-label {
+        font-size: 0.65rem;
+    }
+    
+    /* Messages */
+    .message {
+        font-size: 0.85rem;
+        padding: 0.75rem;
+    }
+    
+    /* Traversal items */
+    .traversal-item {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Code panels */
+    pre {
+        font-size: 0.7rem;
+    }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 896px) and (orientation: landscape) {
+    .visualizer-layout {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .intro-layout {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .control-panel {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .btn {
+        min-height: 44px;
+        padding: 0.75rem 1rem;
+    }
+    
+    input[type="text"],
+    input[type="number"] {
+        min-height: 44px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Easier tap targets */
+    .tab-btn {
+        min-height: 44px;
+    }
+    
+    /* Remove hover effects on touch */
+    .btn:hover,
+    .algorithm-card:hover,
+    .tab-btn:hover {
+        transform: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    .sidebar,
+    .control-panel,
+    .ai-assistant,
+    .btn {
+        display: none;
+    }
+    
+    .visual-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .container {
+        padding: 0;
+    }
+}
+

@@ -32,6 +32,7 @@ class HashTable:
         self.table = [None] * self.capacity  # Array to store key-value pairs
         self.max_capacity = 7  # Hard cap for this visualizer (do not physically rehash beyond this)
         self._rehash_needed = False
+        self.collision_count = 0  # Track total collisions
         
     def _hash(self, key):
         """
@@ -80,6 +81,8 @@ class HashTable:
         self.capacity = new_capacity
         self.table = [None] * self.capacity
         self.size = 0
+        # Reset collision count on rehash
+        self.collision_count = 0
 
         # Reinsert all existing key-value pairs
         for item in old_table:
@@ -113,15 +116,21 @@ class HashTable:
         
         index = self._hash(key)
         start_index = index
+        probes = 0  # Count how many probes we need
         
         # Linear probing: find next available slot
         while self.table[index] is not None:
             # If key already exists, update the value
             if self.table[index] != "DELETED" and self.table[index][0] == key:
                 self.table[index] = (key, value)
-                return start_index, index
-            # Move to next slot
+                return start_index, index, self._rehash_needed
+            # Move to next slot (collision detected)
+            probes += 1
             index = (index + 1) % self.capacity
+        
+        # If we had to probe (probes > 0), it's a collision
+        if probes > 0:
+            self.collision_count += 1
         
         # Found an empty slot
         self.table[index] = (key, value)
@@ -234,6 +243,7 @@ class HashTable:
         """Remove all key-value pairs from the hash table."""
         self.table = [None] * self.capacity
         self.size = 0
+        self.collision_count = 0
 
 
 # Example usage

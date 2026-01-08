@@ -5,68 +5,39 @@ Routes that serve HTML pages (not API endpoints).
 These return actual web pages that users see.
 """
 
-from flask import Blueprint, render_template
+from flask import Blueprint, send_from_directory, send_file
+import os
 
 # No url_prefix - these are the main pages
 pages_bp = Blueprint('pages', __name__)
 
+# Path to React build directory
+REACT_BUILD_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'react-build')
+
 
 @pages_bp.route("/")
 def index():
-    """Home page - shows all available visualizers."""
-    return render_template("index.html")
+    """Home page - serves React app."""
+    index_path = os.path.join(REACT_BUILD_DIR, 'index.html')
+    if os.path.exists(index_path):
+        return send_file(index_path)
+    # Fallback if React build doesn't exist yet
+    return "React build not found. Please run 'npm run build' in the frontend directory.", 404
 
 
-@pages_bp.route("/stack")
-def stack_page():
-    """Stack visualizer page."""
-    return render_template("stack.html")
-
-
-@pages_bp.route("/queue")
-def queue_page():
-    """Queue visualizer page."""
-    return render_template("queue.html")
-
-
-@pages_bp.route("/linkedlist")
-def linkedlist_page():
-    """Singly Linked List visualizer page."""
-    return render_template("linkedlist.html")
-
-
-@pages_bp.route("/hashtable")
-def Linear_hashtable_page():
-    """Linear Probing Hash Table visualizer page."""
-    return render_template("hashtable_linear.html", default_mode='linear')
-
-
-@pages_bp.route("/hashtable/quadratic")
-def quadratic_hashtable_page():
-    """Quadratic Probing Hash Table visualizer page (same template, quadratic mode)."""
-    return render_template("hashtable_linear.html", default_mode='quadratic')
-
-
-@pages_bp.route("/hashtable_linear")
-def hashtable_linear_alias():
-    """Alias route for backward compatibility with /hashtable_linear."""
-    return render_template("hashtable_linear.html", default_mode='linear')
-
-
-@pages_bp.route("/contact")
-def contact_page():
-    """Contact page."""
-    return render_template("contact.html")
-
-
-@pages_bp.route("/contributions")
-def contributions_page():
-    """Contributions page."""
-    return render_template("contributions.html")
-
-
-@pages_bp.route("/algorithms")
-def algorithms_page():
-    """Algorithms page - shows all available and coming soon algorithms."""
-    return render_template("algorithms.html")
+@pages_bp.route("/<path:path>")
+def serve_react_app(path):
+    """Serve React app for all routes (React Router handles routing)."""
+    # Check if it's a static file request (assets, images, etc.)
+    if path.startswith('assets/') or path.endswith(('.js', '.css', '.json', '.png', '.jpg', '.svg', '.ico', '.woff', '.woff2', '.ttf')):
+        file_path = os.path.join(REACT_BUILD_DIR, path)
+        if os.path.exists(file_path):
+            return send_from_directory(REACT_BUILD_DIR, path)
+    
+    # For all other routes, serve index.html (React Router will handle routing)
+    index_path = os.path.join(REACT_BUILD_DIR, 'index.html')
+    if os.path.exists(index_path):
+        return send_file(index_path)
+    
+    return "React build not found. Please run 'npm run build' in the frontend directory.", 404
 

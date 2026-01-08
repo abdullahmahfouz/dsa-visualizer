@@ -27,7 +27,8 @@ def get_hashtable():
         "table": hashtable.to_list(),
         "size": len(hashtable),
         "capacity": hashtable.capacity,
-        "load_factor": hashtable._load_factor()
+        "load_factor": hashtable._load_factor(),
+        "collision_count": hashtable.collision_count
     })
 
 
@@ -122,5 +123,6 @@ def clear_hashtable():
     return jsonify({
         "message": "Hash table cleared",
         "items": {},
-        "size": 0
+        "size": 0,
+        "collision_count": 0
     })
