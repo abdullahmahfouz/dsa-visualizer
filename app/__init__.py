@@ -19,15 +19,6 @@ env_path = basedir / '.env'
 # Load environment variables before anything else
 load_dotenv(dotenv_path=env_path)
 
-# Debug: Check if API key is loaded
-print(f"DEBUG: Loading .env from: {env_path}")
-print(f"DEBUG: .env file exists: {env_path.exists()}")
-print(f"DEBUG: GEMINI_API_KEY loaded: {bool(os.getenv('GEMINI_API_KEY'))}")
-if os.getenv('GEMINI_API_KEY'):
-    print(f"DEBUG: API key starts with: {os.getenv('GEMINI_API_KEY')[:10]}...")
-else:
-    print("DEBUG: GEMINI_API_KEY not found in environment!")
-
 from flask import Flask, send_from_directory
 from flask_cors import CORS
 

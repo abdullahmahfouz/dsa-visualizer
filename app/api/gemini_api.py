@@ -1,17 +1,15 @@
 
 import os
 from flask import Blueprint, request, jsonify
-import google.generativeai as genai
+import google.genai as genai
 import traceback
 
 # Create blueprint
 api_bp = Blueprint('api', __name__)
 
-# Configure Gemini API
+# Get Gemini API key
 api_key = os.getenv("GEMINI_API_KEY")
-if api_key:
-    genai.configure(api_key=api_key)
-else:
+if not api_key:
     print("Warning: GEMINI_API_KEY not set. AI assistant will not work.")
 
 
@@ -39,8 +37,11 @@ def ask_ai():
     """
 
     try:
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        response = model.generate_content(prompt)
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model='gemini-2.0-flash-exp',
+            contents=prompt
+        )
         # Extract text from response - response.text should work, but handle if it's different
         answer_text = response.text if hasattr(response, 'text') else str(response)
         return jsonify({'answer': answer_text})
