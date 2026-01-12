@@ -38,14 +38,17 @@ Here's what makes this tool helpful for students:
 - **Linked List** - Singly linked list with insert, delete, and search operations
 
 #### Hash-Based Structures
-- **Hash Table** - Linear probing with collision detection, visual highlighting, and load factor tracking
+**Hash Table**
+   - Linear probing with collision detection, visual highlighting, and load factor tracking
+   - Quadratic probing: new feature! Visualizes quadratic interval collision resolution, load factor warnings, and probe path
 
 #### Tree Structures
-- **Binary Tree Traversals** - Complete implementation with:
-  - Inorder Traversal (Left → Root → Right)
-  - Preorder Traversal (Root → Left → Right)
-  - Postorder Traversal (Left → Right → Root)
-  - Level Order Traversal (BFS)
+### Quadratic Probing Hash Table APIs
+ - `GET /api/hashtable_quadratic` - Get current quadratic table state
+ - `POST /api/hashtable_quadratic/insert` - Insert key-value pair (body: `{key, value}`)
+ - `POST /api/hashtable_quadratic/delete` - Delete by key (body: `{key}`)
+ - `GET /api/hashtable_quadratic/get` - Get value by key (query: `?key=`)
+ - `POST /api/hashtable_quadratic/clear` - Clear the quadratic table
   - Animated node highlighting during traversal
   - Real-time sequence output
   - Complexity analysis
