@@ -194,11 +194,20 @@ function QueueVisualizer() {
               {queue.length === 0 ? (
                 <div className="queue-empty">Queue is empty. Enqueue some items!</div>
               ) : (
-                queue.map((item, index) => (
-                  <div key={index} className="queue-item">
-                    {item}
-                  </div>
-                ))
+                queue.map((item, index) => {
+                  const isFront = index === 0;
+                  const isBack = index === queue.length - 1;
+                  return (
+                    <div 
+                      key={index} 
+                      className={`queue-item ${isFront ? 'queue-front' : ''} ${isBack ? 'queue-back' : ''}`}
+                    >
+                      {isFront && <span className="front-label">FRONT</span>}
+                      {item}
+                      {isBack && <span className="back-label">BACK</span>}
+                    </div>
+                  );
+                })
               )}
             </div>
             <div className="queue-label">

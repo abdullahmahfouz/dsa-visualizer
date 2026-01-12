@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HelpCircle, Lightbulb, AlertTriangle, Info } from 'lucide-react';
+import { HelpCircle, Lightbulb, AlertTriangle, Info, ArrowRight, RefreshCw } from 'lucide-react';
 import AIAssistant from '../../components/AIAssistant';
 import CodeTabs from '../../components/CodeTabs';
 import MessageBanner from '../../components/MessageBanner';
@@ -17,7 +17,10 @@ function HashTableVisualizer() {
   const [insertValue, setInsertValue] = useState('');
   const [deleteKey, setDeleteKey] = useState('');
   const [getKey, setGetKey] = useState('');
-  const [highlightedSlots, setHighlightedSlots] = useState([]);
+  const [highlightedSlot, setHighlightedSlot] = useState(null);
+  const [probingPath, setProbingPath] = useState([]);
+  const [lastInsertedKey, setLastInsertedKey] = useState(null);
+  const [collisionInfo, setCollisionInfo] = useState(null);
 
   useEffect(() => {
     loadHashtable();
@@ -36,7 +39,6 @@ function HashTableVisualizer() {
     }
   };
 
-  // Calculate hash for a key (simple hash function for visualization)
   const calculateHash = (key) => {
     if (!capacity || capacity === 0) return 0;
     let hash = 0;
@@ -46,15 +48,37 @@ function HashTableVisualizer() {
     return hash;
   };
 
+  // Calculate probing path for visualization
+  const calculateProbingPath = (key, currentTable) => {
+    const hashIndex = calculateHash(key);
+    const path = [hashIndex];
+    let index = hashIndex;
+    
+    // Simulate linear probing
+    while (currentTable[index] && currentTable[index][0] !== key) {
+      index = (index + 1) % capacity;
+      path.push(index);
+      if (index === hashIndex) break; // Full loop
+      if (path.length > capacity) break; // Safety
+    }
+    
+    return { originalHash: hashIndex, path, finalSlot: index };
+  };
+
   const insertItem = async () => {
     if (!insertKey.trim() || !insertValue.trim()) {
       showMessage('Please enter both key and value!', 'error');
       return;
     }
 
-    // Check if this will cause a collision (only if table is loaded)
     const hashIndex = capacity > 0 ? calculateHash(insertKey.trim()) : 0;
     const willCollide = table.length > 0 && table[hashIndex] && table[hashIndex][0] !== insertKey.trim();
+    
+    // Calculate probing path before insert
+    let probing = null;
+    if (willCollide) {
+      probing = calculateProbingPath(insertKey.trim(), table);
+    }
 
     try {
       const result = await postJson('/api/hashtable/insert', { key: insertKey.trim(), value: insertValue.trim() });
@@ -64,34 +88,40 @@ function HashTableVisualizer() {
       }
 
       await loadHashtable();
+      setLastInsertedKey(insertKey.trim());
       
-      // Show collision message if detected
-      if (willCollide) {
-        showMessage(`Collision detected! Key "${insertKey}" hashed to slot ${hashIndex} but it was occupied. Used linear probing to find next available slot.`, 'warning');
-        // Highlight the collision path
-        const probingPath = [];
-        for (let i = hashIndex; i < table.length && probingPath.length < 5; i++) {
-          probingPath.push(i);
-          if (!table[i]) break;
-        }
-        setHighlightedSlots(probingPath);
-        setTimeout(() => setHighlightedSlots([]), 3000);
+      if (willCollide && probing) {
+        // Show collision with probing visualization
+        setCollisionInfo({
+          key: insertKey.trim(),
+          originalSlot: probing.originalHash,
+          probedSlots: probing.path,
+          finalSlot: probing.path[probing.path.length - 1]
+        });
+        setProbingPath(probing.path);
+        showMessage(`Collision! "${insertKey}" hashed to ${probing.originalHash}, probed ${probing.path.length} slot(s)`, 'warning');
+        
+        // Clear probing visualization after delay
+        setTimeout(() => {
+          setProbingPath([]);
+          setCollisionInfo(null);
+        }, 4000);
       } else {
-        showMessage(`Inserted ${insertKey}: ${insertValue} at slot ${hashIndex}`, 'success');
-        setHighlightedSlots([hashIndex]);
-        setTimeout(() => setHighlightedSlots([]), 2000);
+        showMessage(`Inserted "${insertKey}" → slot ${hashIndex}`, 'success');
+        setHighlightedSlot(hashIndex);
+        setTimeout(() => setHighlightedSlot(null), 2000);
       }
       
       setInsertKey('');
       setInsertValue('');
+      setTimeout(() => setLastInsertedKey(null), 3000);
     } catch (error) {
-      console.error('Insert error:', error);
       showMessage('Error inserting. Is Flask running?', 'error');
     }
   };
 
   const deleteItem = async () => {
-    if (!deleteKey || deleteKey.trim() === '') {
+    if (!deleteKey.trim()) {
       showMessage('Please enter a key!', 'error');
       return;
     }
@@ -104,16 +134,15 @@ function HashTableVisualizer() {
       }
 
       await loadHashtable();
-      showMessage(`Deleted ${deleteKey}`, 'success');
+      showMessage(`Deleted "${deleteKey}"`, 'success');
       setDeleteKey('');
     } catch (error) {
-      console.error('Delete error:', error);
       showMessage('Error deleting. Is Flask running?', 'error');
     }
   };
 
   const getItem = async () => {
-    if (!getKey || getKey.trim() === '') {
+    if (!getKey.trim()) {
       showMessage('Please enter a key!', 'error');
       return;
     }
@@ -127,9 +156,9 @@ function HashTableVisualizer() {
       }
 
       if (result.found) {
-        showMessage(`Found: ${getKey} = ${result.value}`, 'success');
+        showMessage(`Found: "${getKey}" = ${result.value}`, 'success');
       } else {
-        showMessage(`Key ${getKey} not found`, 'error');
+        showMessage(`Key "${getKey}" not found`, 'error');
       }
       setGetKey('');
     } catch (error) {
@@ -141,6 +170,8 @@ function HashTableVisualizer() {
     try {
       await postJson('/api/hashtable/clear', {});
       await loadHashtable();
+      setProbingPath([]);
+      setCollisionInfo(null);
       showMessage('Hashtable cleared!', 'success');
     } catch (error) {
       showMessage('Error clearing hashtable', 'error');
@@ -154,13 +185,13 @@ function HashTableVisualizer() {
           <div className="concept-box">
             <div className="concept-header">
               <HelpCircle className="icon-sm" />
-              <span>What is a Hash Table with Linear Probing?</span>
+              <span>What is a Hash Table?</span>
             </div>
             <div className="concept-content">
-              <p>A <strong>Hash Table</strong> stores key-value pairs using a hash function for O(1) average-case lookup, insertion, and deletion.</p>
+              <p>A <strong>Hash Table</strong> maps keys to values using a hash function for O(1) lookups.</p>
               <div className="concept-analogy">
                 <Lightbulb />
-                <span>Think of it like a <strong>library catalog</strong> – the hash function tells you which shelf to check!</span>
+                <span>Like a <strong>coat check</strong> – give them your coat (value), get a ticket number (hash of key)!</span>
               </div>
             </div>
           </div>
@@ -168,29 +199,24 @@ function HashTableVisualizer() {
           <div className="concept-box" style={{ marginTop: '1rem' }}>
             <div className="concept-header">
               <AlertTriangle className="icon-sm" style={{ color: '#f59e0b' }} />
-              <span>What are Collisions?</span>
+              <span>Linear Probing</span>
             </div>
             <div className="concept-content">
-              <p>A <strong>collision</strong> occurs when two different keys hash to the same index. For example:</p>
-              <div style={{ background: 'var(--bg-tertiary)', padding: '0.75rem', borderRadius: '8px', marginTop: '0.5rem', fontFamily: 'monospace', fontSize: '0.9rem' }}>
-                <div>hash("apple") = 3</div>
-                <div>hash("banana") = 3 <span style={{ color: '#f59e0b' }}>- Collision!</span></div>
-              </div>
-              <p style={{ marginTop: '0.75rem' }}><strong>Linear Probing</strong> solves this by checking the next available slot: if slot 3 is full, try slot 4, then 5, and so on.</p>
+              <p>When two keys hash to the same slot (<strong>collision</strong>), we check the next slot until we find an empty one.</p>
               <div className="concept-analogy" style={{ marginTop: '0.5rem' }}>
                 <Info style={{ color: '#3b82f6' }} />
-                <span>Like finding parking – if your spot is taken, find the <strong>next available space</strong>!</span>
+                <span>Like parking – if spot 3 is taken, try spot 4, then 5...</span>
               </div>
             </div>
           </div>
         </div>
 
-        <AIAssistant context="Hash Table with Linear Probing data structure" />
+        <AIAssistant context="Hash Table with Linear Probing" />
       </div>
 
       <div className="visualizer-layout">
         <div className="control-panel">
-          <h2>Hash Table Operations</h2>
+          <h2>Operations</h2>
           <div className="operation-group">
             <label>Insert Key-Value</label>
             <div className="input-group">
@@ -239,70 +265,165 @@ function HashTableVisualizer() {
           <div className="operation-group">
             <button onClick={clearHashtable} className="btn btn-clear">Clear Table</button>
           </div>
+          
           <div className="info-panel">
             <div className="info-item">
-              <span className="info-label">Filled Slots:</span>
-              <span className="info-value">{size}</span>
+              <span className="info-label">Items</span>
+              <span className="info-value">{size}/{capacity}</span>
             </div>
             <div className="info-item">
-              <span className="info-label">Total Capacity:</span>
-              <span className="info-value">{capacity}</span>
+              <span className="info-label">Load</span>
+              <span className="info-value" style={{ color: loadFactor >= 0.7 ? '#f59e0b' : 'inherit' }}>
+                {(loadFactor * 100).toFixed(0)}%
+              </span>
             </div>
             <div className="info-item">
-              <span className="info-label">Load Factor:</span>
-              <span className="info-value">{loadFactor.toFixed(2)}</span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Collisions:</span>
+              <span className="info-label">Collisions</span>
               <span className="info-value" style={{ color: collisionCount > 0 ? '#f59e0b' : 'inherit' }}>
                 {collisionCount}
               </span>
             </div>
           </div>
           
-          {loadFactor > 0.7 && (
-            <div className="warning-box" style={{ 
-              background: 'rgba(245, 158, 11, 0.1)', 
-              border: '1px solid rgba(245, 158, 11, 0.3)',
-              borderRadius: '8px',
-              padding: '0.75rem',
-              marginTop: '1rem',
-              display: 'flex',
-              gap: '0.5rem',
-              alignItems: 'start'
-            }}>
-              <AlertTriangle style={{ color: '#f59e0b', flexShrink: 0, marginTop: '2px' }} size={18} />
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                <strong style={{ color: 'var(--text-primary)' }}>High Load Factor!</strong> When load factor exceeds 0.7, collisions become more frequent and performance degrades. Consider resizing the table.
-              </div>
+          {/* Rehash Info Box - shows when load factor approaches threshold */}
+          <div className="rehash-info-box">
+            <RefreshCw size={16} />
+            <div>
+              <strong>Rehashing Threshold: 70%</strong>
+              <p>In practice, hash tables rehash (double capacity) when load factor reaches ~0.7 to maintain O(1) performance.</p>
+              {loadFactor >= 0.7 ? (
+                <span className="rehash-warning">⚠️ Current load ({(loadFactor * 100).toFixed(0)}%) exceeds threshold!</span>
+              ) : (
+                <span className="rehash-safe">✓ Currently safe ({(loadFactor * 100).toFixed(0)}% &lt; 70%)</span>
+              )}
             </div>
-          )}
+          </div>
+          
           <MessageBanner message={message} />
         </div>
 
         <div className="visual-panel">
-          <h2>Hash Table Visualization</h2>
-          <div className="hashtable-container">
-            {!table || table.length === 0 || size === 0 ? (
-              <div className="hashtable-empty">Hashtable is empty. Insert some items!</div>
+          <h2>Hash Table</h2>
+          
+          {/* Hash Function Demo */}
+          {insertKey && (
+            <div className="hash-demo">
+              <div className="hash-demo-item">
+                <span className="hash-demo-label">Key:</span>
+                <span className="hash-demo-key">"{insertKey}"</span>
+              </div>
+              <ArrowRight className="hash-demo-arrow" />
+              <div className="hash-demo-item">
+                <span className="hash-demo-label">hash()</span>
+              </div>
+              <ArrowRight className="hash-demo-arrow" />
+              <div className="hash-demo-item">
+                <span className="hash-demo-label">Slot:</span>
+                <span className="hash-demo-index">{calculateHash(insertKey)}</span>
+              </div>
+            </div>
+          )}
+          
+          {/* Collision/Probing Info Banner */}
+          {collisionInfo && (
+            <div className="collision-banner">
+              <AlertTriangle size={18} />
+              <div>
+                <strong>Collision Detected!</strong>
+                <p>
+                  "{collisionInfo.key}" hashed to slot <span className="slot-badge original">{collisionInfo.originalSlot}</span>
+                  {collisionInfo.probedSlots.length > 1 && (
+                    <>
+                      {' '}→ Probed: {collisionInfo.probedSlots.map((slot, i) => (
+                        <span key={i}>
+                          <span className={`slot-badge ${i === collisionInfo.probedSlots.length - 1 ? 'final' : 'probed'}`}>
+                            {slot}
+                          </span>
+                          {i < collisionInfo.probedSlots.length - 1 && ' → '}
+                        </span>
+                      ))}
+                    </>
+                  )}
+                </p>
+              </div>
+            </div>
+          )}
+
+          <div className="ht-visual">
+            {!table || table.length === 0 ? (
+              <div className="ht-empty">
+                Hash table is empty. Insert some key-value pairs!
+              </div>
             ) : (
-              <div className="hashtable-grid">
-                {table.map((slot, index) => (
-                  <div 
-                    key={index} 
-                    className={`hashtable-slot ${slot ? 'occupied' : 'empty'} ${highlightedSlots.includes(index) ? 'slot-highlight' : ''}`}
-                  >
-                    <div className="slot-index">{index}</div>
-                    {slot ? (
-                      <div className="slot-content">
-                        <div className="slot-key">{slot[0]}</div>
-                        <div className="slot-value">{slot[1]}</div>
+              <div className="ht-buckets">
+                {table.map((slot, index) => {
+                  const isProbed = probingPath.includes(index);
+                  const isOriginalHash = collisionInfo && collisionInfo.originalSlot === index;
+                  const isFinalSlot = collisionInfo && collisionInfo.finalSlot === index;
+                  
+                  return (
+                    <div 
+                      key={index} 
+                      className={`ht-row ${slot ? 'filled' : 'empty'} 
+                        ${highlightedSlot === index ? 'highlighted' : ''} 
+                        ${lastInsertedKey && slot && slot[0] === lastInsertedKey ? 'just-inserted' : ''}
+                        ${isProbed ? 'probed' : ''}
+                        ${isOriginalHash ? 'original-hash' : ''}
+                        ${isFinalSlot ? 'final-slot' : ''}`}
+                    >
+                      {/* Probing indicator */}
+                      {isProbed && (
+                        <div className="probe-indicator">
+                          {isOriginalHash ? '🎯' : isFinalSlot ? '✓' : '→'}
+                        </div>
+                      )}
+                      
+                      {/* Key Box (left side) */}
+                      <div className={`ht-key-box ${slot ? 'has-key' : ''}`}>
+                        {slot && <span className="ht-key">{slot[0]}</span>}
                       </div>
-                    ) : (
-                      <div className="slot-empty">Empty</div>
-                    )}
-                  </div>
-                ))}
+                      
+                      {/* Arrow */}
+                      <div className="ht-arrow">
+                        {slot && <ArrowRight size={20} />}
+                      </div>
+                      
+                      {/* Index Badge */}
+                      <div className={`ht-index ${isOriginalHash ? 'collision-index' : ''}`}>{index}</div>
+                      
+                      {/* Value Box (right side) */}
+                      <div className={`ht-value-box ${slot ? 'has-value' : ''}`}>
+                        {slot ? (
+                          <span className="ht-value">{slot[1]}</span>
+                        ) : (
+                          <span className="ht-empty-slot">—</span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          
+          {/* Legend */}
+          <div className="ht-legend">
+            <div className="legend-item">
+              <div className="legend-color key-color"></div>
+              <span>Key</span>
+            </div>
+            <div className="legend-item">
+              <div className="legend-color index-color"></div>
+              <span>Index</span>
+            </div>
+            <div className="legend-item">
+              <div className="legend-color value-color"></div>
+              <span>Value</span>
+            </div>
+            {probingPath.length > 0 && (
+              <div className="legend-item">
+                <div className="legend-color probe-color"></div>
+                <span>Probing Path</span>
               </div>
             )}
           </div>
@@ -315,4 +436,3 @@ function HashTableVisualizer() {
 }
 
 export default HashTableVisualizer;
-
