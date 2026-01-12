@@ -63,7 +63,7 @@ function Algorithms() {
           icon: Hash, 
           title: 'Quadratic Probing', 
           description: 'Instead of checking consecutive slots, probe at quadratic intervals: 1², 2², 3²... positions away from the original hash. This eliminates primary clustering but can cause "secondary clustering" where keys with the same hash follow the same probe sequence. Table size should be prime and load factor < 0.5 to guarantee finding an empty slot. Used when cache performance is less critical than even distribution.', 
-          available: false 
+          available: true 
         },
         { 
           to: '/hashtable_chaining', 

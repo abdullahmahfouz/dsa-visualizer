@@ -6,12 +6,11 @@ import MessageBanner from '../../components/MessageBanner';
 import { getJson, postJson } from '../../api/api';
 import { useTimedMessage } from '../../components/js-components/useTimedMessage';
 
-function HashTableVisualizer() {
+function HashTableQuadratic() {
   const [table, setTable] = useState([]);
   const [size, setSize] = useState(0);
   const [capacity, setCapacity] = useState(0);
   const [loadFactor, setLoadFactor] = useState(0);
-  const [collisionCount, setCollisionCount] = useState(0);
   const { message, showMessage } = useTimedMessage(3000);
   const [insertKey, setInsertKey] = useState('');
   const [insertValue, setInsertValue] = useState('');
@@ -28,12 +27,11 @@ function HashTableVisualizer() {
 
   const loadHashtable = async () => {
     try {
-      const data = await getJson('/api/hashtable');
+      const data = await getJson('/api/hashtable_quadratic');
       setTable(data.table || []);
       setSize(data.size || 0);
       setCapacity(data.capacity || 0);
       setLoadFactor(data.load_factor || 0);
-      setCollisionCount(data.collision_count || 0);
     } catch (error) {
       console.error('Error loading hashtable:', error);
     }
@@ -48,21 +46,22 @@ function HashTableVisualizer() {
     return hash;
   };
 
-  // Calculate probing path for visualization
+  // Calculate quadratic probing path for visualization
   const calculateProbingPath = (key, currentTable) => {
     const hashIndex = calculateHash(key);
-    const path = [hashIndex];
-    let index = hashIndex;
+    const path = [];
     
-    // Simulate linear probing
-    while (currentTable[index] && currentTable[index][0] !== key) {
-      index = (index + 1) % capacity;
-      path.push(index);
-      if (index === hashIndex) break; // Full loop
-      if (path.length > capacity) break; // Safety
+    // Simulate quadratic probing: (hash + i²) % capacity
+    for (let i = 0; i < capacity; i++) {
+      const probeIdx = (hashIndex + i * i) % capacity;
+      path.push({ index: probeIdx, i: i, formula: `(${hashIndex} + ${i}²) % ${capacity} = ${probeIdx}` });
+      
+      if (!currentTable[probeIdx] || currentTable[probeIdx][0] === key) {
+        break;
+      }
     }
     
-    return { originalHash: hashIndex, path, finalSlot: index };
+    return { originalHash: hashIndex, path, finalSlot: path[path.length - 1]?.index };
   };
 
   const insertItem = async () => {
@@ -72,7 +71,7 @@ function HashTableVisualizer() {
     }
 
     const hashIndex = capacity > 0 ? calculateHash(insertKey.trim()) : 0;
-    const willCollide = table.length > 0 && table[hashIndex] && table[hashIndex][0] !== insertKey.trim();
+    const willCollide = table.length > 0 && table[hashIndex] && table[hashIndex] !== "DELETED" && table[hashIndex][0] !== insertKey.trim();
     
     // Calculate probing path before insert
     let probing = null;
@@ -81,7 +80,7 @@ function HashTableVisualizer() {
     }
 
     try {
-      const result = await postJson('/api/hashtable/insert', { key: insertKey.trim(), value: insertValue.trim() });
+      const result = await postJson('/api/hashtable_quadratic/insert', { key: insertKey.trim(), value: insertValue.trim() });
       if (result.error) {
         showMessage(result.error, 'error');
         return;
@@ -96,16 +95,16 @@ function HashTableVisualizer() {
           key: insertKey.trim(),
           originalSlot: probing.originalHash,
           probedSlots: probing.path,
-          finalSlot: probing.path[probing.path.length - 1]
+          finalSlot: result.final_index
         });
-        setProbingPath(probing.path);
-        showMessage(`Collision! "${insertKey}" hashed to ${probing.originalHash}, probed ${probing.path.length} slot(s)`, 'warning');
+        setProbingPath(probing.path.map(p => p.index));
+        showMessage(`Collision! Quadratic probing: ${probing.path.length} probe(s)`, 'warning');
         
         // Clear probing visualization after delay
         setTimeout(() => {
           setProbingPath([]);
           setCollisionInfo(null);
-        }, 4000);
+        }, 5000);
       } else {
         showMessage(`Inserted "${insertKey}" → slot ${hashIndex}`, 'success');
         setHighlightedSlot(hashIndex);
@@ -127,7 +126,7 @@ function HashTableVisualizer() {
     }
 
     try {
-      const result = await postJson('/api/hashtable/delete', { key: deleteKey.trim() });
+      const result = await postJson('/api/hashtable_quadratic/delete', { key: deleteKey.trim() });
       if (result.error) {
         showMessage(result.error, 'error');
         return;
@@ -148,7 +147,7 @@ function HashTableVisualizer() {
     }
 
     try {
-      const result = await getJson(`/api/hashtable/get?key=${encodeURIComponent(getKey.trim())}`);
+      const result = await getJson(`/api/hashtable_quadratic/get?key=${encodeURIComponent(getKey.trim())}`);
       
       if (result.error) {
         showMessage(result.error, 'error');
@@ -168,7 +167,7 @@ function HashTableVisualizer() {
 
   const clearHashtable = async () => {
     try {
-      await postJson('/api/hashtable/clear', {});
+      await postJson('/api/hashtable_quadratic/clear', {});
       await loadHashtable();
       setProbingPath([]);
       setCollisionInfo(null);
@@ -185,33 +184,43 @@ function HashTableVisualizer() {
           <div className="concept-box">
             <div className="concept-header">
               <HelpCircle className="icon-sm" />
-              <span>What is a Hash Table?</span>
+              <span>What is Quadratic Probing?</span>
             </div>
             <div className="concept-content">
-              <p>A <strong>Hash Table</strong> maps keys to values using a hash function for O(1) lookups.</p>
-              <div className="concept-analogy">
+              <p><strong>Quadratic Probing</strong> is a collision resolution technique where we probe at quadratically increasing intervals.</p>
+              <div style={{ background: 'var(--bg-tertiary)', padding: '0.75rem', borderRadius: '8px', marginTop: '0.5rem', fontFamily: 'monospace', fontSize: '0.9rem' }}>
+                <div>probe(i) = (hash + i²) % capacity</div>
+                <div style={{ color: 'var(--text-muted)', marginTop: '0.25rem' }}>i = 0, 1, 4, 9, 16, 25...</div>
+              </div>
+              <div className="concept-analogy" style={{ marginTop: '0.75rem' }}>
                 <Lightbulb />
-                <span>Like a <strong>coat check</strong> – give them your coat (value), get a ticket number (hash of key)!</span>
+                <span>Unlike linear probing, we jump further each time – reducing <strong>clustering</strong>!</span>
               </div>
             </div>
           </div>
           
           <div className="concept-box" style={{ marginTop: '1rem' }}>
             <div className="concept-header">
-              <AlertTriangle className="icon-sm" style={{ color: '#f59e0b' }} />
-              <span>Linear Probing</span>
+              <Info className="icon-sm" style={{ color: '#3b82f6' }} />
+              <span>Linear vs Quadratic</span>
             </div>
             <div className="concept-content">
-              <p>When two keys hash to the same slot (<strong>collision</strong>), we check the next slot until we find an empty one.</p>
-              <div className="concept-analogy" style={{ marginTop: '0.5rem' }}>
-                <Info style={{ color: '#3b82f6' }} />
-                <span>Like parking – if spot 3 is taken, try spot 4, then 5...</span>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.85rem' }}>
+                <div>
+                  <strong style={{ color: '#f59e0b' }}>Linear:</strong>
+                  <div style={{ fontFamily: 'monospace', marginTop: '0.25rem' }}>+1, +2, +3, +4...</div>
+                </div>
+                <div>
+                  <strong style={{ color: '#22c55e' }}>Quadratic:</strong>
+                  <div style={{ fontFamily: 'monospace', marginTop: '0.25rem' }}>+1, +4, +9, +16...</div>
+                </div>
               </div>
+              <p style={{ marginTop: '0.75rem', fontSize: '0.85rem' }}>Quadratic probing spreads entries more evenly but may not find empty slots if table is over 50% full.</p>
             </div>
           </div>
         </div>
 
-        <AIAssistant context="Hash Table with Linear Probing" />
+        <AIAssistant context="Hash Table with Quadratic Probing" />
       </div>
 
       <div className="visualizer-layout">
@@ -273,28 +282,22 @@ function HashTableVisualizer() {
             </div>
             <div className="info-item">
               <span className="info-label">Load</span>
-              <span className="info-value" style={{ color: loadFactor >= 0.7 ? '#f59e0b' : 'inherit' }}>
+              <span className="info-value" style={{ color: loadFactor >= 0.5 ? '#f59e0b' : 'inherit' }}>
                 {(loadFactor * 100).toFixed(0)}%
-              </span>
-            </div>
-            <div className="info-item">
-              <span className="info-label">Collisions</span>
-              <span className="info-value" style={{ color: collisionCount > 0 ? '#f59e0b' : 'inherit' }}>
-                {collisionCount}
               </span>
             </div>
           </div>
           
-          {/* Rehash Info Box - shows when load factor approaches threshold */}
+          {/* Rehash Info Box */}
           <div className="rehash-info-box">
             <RefreshCw size={16} />
             <div>
-              <strong>Rehashing Threshold: 70%</strong>
-              <p>In practice, hash tables rehash (double capacity) when load factor reaches ~0.7 to maintain O(1) performance.</p>
-              {loadFactor >= 0.7 ? (
-                <span className="rehash-warning">Current load ({(loadFactor * 100).toFixed(0)}%) exceeds threshold!</span>
+              <strong>Rehashing Threshold: 50%</strong>
+              <p>Quadratic probing requires lower load factor (~0.5) to guarantee finding empty slots.</p>
+              {loadFactor >= 0.5 ? (
+                <span className="rehash-warning">Load ({(loadFactor * 100).toFixed(0)}%) at threshold!</span>
               ) : (
-                <span className="rehash-safe">Currently safe ({(loadFactor * 100).toFixed(0)}% &lt; 70%)</span>
+                <span className="rehash-safe">Currently safe ({(loadFactor * 100).toFixed(0)}% &lt; 50%)</span>
               )}
             </div>
           </div>
@@ -303,7 +306,7 @@ function HashTableVisualizer() {
         </div>
 
         <div className="visual-panel">
-          <h2>Hash Table</h2>
+          <h2>Hash Table (Quadratic Probing)</h2>
           
           {/* Hash Function Demo */}
           {insertKey && (
@@ -329,22 +332,18 @@ function HashTableVisualizer() {
             <div className="collision-banner">
               <AlertTriangle size={18} />
               <div>
-                <strong>Collision Detected!</strong>
+                <strong>Quadratic Probing!</strong>
                 <p>
                   "{collisionInfo.key}" hashed to slot <span className="slot-badge original">{collisionInfo.originalSlot}</span>
-                  {collisionInfo.probedSlots.length > 1 && (
-                    <>
-                      {' '}- Probed: {collisionInfo.probedSlots.map((slot, i) => (
-                        <span key={i}>
-                          <span className={`slot-badge ${i === collisionInfo.probedSlots.length - 1 ? 'final' : 'probed'}`}>
-                            {slot}
-                          </span>
-                          {i < collisionInfo.probedSlots.length - 1 && ' > '}
-                        </span>
-                      ))}
-                    </>
-                  )}
                 </p>
+                <div style={{ marginTop: '0.5rem', fontSize: '0.8rem', fontFamily: 'monospace' }}>
+                  {collisionInfo.probedSlots.map((probe, i) => (
+                    <div key={i} style={{ marginBottom: '0.25rem' }}>
+                      i={probe.i}: {probe.formula}
+                      {i === collisionInfo.probedSlots.length - 1 && <span style={{ color: '#4ade80' }}> [FOUND]</span>}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
@@ -360,13 +359,16 @@ function HashTableVisualizer() {
                   const isProbed = probingPath.includes(index);
                   const isOriginalHash = collisionInfo && collisionInfo.originalSlot === index;
                   const isFinalSlot = collisionInfo && collisionInfo.finalSlot === index;
+                  const isDeleted = slot === "DELETED";
+                  const hasValue = slot && slot !== "DELETED";
                   
                   return (
                     <div 
                       key={index} 
-                      className={`ht-row ${slot ? 'filled' : 'empty'} 
+                      className={`ht-row ${hasValue ? 'filled' : 'empty'} 
+                        ${isDeleted ? 'deleted' : ''}
                         ${highlightedSlot === index ? 'highlighted' : ''} 
-                        ${lastInsertedKey && slot && slot[0] === lastInsertedKey ? 'just-inserted' : ''}
+                        ${lastInsertedKey && hasValue && slot[0] === lastInsertedKey ? 'just-inserted' : ''}
                         ${isProbed ? 'probed' : ''}
                         ${isOriginalHash ? 'original-hash' : ''}
                         ${isFinalSlot ? 'final-slot' : ''}`}
@@ -379,22 +381,25 @@ function HashTableVisualizer() {
                       )}
                       
                       {/* Key Box (left side) */}
-                      <div className={`ht-key-box ${slot ? 'has-key' : ''}`}>
-                        {slot && <span className="ht-key">{slot[0]}</span>}
+                      <div className={`ht-key-box ${hasValue ? 'has-key' : ''} ${isDeleted ? 'deleted-slot' : ''}`}>
+                        {hasValue && <span className="ht-key">{slot[0]}</span>}
+                        {isDeleted && <span className="ht-deleted-text">DEL</span>}
                       </div>
                       
                       {/* Arrow */}
                       <div className="ht-arrow">
-                        {slot && <ArrowRight size={20} />}
+                        {hasValue && <ArrowRight size={20} />}
                       </div>
                       
                       {/* Index Badge */}
                       <div className={`ht-index ${isOriginalHash ? 'collision-index' : ''}`}>{index}</div>
                       
                       {/* Value Box (right side) */}
-                      <div className={`ht-value-box ${slot ? 'has-value' : ''}`}>
-                        {slot ? (
+                      <div className={`ht-value-box ${hasValue ? 'has-value' : ''} ${isDeleted ? 'deleted-slot' : ''}`}>
+                        {hasValue ? (
                           <span className="ht-value">{slot[1]}</span>
+                        ) : isDeleted ? (
+                          <span className="ht-deleted-text">DELETED</span>
                         ) : (
                           <span className="ht-empty-slot">—</span>
                         )}
@@ -423,7 +428,7 @@ function HashTableVisualizer() {
             {probingPath.length > 0 && (
               <div className="legend-item">
                 <div className="legend-color probe-color"></div>
-                <span>Probing Path</span>
+                <span>Probe Path</span>
               </div>
             )}
           </div>
@@ -435,4 +440,4 @@ function HashTableVisualizer() {
   );
 }
 
-export default HashTableVisualizer;
+export default HashTableQuadratic;

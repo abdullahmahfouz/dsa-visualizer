@@ -350,6 +350,30 @@
     font-size: 1.2rem;
 }
 
+/* Deleted slots (lazy deletion) */
+.ht-row.deleted {
+    opacity: 0.6;
+}
+
+.deleted-slot {
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 5px,
+        rgba(239, 68, 68, 0.1) 5px,
+        rgba(239, 68, 68, 0.1) 10px
+    ) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.ht-deleted-text {
+    color: #ef4444;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
 /* ============ Rehash Info Box ============ */
 
 .rehash-info-box {

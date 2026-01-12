@@ -17,6 +17,7 @@ import LinkedListVisualizer from './visualizers/linear/LinkedListVisualizer';
 // Visualizers - Hash
 import HashTableVisualizer from './visualizers/hash/HashTableVisualizer';
 import HashTableChaining from './visualizers/hash/HashTableChaining';
+import HashTableQuadratic from './visualizers/hash/HashTableQuadratic';
 
 // Visualizers - Trees
 import BinaryTreeVisualizer from './visualizers/binarytrees/BinaryTreeTraversals/BinaryTreeTraversals';
@@ -35,6 +36,7 @@ function App() {
           <Route path="/queue" element={<QueueVisualizer />} />
           <Route path="/linkedlist" element={<LinkedListVisualizer />} />
           <Route path="/hashtable_linear" element={<HashTableVisualizer />} />
+          <Route path="/hashtable_quadratic" element={<HashTableQuadratic />} />
           <Route path="/hashtable_chaining" element={<HashTableChaining />} />
           <Route path="/binarytree" element={<BinaryTreeVisualizer />} />
         </Routes>
