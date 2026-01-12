@@ -36,10 +36,10 @@ function AIAssistant({ context = 'Data Structures' }) {
       if (res.ok) {
         setResponse(data.answer || 'No answer returned.');
       } else {
-        setResponse(`Error: ${data.error || 'Something went wrong'}`);
+        setResponse('Currently not working, try again later.');
       }
     } catch (error) {
-      setResponse(`Network error: ${error.message}`);
+      setResponse('Currently not working, try again later.');
     } finally {
       setLoading(false);
     }

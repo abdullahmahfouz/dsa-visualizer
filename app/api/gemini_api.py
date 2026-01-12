@@ -39,7 +39,7 @@ def ask_ai():
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model='gemini-2.0-flash-exp',
+            model='gemini-2.5-flash',
             contents=prompt
         )
         # Extract text from response - response.text should work, but handle if it's different
@@ -62,5 +62,4 @@ def ask_ai():
 
         # Return the exception message so the frontend can show a helpful error (e.g., quota/billing info)
         return jsonify({'error': str(e)}), status_code_int
-
 

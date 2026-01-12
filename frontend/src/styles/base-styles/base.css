@@ -164,6 +164,12 @@ code {
     margin-bottom: 1rem;
 }
 
+.ai-assistant:hover {
+    transform: translateY(-2px);
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+}
+
 .ai-assistant h3 {
     display: flex;
     align-items: center;
