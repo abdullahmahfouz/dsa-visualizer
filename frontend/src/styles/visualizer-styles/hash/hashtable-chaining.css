@@ -1,0 +1,250 @@
+/* ============================================================================
+   HASH TABLE CHAINING STYLES
+   ============================================================================ */
+
+/* Container for the entire chaining visualization */
+.hashtable-chaining-container {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  min-height: 400px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+/* Empty state message */
+.hashtable-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Container for all buckets */
+.buckets-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Single bucket row (index + content) */
+.bucket-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.bucket-row:hover {
+  background: rgba(99, 102, 241, 0.05);
+  border-color: var(--accent-primary);
+}
+
+/* Bucket index number */
+.bucket-index {
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-primary);
+  color: white;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+}
+
+/* Bucket content area (holds the chain) */
+.bucket-content {
+  flex: 1;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================================================
+   CHAIN STYLES
+   ============================================================================ */
+
+/* Container for the linked list chain */
+.chain-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Empty bucket display */
+.chain-empty {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 0.5rem 1rem;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+}
+
+/* Single node in the chain */
+.chain-node {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.75rem;
+  min-width: 80px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.chain-node:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Key in the node */
+.chain-node-key {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Value in the node */
+.chain-node-value {
+  font-size: 1rem;
+  color: white;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+/* Arrow between nodes */
+.chain-arrow {
+  font-size: 1.5rem;
+  color: var(--accent-primary);
+  font-weight: bold;
+  padding: 0 0.25rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+/* ============================================================================
+   LEGEND STYLES
+   ============================================================================ */
+
+.chaining-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.legend-box {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.legend-arrow {
+  font-size: 1.25rem;
+  color: var(--accent-primary);
+  font-weight: bold;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .bucket-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .bucket-index {
+    align-self: flex-start;
+  }
+
+  .chain-node {
+    min-width: 60px;
+  }
+
+  .chain-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chain-arrow {
+    transform: rotate(90deg);
+    font-size: 1.25rem;
+  }
+
+  .chaining-legend {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hashtable-chaining-container {
+    padding: 1rem;
+  }
+
+  .bucket-row {
+    padding: 0.5rem;
+  }
+
+  .bucket-index {
+    min-width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .chain-node {
+    padding: 0.4rem 0.6rem;
+    min-width: 70px;
+  }
+
+  .chain-node-value {
+    font-size: 0.9rem;
+  }
+}
+
+

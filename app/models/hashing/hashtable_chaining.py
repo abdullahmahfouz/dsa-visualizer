@@ -27,7 +27,7 @@ class HashTableChaining:
     Hash table implementation using separate chaining for collision resolution.
     Each bucket (table index) contains a linked list of key-value pairs.
     """
-   
+    
     def __init__(self, initial_capacity):
         """
         Initialize the hash table with separate chaining.
@@ -82,7 +82,7 @@ class HashTableChaining:
         
         # Increment total number of elements
         self.size += 1
-
+        
     def search(self, key):
         """
         Search for a value by its key in the hash table.

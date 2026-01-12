@@ -2,6 +2,173 @@
    Binary Tree Visualizer Styles
    ============================================ */
 
+/* Concept Boxes */
+.concept-key-terms,
+.concept-why-traverse {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+}
+
+.concept-key-terms h4,
+.concept-why-traverse h4 {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.concept-key-terms ul,
+.concept-why-traverse ul {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-left: 1.25rem;
+}
+
+/* Traversal Legend */
+.traversal-legend {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.legend-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.legend-dot--default { background: #6366f1; }
+.legend-dot--visiting { background: #f59e0b; box-shadow: 0 0 8px #f59e0b; }
+.legend-dot--visited { background: #10b981; }
+
+/* Traversal Output Panel */
+.traversal-output-panel {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: var(--radius-lg);
+}
+
+.traversal-title {
+    color: var(--accent-primary);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.traversal-badge {
+    font-size: 0.75rem;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.traversal-badge--running { background: #f59e0b; }
+.traversal-badge--complete { background: #10b981; }
+
+.traversal-order {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.traversal-description {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.traversal-output-box {
+    background: var(--bg-tertiary);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.traversal-output-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.traversal-sequence-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2rem;
+}
+
+.traversal-node {
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.traversal-node--current { background: #f59e0b; }
+.traversal-node--complete { background: #10b981; }
+
+.traversal-array-section {
+    margin-top: 1rem;
+}
+
+.traversal-array-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.traversal-array-output {
+    display: block;
+    background: var(--bg-secondary);
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #10b981;
+    font-family: var(--font-mono);
+}
+
+.traversal-use-case {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.75rem;
+    font-style: italic;
+}
+
+.traversal-complexity {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.complexity-value {
+    color: var(--accent-primary);
+    background: transparent;
+    padding: 0;
+}
+
 /* Warning Box */
 .warning-box {
     background: rgba(245, 158, 11, 0.1);

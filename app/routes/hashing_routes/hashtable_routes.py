@@ -7,7 +7,7 @@ Supports both Linear and Quadratic Probing
 """
 
 from flask import Blueprint, jsonify, request
-from ..models.hashtable_linear import HashTable
+from ...models.hashing.hashtable_linear import HashTable
 
 # Create Blueprint with /api/hashtable prefix
 hashtable_bp = Blueprint('hashtable', __name__, url_prefix='/api/hashtable')

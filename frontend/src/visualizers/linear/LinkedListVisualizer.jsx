@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { HelpCircle, Lightbulb } from 'lucide-react';
 import AIAssistant from '../../components/AIAssistant';
 import CodeTabs from '../../components/CodeTabs';
+import MessageBanner from '../../components/MessageBanner';
+import { getJson, postJson } from '../../api/api';
+import { useTimedMessage } from '../../components/js-components/useTimedMessage';
 
 function LinkedListVisualizer() {
   const [list, setList] = useState([]);
   const [size, setSize] = useState(0);
   const [head, setHead] = useState('Empty');
-  const [message, setMessage] = useState('');
+  const { message, showMessage } = useTimedMessage(3000);
   const [insertHeadValue, setInsertHeadValue] = useState('');
   const [insertTailValue, setInsertTailValue] = useState('');
   const [insertIndexValue, setInsertIndexValue] = useState('');
@@ -21,19 +24,13 @@ function LinkedListVisualizer() {
 
   const loadLinkedList = async () => {
     try {
-      const response = await fetch('/api/linkedlist');
-      const data = await response.json();
+      const data = await getJson('/api/linkedlist');
       setList(data.items || []);
       setSize(data.size || 0);
       setHead(data.head !== null && data.head !== undefined ? data.head : 'Empty');
     } catch (error) {
       console.error('Error loading linked list:', error);
     }
-  };
-
-  const showMessage = (text, type = 'info') => {
-    setMessage(text);
-    setTimeout(() => setMessage(''), 3000);
   };
 
   const insertAtHead = async () => {
@@ -49,13 +46,7 @@ function LinkedListVisualizer() {
     }
 
     try {
-      const response = await fetch('/api/linkedlist/insert/head', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: numValue })
-      });
-
-      const result = await response.json();
+      const result = await postJson('/api/linkedlist/insert/head', { value: numValue });
       if (result.error) {
         showMessage(result.error, 'error');
         return;
@@ -85,13 +76,7 @@ function LinkedListVisualizer() {
     }
 
     try {
-      const response = await fetch('/api/linkedlist/insert/tail', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: numValue })
-      });
-
-      const result = await response.json();
+      const result = await postJson('/api/linkedlist/insert/tail', { value: numValue });
       if (result.error) {
         showMessage(result.error, 'error');
         return;
@@ -110,8 +95,7 @@ function LinkedListVisualizer() {
 
   const deleteAtHead = async () => {
     try {
-      const response = await fetch('/api/linkedlist/delete/head', { method: 'POST' });
-      const result = await response.json();
+      const result = await postJson('/api/linkedlist/delete/head', {});
       if (result.error) {
         showMessage(result.error, 'error');
         return;
@@ -127,8 +111,7 @@ function LinkedListVisualizer() {
 
   const deleteAtTail = async () => {
     try {
-      const response = await fetch('/api/linkedlist/delete/tail', { method: 'POST' });
-      const result = await response.json();
+      const result = await postJson('/api/linkedlist/delete/tail', {});
       if (result.error) {
         showMessage(result.error, 'error');
         return;
@@ -144,7 +127,7 @@ function LinkedListVisualizer() {
 
   const clearList = async () => {
     try {
-      await fetch('/api/linkedlist/clear', { method: 'POST' });
+      await postJson('/api/linkedlist/clear', {});
       setList([]);
       setSize(0);
       setHead('Empty');
@@ -225,11 +208,7 @@ function LinkedListVisualizer() {
               <span className="info-value">{head}</span>
             </div>
           </div>
-          {message && (
-            <div className={`message message-${message.includes('Error') ? 'error' : message.includes('success') ? 'success' : 'info'}`}>
-              {message}
-            </div>
-          )}
+          <MessageBanner message={message} />
         </div>
 
         <div className="visual-panel">
@@ -253,7 +232,7 @@ function LinkedListVisualizer() {
         </div>
       </div>
 
-      <CodeTabs dataStructure="stack" />
+      <CodeTabs dataStructure="linkedlist" />
     </div>
   );
 }

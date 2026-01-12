@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from ..models.hashtable_chaining import HashTableChaining 
+from ...models.hashing.hashtable_chaining import HashTableChaining 
 
 hs_bp = Blueprint('hashtable_chaining', __name__, url_prefix='/api/hashtable_chaining')
 

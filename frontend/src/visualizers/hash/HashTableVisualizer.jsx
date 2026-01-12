@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { HelpCircle, Lightbulb, AlertTriangle, Info } from 'lucide-react';
 import AIAssistant from '../../components/AIAssistant';
 import CodeTabs from '../../components/CodeTabs';
+import MessageBanner from '../../components/MessageBanner';
+import { getJson, postJson } from '../../api/api';
+import { useTimedMessage } from '../../components/js-components/useTimedMessage';
 
 function HashTableVisualizer() {
   const [table, setTable] = useState([]);
@@ -9,7 +12,7 @@ function HashTableVisualizer() {
   const [capacity, setCapacity] = useState(0);
   const [loadFactor, setLoadFactor] = useState(0);
   const [collisionCount, setCollisionCount] = useState(0);
-  const [message, setMessage] = useState('');
+  const { message, showMessage } = useTimedMessage(3000);
   const [insertKey, setInsertKey] = useState('');
   const [insertValue, setInsertValue] = useState('');
   const [deleteKey, setDeleteKey] = useState('');
@@ -22,8 +25,7 @@ function HashTableVisualizer() {
 
   const loadHashtable = async () => {
     try {
-      const response = await fetch('/api/hashtable');
-      const data = await response.json();
+      const data = await getJson('/api/hashtable');
       setTable(data.table || []);
       setSize(data.size || 0);
       setCapacity(data.capacity || 0);
@@ -44,11 +46,6 @@ function HashTableVisualizer() {
     return hash;
   };
 
-  const showMessage = (text, type = 'info') => {
-    setMessage(text);
-    setTimeout(() => setMessage(''), 3000);
-  };
-
   const insertItem = async () => {
     if (!insertKey.trim() || !insertValue.trim()) {
       showMessage('Please enter both key and value!', 'error');
@@ -60,13 +57,7 @@ function HashTableVisualizer() {
     const willCollide = table.length > 0 && table[hashIndex] && table[hashIndex][0] !== insertKey.trim();
 
     try {
-      const response = await fetch('/api/hashtable/insert', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key: insertKey.trim(), value: insertValue.trim() })
-      });
-
-      const result = await response.json();
+      const result = await postJson('/api/hashtable/insert', { key: insertKey.trim(), value: insertValue.trim() });
       if (result.error) {
         showMessage(result.error, 'error');
         return;
@@ -106,13 +97,7 @@ function HashTableVisualizer() {
     }
 
     try {
-      const response = await fetch('/api/hashtable/delete', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key: deleteKey.trim() })
-      });
-
-      const result = await response.json();
+      const result = await postJson('/api/hashtable/delete', { key: deleteKey.trim() });
       if (result.error) {
         showMessage(result.error, 'error');
         return;
@@ -134,8 +119,7 @@ function HashTableVisualizer() {
     }
 
     try {
-      const response = await fetch(`/api/hashtable/get?key=${encodeURIComponent(getKey.trim())}`);
-      const result = await response.json();
+      const result = await getJson(`/api/hashtable/get?key=${encodeURIComponent(getKey.trim())}`);
       
       if (result.error) {
         showMessage(result.error, 'error');
@@ -155,7 +139,7 @@ function HashTableVisualizer() {
 
   const clearHashtable = async () => {
     try {
-      await fetch('/api/hashtable/clear', { method: 'POST' });
+      await postJson('/api/hashtable/clear', {});
       await loadHashtable();
       showMessage('Hashtable cleared!', 'success');
     } catch (error) {
@@ -293,11 +277,7 @@ function HashTableVisualizer() {
               </div>
             </div>
           )}
-          {message && (
-            <div className={`message message-${message.includes('Error') || message.includes('error') ? 'error' : message.includes('success') || message.includes('Inserted') || message.includes('Deleted') ? 'success' : message.includes('Collision') ? 'warning' : 'info'}`}>
-              {message}
-            </div>
-          )}
+          <MessageBanner message={message} />
         </div>
 
         <div className="visual-panel">
@@ -329,7 +309,7 @@ function HashTableVisualizer() {
         </div>
       </div>
 
-      <CodeTabs dataStructure="stack" />
+      <CodeTabs dataStructure="hashtable" />
     </div>
   );
 }

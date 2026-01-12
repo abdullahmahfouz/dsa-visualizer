@@ -11,7 +11,7 @@ Binary Tree operations:
 """
 
 from flask import Blueprint, jsonify, request
-from ..models.binary_tree import BinaryTree
+from ...models.binarytrees.binary_tree import BinaryTree
 
 # Create Blueprint with /api/binarytree prefix
 binarytree_bp = Blueprint('binarytree', __name__, url_prefix='/api/binarytree')

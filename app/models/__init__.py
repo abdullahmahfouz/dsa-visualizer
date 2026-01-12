@@ -1,4 +1,3 @@
-# This file makes data_structures a Python package
-# It allows us to import like: from data_structures.stack import Stack
+# This file makes models a Python package
+# It allows us to import from the subpackages: linear, hashing, binarytrees
 
-from .stack import Stack

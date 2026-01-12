@@ -1,26 +1,27 @@
 /* Import all CSS files */
 
 /* Base styles */
-@import './base/variables.css';
-@import './base/base.css';
-@import './base/layout.css';
+@import './base-styles/variables.css';
+@import './base-styles/base.css';
+@import './base-styles/layout.css';
 
 /* Components */
-@import './components/icons.css';
-@import './components/cards.css';
-@import './components/info.css';
-@import './components/forms.css';
-@import './components/code-tabs.css';
+@import './component-styles/icons.css';
+@import './component-styles/cards.css';
+@import './component-styles/info.css';
+@import './component-styles/forms.css';
+@import './component-styles/code-tabs.css';
 
 /* Pages */
-@import './pages/homepage.css';
+@import './page-styles/homepage.css';
 
 /* Visualizers */
-@import './visualizers/stack.css';
-@import './visualizers/queue.css';
-@import './visualizers/linkedlist.css';
-@import './visualizers/hashtable.css';
-@import './visualizers/binarytree.css';
+@import './visualizer-styles/linear/stack.css';
+@import './visualizer-styles/linear/queue.css';
+@import './visualizer-styles/linear/linkedlist.css';
+@import './visualizer-styles/hash/hashtable.css';
+@import './visualizer-styles/hash/hashtable-chaining.css';
+@import './visualizer-styles/binarytrees/binarytree.css';
 
 /* Mobile Responsive - Must be last to override other styles */
-@import './base/responsive.css';
+@import './base-styles/responsive.css';

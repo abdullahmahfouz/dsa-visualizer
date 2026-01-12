@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { HelpCircle, Lightbulb, Bot } from 'lucide-react';
+import { HelpCircle, Lightbulb } from 'lucide-react';
 import AIAssistant from '../../components/AIAssistant';
 import CodeTabs from '../../components/CodeTabs';
+import MessageBanner from '../../components/MessageBanner';
+import { getJson, postJson } from '../../api/api';
+import { useTimedMessage } from '../../components/js-components/useTimedMessage';
 
 function StackVisualizer() {
   const [stack, setStack] = useState([]);
   const [size, setSize] = useState(0);
   const [top, setTop] = useState('Empty');
   const [maxSize] = useState(10);
-  const [message, setMessage] = useState('');
+  const { message, showMessage } = useTimedMessage(3000);
   const [pushValue, setPushValue] = useState('');
 
   useEffect(() => {
@@ -17,19 +20,13 @@ function StackVisualizer() {
 
   const loadStack = async () => {
     try {
-      const response = await fetch('/api/stack');
-      const data = await response.json();
+      const data = await getJson('/api/stack');
       setStack(data.items || []);
       setSize(data.size || 0);
       setTop(data.top !== null && data.top !== undefined ? data.top : 'Empty');
     } catch (error) {
       console.error('Error loading stack:', error);
     }
-  };
-
-  const showMessage = (text, type = 'info') => {
-    setMessage(text);
-    setTimeout(() => setMessage(''), 3000);
   };
 
   const pushItem = async () => {
@@ -45,13 +42,7 @@ function StackVisualizer() {
     }
 
     try {
-      const response = await fetch('/api/stack/push', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: numValue })
-      });
-
-      const result = await response.json();
+      const result = await postJson('/api/stack/push', { value: numValue });
       
       if (result.error) {
         showMessage(result.error, 'error');
@@ -71,8 +62,7 @@ function StackVisualizer() {
 
   const popItem = async () => {
     try {
-      const response = await fetch('/api/stack/pop', { method: 'POST' });
-      const result = await response.json();
+      const result = await postJson('/api/stack/pop', {});
       
       if (result.error) {
         showMessage(result.error, 'error');
@@ -90,8 +80,7 @@ function StackVisualizer() {
 
   const peekItem = async () => {
     try {
-      const response = await fetch('/api/stack/peek');
-      const result = await response.json();
+      const result = await getJson('/api/stack/peek');
       
       if (result.error) {
         showMessage(result.error, 'error');
@@ -106,7 +95,7 @@ function StackVisualizer() {
 
   const clearStack = async () => {
     try {
-      await fetch('/api/stack/clear', { method: 'POST' });
+      await postJson('/api/stack/clear', {});
       setStack([]);
       setSize(0);
       setTop('Empty');
@@ -207,11 +196,7 @@ function StackVisualizer() {
               <span className="info-value">{maxSize}</span>
             </div>
           </div>
-          {message && (
-            <div className={`message message-${message.includes('Error') ? 'error' : message.includes('success') ? 'success' : 'info'}`}>
-              {message}
-            </div>
-          )}
+          <MessageBanner message={message} />
         </div>
 
         <div className="visual-panel">

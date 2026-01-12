@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { HelpCircle, Lightbulb } from 'lucide-react';
 import AIAssistant from '../../components/AIAssistant';
 import CodeTabs from '../../components/CodeTabs';
+import MessageBanner from '../../components/MessageBanner';
+import { getJson, postJson } from '../../api/api';
+import { useTimedMessage } from '../../components/js-components/useTimedMessage';
 
 function QueueVisualizer() {
   const [queue, setQueue] = useState([]);
   const [size, setSize] = useState(0);
   const [front, setFront] = useState('Empty');
   const [maxSize] = useState(10);
-  const [message, setMessage] = useState('');
+  const { message, showMessage } = useTimedMessage(3000);
   const [enqueueValue, setEnqueueValue] = useState('');
 
   useEffect(() => {
@@ -17,19 +20,13 @@ function QueueVisualizer() {
 
   const loadQueue = async () => {
     try {
-      const response = await fetch('/api/queue');
-      const data = await response.json();
+      const data = await getJson('/api/queue');
       setQueue(data.items || []);
       setSize(data.size || 0);
       setFront(data.front !== null && data.front !== undefined ? data.front : 'Empty');
     } catch (error) {
       console.error('Error loading queue:', error);
     }
-  };
-
-  const showMessage = (text, type = 'info') => {
-    setMessage(text);
-    setTimeout(() => setMessage(''), 3000);
   };
 
   const enqueueItem = async () => {
@@ -45,13 +42,7 @@ function QueueVisualizer() {
     }
 
     try {
-      const response = await fetch('/api/queue/enqueue', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ value: numValue })
-      });
-
-      const result = await response.json();
+      const result = await postJson('/api/queue/enqueue', { value: numValue });
       
       if (result.error) {
         showMessage(result.error, 'error');
@@ -71,8 +62,7 @@ function QueueVisualizer() {
 
   const dequeueItem = async () => {
     try {
-      const response = await fetch('/api/queue/dequeue', { method: 'POST' });
-      const result = await response.json();
+      const result = await postJson('/api/queue/dequeue', {});
       
       if (result.error) {
         showMessage(result.error, 'error');
@@ -90,8 +80,7 @@ function QueueVisualizer() {
 
   const peekItem = async () => {
     try {
-      const response = await fetch('/api/queue/peek');
-      const result = await response.json();
+      const result = await getJson('/api/queue/peek');
       
       if (result.error) {
         showMessage(result.error, 'error');
@@ -106,7 +95,7 @@ function QueueVisualizer() {
 
   const clearQueue = async () => {
     try {
-      await fetch('/api/queue/clear', { method: 'POST' });
+      await postJson('/api/queue/clear', {});
       setQueue([]);
       setSize(0);
       setFront('Empty');
@@ -192,11 +181,7 @@ function QueueVisualizer() {
               <span className="info-value">{maxSize}</span>
             </div>
           </div>
-          {message && (
-            <div className={`message message-${message.includes('Error') ? 'error' : message.includes('success') ? 'success' : 'info'}`}>
-              {message}
-            </div>
-          )}
+          <MessageBanner message={message} />
         </div>
 
         <div className="visual-panel">
@@ -223,7 +208,7 @@ function QueueVisualizer() {
         </div>
       </div>
 
-      <CodeTabs dataStructure="stack" />
+      <CodeTabs dataStructure="queue" />
     </div>
   );
 }
