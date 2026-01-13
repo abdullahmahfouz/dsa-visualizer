@@ -55,33 +55,43 @@ class HashTableChaining:
     def insert(self, key, value):
         """
         Insert a key-value pair into the hash table.
+        If key already exists, update its value.
         If the bucket is empty, create a new node.
         If the bucket has existing nodes, append to the end of the chain.
-        
+
         Time Complexity: O(1) average, O(n) worst case (long chain)
-        
+
         Args:
             key: The key to insert
             value: The value associated with the key
+
+        Returns:
+            bool: True if new key was inserted, False if existing key was updated
         """
         # Calculate which bucket this key belongs to
-        index = self._hash(key) 
-        
+        index = self._hash(key)
+
         # Case 1: Bucket is empty - no collision
         if self.table[index] is None:
             self.table[index] = Node(key, value)
-        
-        # Case 2: Bucket has existing nodes - collision occurred
-        else:
-            # Traverse to the end of the chain
-            current = self.table[index]
-            while current.next:
-                current = current.next
-            # Append new node at the end
-            current.next = Node(key, value)
-        
-        # Increment total number of elements
+            self.size += 1
+            return True
+
+        # Case 2: Bucket has existing nodes - check for duplicate key first
+        current = self.table[index]
+        while current:
+            if current.key == key:
+                # Key exists - update value (no size change)
+                current.value = value
+                return False
+            if current.next is None:
+                break
+            current = current.next
+
+        # Key not found - append new node at the end (collision)
+        current.next = Node(key, value)
         self.size += 1
+        return True
         
     def search(self, key):
         """
@@ -115,15 +125,12 @@ class HashTableChaining:
         """
         Delete a key-value pair from the hash table.
         Searches the chain and removes the node if found.
-        
-        Note: This implementation has a bug - it doesn't handle deleting
-        the first node in the chain. Only deletes nodes after the head.
-        
+
         Time Complexity: O(1) average, O(n) worst case
-        
+
         Args:
             key: The key to delete
-            
+
         Returns:
             bool: True if key was found and deleted, False otherwise
         """
@@ -133,56 +140,114 @@ class HashTableChaining:
         # Case 1: Bucket is empty - key doesn't exist
         if self.table[index] is None:
             return False
-        
-        # Case 2: Bucket has nodes - search through the chain
-        else:
-            current = self.table[index]
-            
-            # Traverse the chain looking for the key
-            while current.next:
-                # Check if the NEXT node has the key
-                if current.next.key == key:
-                    # Remove the next node by skipping it
-                    current.next = current.next.next
-                    self.size -= 1
-                    return True
+
+        # Case 2: Check if the HEAD node has the key
+        if self.table[index].key == key:
+            # Remove head by pointing to the next node
+            self.table[index] = self.table[index].next
+            self.size -= 1
+            return True
+
+        # Case 3: Search through the rest of the chain
+        current = self.table[index]
+        while current.next:
+            if current.next.key == key:
+                # Remove the next node by skipping it
+                current.next = current.next.next
+                self.size -= 1
+                return True
+            current = current.next
+
+        # Key not found in the chain
+        return False
+
+    def rehash(self, new_capacity=None):
+        """
+        Rehash the table to a new capacity (doubles by default).
+        All existing key-value pairs are re-inserted into the new table.
+
+        This is typically done when the load factor gets too high.
+
+        Args:
+            new_capacity (int): New capacity for the table. If None, doubles current capacity.
+
+        Returns:
+            dict: Information about the rehash operation
+        """
+        old_capacity = self.capacity
+        old_table = self.table
+
+        # Set new capacity (double by default)
+        self.capacity = new_capacity if new_capacity else self.capacity * 2
+        self.table = [None] * self.capacity
+        self.size = 0
+
+        # Re-insert all existing items
+        items_rehashed = 0
+        for i in range(old_capacity):
+            current = old_table[i]
+            while current:
+                self.insert(current.key, current.value)
+                items_rehashed += 1
                 current = current.next
-            
-            # Key not found in the chain
-            return False
+
+        return {
+            "old_capacity": old_capacity,
+            "new_capacity": self.capacity,
+            "items_rehashed": items_rehashed
+        }
+
+    def get_collision_count(self):
+        """
+        Count the number of collisions in the hash table.
+        A collision occurs when a bucket has more than one item.
+
+        Returns:
+            int: Number of collisions (items beyond the first in each bucket)
+        """
+        collision_count = 0
+        for i in range(self.capacity):
+            current = self.table[i]
+            if current and current.next:
+                # Count items beyond the first one
+                current = current.next
+                while current:
+                    collision_count += 1
+                    current = current.next
+        return collision_count
 
     def to_list(self):
         """
         Convert the hash table to a list format for visualization.
         Each index contains either None (empty bucket) or a list of key-value pairs (chain).
-        
+
         Returns:
             list: Array where each element represents a bucket.
                   None = empty bucket
                   List of dicts = chain of items at that bucket
-        
+
         Example:
             [
                 None,                                    # Index 0: empty
                 [{"key": "apple", "value": 10}],        # Index 1: one item
-                [{"key": "cat", "value": 5}, 
+                [{"key": "cat", "value": 5},
                  {"key": "dog", "value": 8}],           # Index 2: collision, two items
                 None                                     # Index 3: empty
             ]
         """
         table_list = []
-        
+
         # Loop through each bucket in the hash table
         for i in range(self.capacity):
             bucket = []
             current = self.table[i]
-            
+
             # Traverse the linked list chain at this bucket
             while current:
                 bucket.append({"key": current.key, "value": current.value})
                 current = current.next
-            
+
             # Add the bucket to result (or None if empty)
             table_list.append(bucket if bucket else None)
-        
+
         return table_list

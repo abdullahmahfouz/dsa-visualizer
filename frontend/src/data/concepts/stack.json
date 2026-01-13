@@ -1,0 +1,76 @@
+{
+  "concept": {
+    "title": "What is a Stack?",
+    "description": "A Stack is a linear data structure that follows the Last-In-First-Out (LIFO) principle.",
+    "codeExample": "push(A) → push(B) → push(C) → pop() returns C",
+    "analogy": "Like a stack of plates - you can only take the top plate off first!"
+  },
+  "properties": {
+    "title": "Stack Properties",
+    "items": [
+      { "label": "Order", "value": "LIFO (Last-In-First-Out)" },
+      { "label": "Access", "value": "Top element only" },
+      { "label": "Insert", "value": "Push to top - O(1)" },
+      { "label": "Remove", "value": "Pop from top - O(1)" }
+    ]
+  },
+  "useCases": {
+    "title": "Common Use Cases",
+    "items": [
+      "Function call stack (recursion)",
+      "Undo/Redo operations",
+      "Browser back button",
+      "Expression evaluation",
+      "Syntax parsing"
+    ]
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Push", "time": "O(1)", "description": "Add to top" },
+      { "name": "Pop", "time": "O(1)", "description": "Remove from top" },
+      { "name": "Peek", "time": "O(1)", "description": "View top element" },
+      { "name": "isEmpty", "time": "O(1)", "description": "Check if empty" },
+      { "name": "Search", "time": "O(n)", "description": "Find element" }
+    ]
+  },
+  "operations": {
+    "push": {
+      "label": "Push Value",
+      "placeholder": "Value",
+      "buttonText": "Push"
+    },
+    "pop": {
+      "buttonText": "Pop"
+    },
+    "peek": {
+      "buttonText": "Peek"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    }
+  },
+  "infoLabels": {
+    "size": "Size",
+    "top": "Top",
+    "capacity": "Capacity"
+  },
+  "messages": {
+    "emptyStack": "Stack is empty. Push some values!",
+    "pushSuccess": "Pushed \"{value}\" to stack",
+    "popSuccess": "Popped \"{value}\" from stack",
+    "popEmpty": "Cannot pop - stack is empty!",
+    "peekSuccess": "Top element: \"{value}\"",
+    "peekEmpty": "Cannot peek - stack is empty!",
+    "clearSuccess": "Stack cleared!",
+    "errorNoValue": "Please enter a value!",
+    "errorPush": "Error pushing to stack",
+    "errorPop": "Error popping from stack",
+    "errorClear": "Error clearing stack",
+    "stackFull": "Stack is full!"
+  },
+  "legend": [
+    { "type": "color", "className": "top-color", "label": "Top Element" },
+    { "type": "color", "className": "element-color", "label": "Stack Element" }
+  ]
+}

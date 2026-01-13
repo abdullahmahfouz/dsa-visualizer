@@ -1,0 +1,127 @@
+{
+  "concept": {
+    "title": "What is Quadratic Probing?",
+    "description": "Quadratic Probing is a collision resolution technique that uses a quadratic function to find the next available slot.",
+    "codeExample": "index = (hash(key) + i²) % capacity, where i = 0, 1, 2, 3...",
+    "analogy": "Like jumping farther each time - first 1 step, then 4, then 9, then 16!"
+  },
+  "properties": {
+    "title": "Quadratic Probing Properties",
+    "items": [
+      { "label": "Probe Sequence", "value": "+1, +4, +9, +16, +25..." },
+      { "label": "Formula", "value": "(hash + i²) % capacity" },
+      { "label": "Clustering", "value": "Reduces primary clustering" },
+      { "label": "Load Factor", "value": "Must stay below 0.5 for guarantee" }
+    ]
+  },
+  "comparison": {
+    "title": "Quadratic vs Linear Probing",
+    "quadratic": {
+      "label": "Quadratic:",
+      "color": "#f59e0b",
+      "points": [
+        "Jumps by squares: 1, 4, 9...",
+        "Less primary clustering",
+        "May miss empty slots"
+      ]
+    },
+    "linear": {
+      "label": "Linear:",
+      "color": "#3b82f6",
+      "points": [
+        "Steps by 1 each time",
+        "Primary clustering issue",
+        "Always finds empty slot"
+      ]
+    },
+    "summary": "Quadratic probing reduces clustering but requires load factor < 0.5 and prime table size for guaranteed insertion."
+  },
+  "clustering": {
+    "title": "Clustering Problem",
+    "primary": {
+      "name": "Primary Clustering",
+      "description": "Long runs of occupied slots form clusters",
+      "cause": "Linear probing - same probe sequence for nearby hashes",
+      "solution": "Use quadratic or double hashing"
+    },
+    "secondary": {
+      "name": "Secondary Clustering",
+      "description": "Keys with same hash follow same probe sequence",
+      "cause": "Probe sequence depends only on initial hash",
+      "solution": "Use double hashing"
+    }
+  },
+  "loadFactor": {
+    "title": "Load Factor Warning",
+    "description": "Quadratic probing may fail to find empty slots if load factor > 0.5",
+    "threshold": 0.5,
+    "warningMessage": "Warning: Load factor ({loadFactor}) > 0.5 - insertions may fail!",
+    "safeMessage": "Load factor: {loadFactor}"
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Insert", "average": "O(1)", "worst": "O(n)", "description": "Add key-value" },
+      { "name": "Search", "average": "O(1)", "worst": "O(n)", "description": "Find by key" },
+      { "name": "Delete", "average": "O(1)", "worst": "O(n)", "description": "Remove by key" },
+      { "name": "Rehash", "average": "O(n)", "worst": "O(n)", "description": "Resize table" }
+    ],
+    "note": "Requires prime table size and load factor < 0.5 for guaranteed O(1)"
+  },
+  "operations": {
+    "insert": {
+      "label": "Insert Key-Value",
+      "keyPlaceholder": "Key",
+      "valuePlaceholder": "Value",
+      "buttonText": "Insert"
+    },
+    "delete": {
+      "label": "Delete Key",
+      "placeholder": "Key",
+      "buttonText": "Delete"
+    },
+    "search": {
+      "label": "Search Key",
+      "placeholder": "Key",
+      "buttonText": "Search"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    },
+    "rehash": {
+      "buttonText": "Rehash"
+    }
+  },
+  "infoLabels": {
+    "items": "Items",
+    "capacity": "Capacity",
+    "load": "Load",
+    "collisions": "Collisions"
+  },
+  "messages": {
+    "emptyTable": "Hash table is empty. Insert some key-value pairs!",
+    "insertSuccess": "Inserted \"{key}\" at slot {index}",
+    "insertUpdated": "Updated \"{key}\" at slot {index}",
+    "insertCollision": "Collision! Quadratic probed to slot {index} (i={probeCount})",
+    "deleteSuccess": "Deleted \"{key}\"",
+    "searchFound": "Found: \"{key}\" = {value}",
+    "searchNotFound": "Key \"{key}\" not found",
+    "clearSuccess": "Hash table cleared!",
+    "rehashSuccess": "Rehashed! Capacity: {oldCapacity} → {newCapacity}",
+    "rehashEmpty": "Nothing to rehash - table is empty!",
+    "tableFull": "Cannot insert - no empty slot found after full probe cycle!",
+    "errorNoKey": "Please enter a key!",
+    "errorNoKeyValue": "Please enter both key and value!",
+    "errorInsert": "Error inserting. Is Flask running?",
+    "errorDelete": "Error deleting. Is Flask running?",
+    "errorSearch": "Error searching item",
+    "errorClear": "Error clearing hash table",
+    "errorRehash": "Error rehashing. Is Flask running?"
+  },
+  "legend": [
+    { "type": "color", "className": "key-color", "label": "Key" },
+    { "type": "color", "className": "index-color", "label": "Index" },
+    { "type": "color", "className": "value-color", "label": "Value" },
+    { "type": "color", "className": "probe-color", "label": "Quadratic Probe" }
+  ]
+}

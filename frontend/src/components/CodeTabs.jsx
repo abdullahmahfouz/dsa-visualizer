@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { FileCode, Copy } from 'lucide-react';
 
-// Import each data structure's code snippets
-import stackSnippets from '../codeSnippets/stack.json';
-import queueSnippets from '../codeSnippets/queue.json';
-import linkedlistSnippets from '../codeSnippets/linkedlist.json';
-import binarytreeSnippets from '../codeSnippets/binarytree.json';
-import hashtableSnippets from '../codeSnippets/hashtable.json';
+// Import code snippets from snippets folder
+import stackSnippets from '../data/snippets/stack.json';
+import queueSnippets from '../data/snippets/queue.json';
+import linkedlistSnippets from '../data/snippets/linkedlist.json';
+import binarytreeSnippets from '../data/snippets/binarytree.json';
+import hashtableSnippets from '../data/snippets/hashtable.json';
+import hashtableChainingSnippets from '../data/snippets/hashtableChaining.json';
 
 // Combine all snippets into one object
 const codeSnippets = {
@@ -14,7 +15,8 @@ const codeSnippets = {
   queue: queueSnippets,
   linkedlist: linkedlistSnippets,
   binarytree: binarytreeSnippets,
-  hashtable: hashtableSnippets
+  hashtable: hashtableSnippets,
+  hashtableChaining: hashtableChainingSnippets
 };
 
 function CodeTabs({ dataStructure }) {
@@ -22,11 +24,11 @@ function CodeTabs({ dataStructure }) {
   const [copied, setCopied] = useState(false);
 
   const allLanguages = ['python', 'javascript', 'java', 'c++', 'c#'];
-  
-  const availableLanguages = allLanguages.filter(lang => 
+
+  const availableLanguages = allLanguages.filter(lang =>
     codeSnippets[dataStructure]?.[lang]
   );
-  
+
   const languages = availableLanguages.length > 0 ? availableLanguages : allLanguages;
   const code = codeSnippets[dataStructure]?.[activeLang] || 'Code not available for this data structure';
 
@@ -57,7 +59,7 @@ function CodeTabs({ dataStructure }) {
   return (
     <div className="code-section">
       <h2><FileCode /> Implementation</h2>
-      
+
       <div className="code-tabs">
         {languages.map(lang => (
           <button

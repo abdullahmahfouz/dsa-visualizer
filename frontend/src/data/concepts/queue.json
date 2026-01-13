@@ -1,0 +1,98 @@
+{
+  "concept": {
+    "title": "What is a Queue?",
+    "description": "A Queue is a linear data structure that follows the First-In-First-Out (FIFO) principle.",
+    "codeExample": "enqueue(A) → enqueue(B) → enqueue(C) → dequeue() returns A",
+    "analogy": "Like a line at a store - first person in line gets served first!"
+  },
+  "properties": {
+    "title": "Queue Properties",
+    "items": [
+      { "label": "Order", "value": "FIFO (First-In-First-Out)" },
+      { "label": "Access", "value": "Front and Rear" },
+      { "label": "Insert", "value": "Enqueue at rear - O(1)" },
+      { "label": "Remove", "value": "Dequeue from front - O(1)" }
+    ]
+  },
+  "comparison": {
+    "title": "Queue vs Stack",
+    "queue": {
+      "label": "Queue:",
+      "color": "#22c55e",
+      "points": [
+        "FIFO order",
+        "Two access points (front/rear)"
+      ]
+    },
+    "stack": {
+      "label": "Stack:",
+      "color": "#3b82f6",
+      "points": [
+        "LIFO order",
+        "One access point (top)"
+      ]
+    },
+    "summary": "Use Queue when order of processing matters (like task scheduling)."
+  },
+  "useCases": {
+    "title": "Common Use Cases",
+    "items": [
+      "Task scheduling (CPU, print jobs)",
+      "Breadth-First Search (BFS)",
+      "Message queues",
+      "Request handling in servers",
+      "Buffering (streaming)"
+    ]
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Enqueue", "time": "O(1)", "description": "Add to rear" },
+      { "name": "Dequeue", "time": "O(1)", "description": "Remove from front" },
+      { "name": "Front", "time": "O(1)", "description": "View front element" },
+      { "name": "isEmpty", "time": "O(1)", "description": "Check if empty" },
+      { "name": "Search", "time": "O(n)", "description": "Find element" }
+    ]
+  },
+  "operations": {
+    "enqueue": {
+      "label": "Enqueue Value",
+      "placeholder": "Value",
+      "buttonText": "Enqueue"
+    },
+    "dequeue": {
+      "buttonText": "Dequeue"
+    },
+    "front": {
+      "buttonText": "Front"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    }
+  },
+  "infoLabels": {
+    "size": "Size",
+    "front": "Front",
+    "rear": "Rear",
+    "capacity": "Capacity"
+  },
+  "messages": {
+    "emptyQueue": "Queue is empty. Enqueue some values!",
+    "enqueueSuccess": "Enqueued \"{value}\"",
+    "dequeueSuccess": "Dequeued \"{value}\"",
+    "dequeueEmpty": "Cannot dequeue - queue is empty!",
+    "frontSuccess": "Front element: \"{value}\"",
+    "frontEmpty": "Cannot get front - queue is empty!",
+    "clearSuccess": "Queue cleared!",
+    "errorNoValue": "Please enter a value!",
+    "errorEnqueue": "Error enqueueing to queue",
+    "errorDequeue": "Error dequeueing from queue",
+    "errorClear": "Error clearing queue",
+    "queueFull": "Queue is full!"
+  },
+  "legend": [
+    { "type": "color", "className": "front-color", "label": "Front" },
+    { "type": "color", "className": "rear-color", "label": "Rear" },
+    { "type": "color", "className": "element-color", "label": "Queue Element" }
+  ]
+}

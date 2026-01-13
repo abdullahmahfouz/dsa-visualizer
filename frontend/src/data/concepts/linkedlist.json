@@ -1,0 +1,108 @@
+{
+  "concept": {
+    "title": "What is a Linked List?",
+    "description": "A Linked List is a linear data structure where elements are stored in nodes, each pointing to the next node.",
+    "codeExample": "HEAD → [A|→] → [B|→] → [C|→] → NULL",
+    "analogy": "Like a treasure hunt - each clue (node) points to the next location!"
+  },
+  "properties": {
+    "title": "Linked List Properties",
+    "items": [
+      { "label": "Structure", "value": "Nodes with data + pointer" },
+      { "label": "Memory", "value": "Non-contiguous allocation" },
+      { "label": "Size", "value": "Dynamic (grows/shrinks)" },
+      { "label": "Access", "value": "Sequential (no random access)" }
+    ]
+  },
+  "comparison": {
+    "title": "Linked List vs Array",
+    "linkedlist": {
+      "label": "Linked List:",
+      "color": "#22c55e",
+      "points": [
+        "Dynamic size",
+        "O(1) insert/delete at known position",
+        "Extra memory for pointers"
+      ]
+    },
+    "array": {
+      "label": "Array:",
+      "color": "#3b82f6",
+      "points": [
+        "Fixed size (usually)",
+        "O(1) random access by index",
+        "Contiguous memory"
+      ]
+    },
+    "summary": "Use Linked List when you need frequent insertions/deletions and don't need random access."
+  },
+  "types": {
+    "title": "Types of Linked Lists",
+    "items": [
+      { "name": "Singly Linked", "description": "Each node points to next only" },
+      { "name": "Doubly Linked", "description": "Nodes point to both next and previous" },
+      { "name": "Circular", "description": "Last node points back to first" }
+    ]
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Access", "time": "O(n)", "description": "Traverse to find" },
+      { "name": "Search", "time": "O(n)", "description": "Linear search" },
+      { "name": "Insert (head)", "time": "O(1)", "description": "Add at beginning" },
+      { "name": "Insert (tail)", "time": "O(n)", "description": "Traverse then add" },
+      { "name": "Delete (head)", "time": "O(1)", "description": "Remove first" },
+      { "name": "Delete (by value)", "time": "O(n)", "description": "Find then remove" }
+    ]
+  },
+  "operations": {
+    "insertHead": {
+      "label": "Insert at Head",
+      "placeholder": "Value",
+      "buttonText": "Insert Head"
+    },
+    "insertTail": {
+      "label": "Insert at Tail",
+      "placeholder": "Value",
+      "buttonText": "Insert Tail"
+    },
+    "delete": {
+      "label": "Delete Value",
+      "placeholder": "Value",
+      "buttonText": "Delete"
+    },
+    "search": {
+      "label": "Search Value",
+      "placeholder": "Value",
+      "buttonText": "Search"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    }
+  },
+  "infoLabels": {
+    "size": "Size",
+    "head": "Head",
+    "tail": "Tail"
+  },
+  "messages": {
+    "emptyList": "Linked list is empty. Insert some values!",
+    "insertHeadSuccess": "Inserted \"{value}\" at head",
+    "insertTailSuccess": "Inserted \"{value}\" at tail",
+    "deleteSuccess": "Deleted \"{value}\"",
+    "deleteNotFound": "Value \"{value}\" not found",
+    "searchFound": "Found \"{value}\" at position {position}",
+    "searchNotFound": "Value \"{value}\" not found",
+    "clearSuccess": "Linked list cleared!",
+    "errorNoValue": "Please enter a value!",
+    "errorInsert": "Error inserting value",
+    "errorDelete": "Error deleting value",
+    "errorSearch": "Error searching value",
+    "errorClear": "Error clearing list"
+  },
+  "legend": [
+    { "type": "color", "className": "head-color", "label": "Head Node" },
+    { "type": "color", "className": "node-color", "label": "Node" },
+    { "type": "icon", "icon": "ArrowRight", "color": "#8b5cf6", "label": "Pointer" }
+  ]
+}

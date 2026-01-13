@@ -70,7 +70,7 @@ function Algorithms() {
           icon: Hash, 
           title: 'Separate Chaining', 
           description: 'Each array slot holds a linked list (chain) of all entries that hash to that index. No limit on how many items can be stored — just grow the chains. Handles high load factors gracefully (even > 1.0). Simpler deletion than open addressing. Used in Java\'s HashMap, Python\'s dict (with optimization). Trade-off: extra memory for pointers, potentially poor cache performance with long chains.', 
-          available: false 
+          available: true
         },
       ]
     },

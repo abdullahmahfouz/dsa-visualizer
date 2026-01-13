@@ -1,0 +1,107 @@
+{
+  "concept": {
+    "title": "What is a Binary Tree?",
+    "description": "A Binary Tree is a hierarchical data structure where each node has at most two children (left and right).",
+    "codeExample": "       [5]\n      /   \\\n    [3]   [7]\n   /  \\     \\\n [1]  [4]   [9]",
+    "analogy": "Like a family tree - each person can have at most two children!"
+  },
+  "properties": {
+    "title": "Binary Tree Properties",
+    "items": [
+      { "label": "Structure", "value": "Hierarchical (nodes + edges)" },
+      { "label": "Children", "value": "At most 2 per node" },
+      { "label": "Root", "value": "Topmost node (no parent)" },
+      { "label": "Leaf", "value": "Node with no children" }
+    ]
+  },
+  "types": {
+    "title": "Types of Binary Trees",
+    "items": [
+      { "name": "Full Binary Tree", "description": "Every node has 0 or 2 children" },
+      { "name": "Complete Binary Tree", "description": "All levels filled except possibly last" },
+      { "name": "Perfect Binary Tree", "description": "All internal nodes have 2 children, leaves at same level" },
+      { "name": "Binary Search Tree", "description": "Left < Parent < Right ordering" }
+    ]
+  },
+  "traversals": {
+    "title": "Tree Traversals",
+    "items": [
+      { "name": "Inorder", "order": "Left → Root → Right", "use": "BST gives sorted order" },
+      { "name": "Preorder", "order": "Root → Left → Right", "use": "Copy tree, prefix expression" },
+      { "name": "Postorder", "order": "Left → Right → Root", "use": "Delete tree, postfix expression" },
+      { "name": "Level Order", "order": "Level by level (BFS)", "use": "Print by levels" }
+    ]
+  },
+  "complexity": {
+    "title": "Time Complexity (BST)",
+    "operations": [
+      { "name": "Search", "average": "O(log n)", "worst": "O(n)", "description": "Find element" },
+      { "name": "Insert", "average": "O(log n)", "worst": "O(n)", "description": "Add element" },
+      { "name": "Delete", "average": "O(log n)", "worst": "O(n)", "description": "Remove element" },
+      { "name": "Traversal", "average": "O(n)", "worst": "O(n)", "description": "Visit all nodes" }
+    ],
+    "note": "Worst case O(n) occurs when tree becomes a linked list (unbalanced)"
+  },
+  "useCases": {
+    "title": "Common Use Cases",
+    "items": [
+      "Binary Search Trees (fast lookup)",
+      "Expression trees (parsing)",
+      "Huffman coding (compression)",
+      "Heaps (priority queues)",
+      "File system structure"
+    ]
+  },
+  "operations": {
+    "insert": {
+      "label": "Insert Value",
+      "placeholder": "Value",
+      "buttonText": "Insert"
+    },
+    "delete": {
+      "label": "Delete Value",
+      "placeholder": "Value",
+      "buttonText": "Delete"
+    },
+    "search": {
+      "label": "Search Value",
+      "placeholder": "Value",
+      "buttonText": "Search"
+    },
+    "traversals": {
+      "inorder": "Inorder",
+      "preorder": "Preorder",
+      "postorder": "Postorder",
+      "levelorder": "Level Order"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    }
+  },
+  "infoLabels": {
+    "size": "Nodes",
+    "height": "Height",
+    "root": "Root"
+  },
+  "messages": {
+    "emptyTree": "Binary tree is empty. Insert some values!",
+    "insertSuccess": "Inserted {value}",
+    "deleteSuccess": "Deleted {value}",
+    "deleteNotFound": "Value {value} not found",
+    "searchFound": "Found {value}",
+    "searchNotFound": "Value {value} not found",
+    "clearSuccess": "Tree cleared!",
+    "traversalResult": "{type} traversal: {result}",
+    "errorNoValue": "Please enter a value!",
+    "errorInsert": "Error inserting value",
+    "errorDelete": "Error deleting value",
+    "errorSearch": "Error searching value",
+    "errorClear": "Error clearing tree"
+  },
+  "legend": [
+    { "type": "color", "className": "root-color", "label": "Root" },
+    { "type": "color", "className": "node-color", "label": "Node" },
+    { "type": "color", "className": "leaf-color", "label": "Leaf" },
+    { "type": "color", "className": "highlight-color", "label": "Current/Found" }
+  ]
+}

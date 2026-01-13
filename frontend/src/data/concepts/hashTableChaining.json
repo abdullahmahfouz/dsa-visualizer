@@ -1,0 +1,96 @@
+{
+  "concept": {
+    "title": "What is Chaining?",
+    "description": "Chaining handles collisions by storing multiple key-value pairs in a linked list at each slot.",
+    "codeExample": "slot[hash] → [key1, val1] → [key2, val2] → ...",
+    "analogy": "Like a coat rack - multiple coats can hang on the same hook!"
+  },
+  "comparison": {
+    "title": "Chaining vs Probing",
+    "chaining": {
+      "label": "Chaining:",
+      "color": "#22c55e",
+      "points": [
+        "Uses linked lists",
+        "Load factor can exceed 1.0"
+      ]
+    },
+    "probing": {
+      "label": "Probing:",
+      "color": "#f59e0b",
+      "points": [
+        "Finds next empty slot",
+        "Load factor must stay below 1.0"
+      ]
+    },
+    "summary": "Chaining is simpler and handles high load factors better, but uses extra memory for pointers."
+  },
+  "chainingAdvantage": {
+    "title": "Chaining Advantage",
+    "description": "With chaining, load factor can exceed 1.0 because each slot can hold multiple items in a chain.",
+    "highLoadThreshold": 1.5,
+    "highLoadMessage": "High load ({loadFactor}) - chains getting long!",
+    "safeMessage": "Load factor: {loadFactor}"
+  },
+  "rehash": {
+    "title": "Rehash Table",
+    "description": "Doubles the table capacity and redistributes all items to reduce chain lengths.",
+    "buttonText": "Rehash",
+    "recommendThreshold": 1.5
+  },
+  "legend": [
+    { "type": "color", "className": "key-color", "label": "Key" },
+    { "type": "color", "className": "index-color", "label": "Index" },
+    { "type": "color", "className": "value-color", "label": "Value" },
+    { "type": "icon", "icon": "Link", "color": "#8b5cf6", "label": "Chain (Linked List)" }
+  ],
+  "operations": {
+    "insert": {
+      "label": "Insert Key-Value",
+      "keyPlaceholder": "Key",
+      "valuePlaceholder": "Value",
+      "buttonText": "Insert"
+    },
+    "delete": {
+      "label": "Delete Key",
+      "placeholder": "Key",
+      "buttonText": "Delete"
+    },
+    "search": {
+      "label": "Search Key",
+      "placeholder": "Key",
+      "buttonText": "Search"
+    },
+    "clear": {
+      "buttonText": "Clear Table"
+    },
+    "rehash": {
+      "buttonText": "Rehash"
+    }
+  },
+  "infoLabels": {
+    "items": "Items",
+    "capacity": "Capacity",
+    "load": "Load",
+    "collisions": "Collisions"
+  },
+  "messages": {
+    "emptyTable": "Hash table is empty. Insert some key-value pairs!",
+    "insertSuccess": "Inserted \"{key}\" at slot {index}",
+    "insertUpdated": "Updated \"{key}\" at slot {index}",
+    "insertCollision": "Collision! Added \"{key}\" to chain at slot {index}",
+    "deleteSuccess": "Deleted \"{key}\"",
+    "searchFound": "Found: \"{key}\" = {value}",
+    "searchNotFound": "Key \"{key}\" not found",
+    "clearSuccess": "Hashtable cleared!",
+    "rehashSuccess": "Rehashed! Capacity: {oldCapacity} -> {newCapacity}",
+    "rehashEmpty": "Nothing to rehash - table is empty!",
+    "errorNoKey": "Please enter a key!",
+    "errorNoKeyValue": "Please enter both key and value!",
+    "errorInsert": "Error inserting. Is Flask running?",
+    "errorDelete": "Error deleting. Is Flask running?",
+    "errorSearch": "Error searching item",
+    "errorClear": "Error clearing hashtable",
+    "errorRehash": "Error rehashing. Is Flask running?"
+  }
+}

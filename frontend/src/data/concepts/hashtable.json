@@ -1,0 +1,134 @@
+{
+  "concept": {
+    "title": "What is a Hash Table?",
+    "description": "A Hash Table is a data structure that maps keys to values using a hash function for O(1) average access time.",
+    "codeExample": "hash(\"apple\") → 3 → table[3] = \"apple\"",
+    "analogy": "Like a library catalog - the book title (key) tells you exactly which shelf (index) to find it!"
+  },
+  "properties": {
+    "title": "Hash Table Properties",
+    "items": [
+      { "label": "Access", "value": "O(1) average time" },
+      { "label": "Hash Function", "value": "Maps key → index" },
+      { "label": "Load Factor", "value": "size / capacity" },
+      { "label": "Collision", "value": "When two keys hash to same index" }
+    ]
+  },
+  "collisionResolution": {
+    "title": "Collision Resolution: Linear Probing",
+    "description": "When a collision occurs, probe sequentially until an empty slot is found.",
+    "steps": [
+      "Calculate hash index",
+      "If slot occupied, try next slot",
+      "Repeat until empty slot found",
+      "Insert at empty slot"
+    ],
+    "formula": "index = (hash(key) + i) % capacity, where i = 0, 1, 2, ..."
+  },
+  "comparison": {
+    "title": "Linear vs Quadratic Probing",
+    "linear": {
+      "label": "Linear Probing:",
+      "color": "#3b82f6",
+      "points": [
+        "Simple: check next slot",
+        "Primary clustering problem",
+        "Cache-friendly"
+      ]
+    },
+    "quadratic": {
+      "label": "Quadratic Probing:",
+      "color": "#f59e0b",
+      "points": [
+        "Jump by squares: 1, 4, 9...",
+        "Reduces primary clustering",
+        "May not find empty slot"
+      ]
+    },
+    "summary": "Linear probing is simpler but can cause clustering. Quadratic probing spreads entries better."
+  },
+  "loadFactor": {
+    "title": "Load Factor",
+    "description": "Load factor = size / capacity. Measures how full the table is.",
+    "threshold": 0.7,
+    "warningMessage": "High load ({loadFactor}) - consider rehashing!",
+    "safeMessage": "Load factor: {loadFactor}"
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Insert", "average": "O(1)", "worst": "O(n)", "description": "Add key-value" },
+      { "name": "Search", "average": "O(1)", "worst": "O(n)", "description": "Find by key" },
+      { "name": "Delete", "average": "O(1)", "worst": "O(n)", "description": "Remove by key" },
+      { "name": "Rehash", "average": "O(n)", "worst": "O(n)", "description": "Resize table" }
+    ],
+    "note": "Worst case O(n) when many collisions or poor hash function"
+  },
+  "useCases": {
+    "title": "Common Use Cases",
+    "items": [
+      "Dictionaries/Maps",
+      "Caching (memoization)",
+      "Database indexing",
+      "Symbol tables (compilers)",
+      "Counting frequencies"
+    ]
+  },
+  "operations": {
+    "insert": {
+      "label": "Insert Key-Value",
+      "keyPlaceholder": "Key",
+      "valuePlaceholder": "Value",
+      "buttonText": "Insert"
+    },
+    "delete": {
+      "label": "Delete Key",
+      "placeholder": "Key",
+      "buttonText": "Delete"
+    },
+    "search": {
+      "label": "Search Key",
+      "placeholder": "Key",
+      "buttonText": "Search"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    },
+    "rehash": {
+      "buttonText": "Rehash"
+    }
+  },
+  "infoLabels": {
+    "items": "Items",
+    "capacity": "Capacity",
+    "load": "Load",
+    "collisions": "Collisions"
+  },
+  "messages": {
+    "emptyTable": "Hash table is empty. Insert some key-value pairs!",
+    "insertSuccess": "Inserted \"{key}\" at slot {index}",
+    "insertUpdated": "Updated \"{key}\" at slot {index}",
+    "insertCollision": "Collision at slot {original}! Probed to slot {index}",
+    "deleteSuccess": "Deleted \"{key}\"",
+    "searchFound": "Found: \"{key}\" = {value}",
+    "searchNotFound": "Key \"{key}\" not found",
+    "clearSuccess": "Hash table cleared!",
+    "rehashSuccess": "Rehashed! Capacity: {oldCapacity} → {newCapacity}",
+    "rehashEmpty": "Nothing to rehash - table is empty!",
+    "tableFull": "Table is full! Consider rehashing.",
+    "errorNoKey": "Please enter a key!",
+    "errorNoKeyValue": "Please enter both key and value!",
+    "errorInsert": "Error inserting. Is Flask running?",
+    "errorDelete": "Error deleting. Is Flask running?",
+    "errorSearch": "Error searching item",
+    "errorClear": "Error clearing hash table",
+    "errorRehash": "Error rehashing. Is Flask running?"
+  },
+  "legend": [
+    { "type": "color", "className": "key-color", "label": "Key" },
+    { "type": "color", "className": "index-color", "label": "Index" },
+    { "type": "color", "className": "value-color", "label": "Value" },
+    { "type": "color", "className": "probe-color", "label": "Probed Slot" },
+    { "type": "color", "className": "collision-color", "label": "Collision" }
+  ]
+}

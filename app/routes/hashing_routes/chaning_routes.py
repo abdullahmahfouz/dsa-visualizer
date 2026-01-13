@@ -15,7 +15,8 @@ def get_hashtable_chaining():
         "table": hs.to_list(),
         "size": hs.size,
         "capacity": hs.capacity,
-        "load_factor": hs.size / hs.capacity if hs.capacity > 0 else 0
+        "load_factor": hs.size / hs.capacity if hs.capacity > 0 else 0,
+        "collision_count": hs.get_collision_count()
     })
 
 @hs_bp.route("/insert", methods=["POST"])
@@ -28,12 +29,31 @@ def insert_item():
     data = request.json
     key = data.get("key")
     value = data.get("value")
-    
+
     if key is None or value is None:
         return jsonify({"error": "Both key and value required"}), 400
-    
+
+    # Calculate hash index
+    index = hs._hash(key)
+
+    # Check if this will be a collision (bucket not empty AND key doesn't exist)
+    existing_value = hs.search(key)
+    is_update = existing_value is not None
+    collision = hs.table[index] is not None and not is_update
+
+    # Insert or update the key-value pair
     hs.insert(key, value)
-    return get_hashtable_chaining()
+
+    return jsonify({
+        "table": hs.to_list(),
+        "size": hs.size,
+        "capacity": hs.capacity,
+        "load_factor": hs.size / hs.capacity if hs.capacity > 0 else 0,
+        "collision_count": hs.get_collision_count(),
+        "index": index,
+        "collision": collision,
+        "updated": is_update
+    })
 
 
 @hs_bp.route("/search", methods=["POST"])
@@ -87,3 +107,47 @@ def clear_hashtable():
     global hs
     hs = HashTableChaining(initial_capacity=7)
     return get_hashtable_chaining()
+
+
+@hs_bp.route("/rehash", methods=["POST"])
+def rehash_hashtable():
+    """
+    POST /api/hashtable_chaining/rehash
+    Rehash the table to a new capacity.
+    Optionally pass {"new_capacity": 14} to specify the new size.
+    """
+    data = request.json or {}
+    new_capacity = data.get("new_capacity")
+
+    if new_capacity is not None and (not isinstance(new_capacity, int) or new_capacity < 1):
+        return jsonify({"error": "new_capacity must be a positive integer"}), 400
+
+    result = hs.rehash(new_capacity)
+
+    return jsonify({
+        "table": hs.to_list(),
+        "size": hs.size,
+        "capacity": hs.capacity,
+        "load_factor": hs.size / hs.capacity if hs.capacity > 0 else 0,
+        "collision_count": hs.get_collision_count(),
+        "rehash_info": result
+    })
+
+
+@hs_bp.route("/get", methods=["GET"])
+def get_item():
+    """
+    GET /api/hashtable_chaining/get?key=apple
+    Get a value by key.
+    """
+    key = request.args.get("key")
+
+    if key is None:
+        return jsonify({"error": "Key required"}), 400
+
+    value = hs.search(key)
+
+    if value is None:
+        return jsonify({"found": False, "key": key})
+
+    return jsonify({"found": True, "key": key, "value": value})
