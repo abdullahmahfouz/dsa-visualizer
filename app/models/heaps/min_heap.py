@@ -9,7 +9,7 @@ The minimum element is always at the root.
 class MinHeap:
     """Min Heap - Priority Queue with minimum at root."""
 
-    def __init__(self, capacity=20):
+    def __init__(self, capacity=7):
         self.heap = []
         self.capacity = capacity
 

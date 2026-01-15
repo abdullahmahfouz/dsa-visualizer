@@ -1,7 +1,7 @@
 import React from 'react';
 import { AlertTriangle, ArrowDown } from 'lucide-react';
 
-export const MAX_HEAP_SIZE = 20;
+export const MAX_HEAP_SIZE = 7;
 
 // Control Panel Component
 export function ControlPanel({

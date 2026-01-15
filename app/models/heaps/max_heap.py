@@ -9,7 +9,7 @@ The maximum element is always at the root.
 class MaxHeap:
     """Max Heap - Priority Queue with maximum at root."""
 
-    def __init__(self, capacity=20):
+    def __init__(self, capacity=7):
         self.heap = []
         self.capacity = capacity
 
