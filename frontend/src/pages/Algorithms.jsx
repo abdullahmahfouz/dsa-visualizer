@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { 
   Layers, ArrowRightLeft, Link as LinkIcon, Hash, GitBranch, 
   GitFork, Scale, MoveUp, ArrowDownNarrowWide, ArrowUpNarrowWide, 
-  ArrowRight, ChevronDown, ChevronUp, ListOrdered, Database, TreeDeciduous, Pyramid
+  ArrowRight, ChevronDown, ChevronUp, ListOrdered, Database, TreeDeciduous, Pyramid,
+  GitGraph
 } from 'lucide-react';
 
 function Algorithms() {
@@ -44,9 +45,10 @@ function Algorithms() {
         },
       ]
     },
+      
     {
       id: 'hash',
-      name: 'Hash-Based Structures',
+      name: 'Hash-Tables',
       icon: Database,
       description: 'Revolutionary data structures that use hash functions to map keys to array indices, enabling O(1) average-case lookup, insertion, and deletion. The backbone of databases, caches, and any system requiring fast key-value access.',
       color: '#10b981',
@@ -74,9 +76,32 @@ function Algorithms() {
         },
       ]
     },
+     {
+      id: 'heaps',
+      name: 'Priority Queues & Heaps',
+      icon: Pyramid,
+      description: 'Complete binary trees satisfying the heap property — either every parent ≥ children (max-heap) or every parent ≤ children (min-heap). Heaps power priority queues, enabling O(1) access to the extreme element and O(log n) insertions and deletions.',
+      color: '#ec4899',
+      items: [
+        { 
+          to: '/minheap', 
+          icon: ArrowDownNarrowWide, 
+          title: 'Min Heap', 
+          description: 'Every parent node is smaller than or equal to its children, so the minimum element is always at the root — accessible in O(1). Insert and extract-min are O(log n) as elements "bubble up" or "sink down" to maintain the heap property. Critical for: Dijkstra\'s shortest path algorithm, Prim\'s minimum spanning tree, job schedulers (process with smallest priority runs next), and efficiently finding the k largest elements in a stream.', 
+          available: true
+        },
+        { 
+          to: '/maxheap', 
+          icon: ArrowUpNarrowWide, 
+          title: 'Max Heap', 
+          description: 'The mirror of min-heap: every parent ≥ children, maximum at root. Extract-max in O(1), insert and delete in O(log n). Powers: Heapsort algorithm (in-place O(n log n) sorting), priority queues where highest priority goes first, finding k smallest elements, implementing a median-finding structure (use one min-heap + one max-heap), and bandwidth management in network routers.', 
+          available: true
+        },
+      ]
+    },
     {
       id: 'trees',
-      name: 'Tree Structures',
+      name: 'Binary Trees',
       icon: TreeDeciduous,
       description: 'Hierarchical data structures where data flows from a root node down through children. Trees enable O(log n) operations on sorted data and model real-world hierarchies like file systems, organization charts, and decision trees in AI/ML.',
       color: '#f59e0b',
@@ -95,45 +120,62 @@ function Algorithms() {
           description: 'The fundamental ordered tree: every node\'s left subtree contains only smaller values, right subtree only larger values. This property enables O(log n) search by eliminating half the tree at each step — like binary search but in tree form. Supports efficient range queries. Caveat: can degrade to O(n) if insertions create an unbalanced "stick". Foundation for databases, symbol tables, and more advanced balanced trees.', 
           available: true 
         },
-        { 
-          to: '/avl', 
-          icon: Scale, 
-          title: 'AVL Tree', 
-          description: 'The first self-balancing BST, invented in 1962. Maintains strict balance: height difference between left and right subtrees ≤ 1 at every node. When insertion/deletion violates this, the tree self-corrects using rotations (single or double). Guarantees O(log n) for all operations. More rigidly balanced than Red-Black trees, so faster lookups but slightly slower insertions. Used when reads far exceed writes.', 
-          available: false 
+        {
+          to: '/avl',
+          icon: Scale,
+          title: 'AVL Tree',
+          description: 'The first self-balancing BST, invented in 1962. Maintains strict balance: height difference between left and right subtrees ≤ 1 at every node. When insertion/deletion violates this, the tree self-corrects using rotations (single or double). Guarantees O(log n) for all operations. More rigidly balanced than Red-Black trees, so faster lookups but slightly slower insertions. Used when reads far exceed writes.',
+          available: true
         },
-        { 
-          to: '/splay', 
-          icon: MoveUp, 
-          title: 'Splay Tree', 
-          description: 'A self-adjusting BST with a clever optimization: every accessed node is "splayed" (rotated) to the root. No explicit balance condition, yet achieves O(log n) amortized time. Recently accessed items stay near the root — perfect for caches where some items are accessed repeatedly (temporal locality). Used in Windows NT\'s virtual memory management, GCC\'s implementation of certain data structures, and network routers.', 
-          available: false 
+        {
+          to: '/splay',
+          icon: MoveUp,
+          title: 'Splay Tree',
+          description: 'A self-adjusting BST with a clever optimization: every accessed node is "splayed" (rotated) to the root. No explicit balance condition, yet achieves O(log n) amortized time. Recently accessed items stay near the root — perfect for caches where some items are accessed repeatedly (temporal locality). Used in Windows NT\'s virtual memory management, GCC\'s implementation of certain data structures, and network routers.',
+          available: true
         },
       ]
     },
+
     {
-      id: 'heaps',
-      name: 'Heap Structures',
-      icon: Pyramid,
-      description: 'Complete binary trees satisfying the heap property — either every parent ≥ children (max-heap) or every parent ≤ children (min-heap). Heaps power priority queues, enabling O(1) access to the extreme element and O(log n) insertions and deletions.',
-      color: '#ec4899',
+      id: 'Graphs',
+      name: 'Graphs',
+      icon: GitGraph,
+      description: '',
+      color: '#ef4444',
       items: [
         { 
-          to: '/minheap', 
-          icon: ArrowDownNarrowWide, 
-          title: 'Min Heap', 
-          description: 'Every parent node is smaller than or equal to its children, so the minimum element is always at the root — accessible in O(1). Insert and extract-min are O(log n) as elements "bubble up" or "sink down" to maintain the heap property. Critical for: Dijkstra\'s shortest path algorithm, Prim\'s minimum spanning tree, job schedulers (process with smallest priority runs next), and efficiently finding the k largest elements in a stream.', 
+          to: '/adjacency-matrix', 
+          icon: Database, 
+          title: 'Adjacency Matrix', 
+          description: 'A 2D array used to represent a finite graph. Each cell at (i, j) indicates if there is an edge from vertex i to vertex j. Simple and fast for dense graphs, but uses O(V^2) space. Not practical for large, sparse graphs.', 
           available: false 
         },
         { 
-          to: '/maxheap', 
-          icon: ArrowUpNarrowWide, 
-          title: 'Max Heap', 
-          description: 'The mirror of min-heap: every parent ≥ children, maximum at root. Extract-max in O(1), insert and delete in O(log n). Powers: Heapsort algorithm (in-place O(n log n) sorting), priority queues where highest priority goes first, finding k smallest elements, implementing a median-finding structure (use one min-heap + one max-heap), and bandwidth management in network routers.', 
+          to: '/adjacency-list', 
+          icon: LinkIcon, 
+          title: 'Adjacency List', 
+          description: 'A space-efficient way to represent a graph. Each vertex stores a list of adjacent vertices. Ideal for sparse graphs, supports efficient iteration over neighbors. Commonly used in network routing, social networks, and recommendation systems.', 
+          available: false 
+        },
+        { 
+          to: '/bfs', 
+          icon: ArrowRightLeft, 
+          title: 'Breadth-First Search (BFS)', 
+          description: 'A fundamental graph traversal algorithm that explores neighbors level by level. Used for finding shortest paths in unweighted graphs, peer-to-peer networks, and web crawlers.', 
+          available: false 
+        },
+        { 
+          to: '/dfs', 
+          icon: GitBranch, 
+          title: 'Depth-First Search (DFS)', 
+          description: 'A classic graph traversal technique that explores as far as possible along each branch before backtracking. Used for topological sorting, cycle detection, and solving puzzles like mazes.', 
           available: false 
         },
       ]
     },
+      
+   
   ];
 
   return (

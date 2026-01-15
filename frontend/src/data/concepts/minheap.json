@@ -1,0 +1,110 @@
+{
+  "concept": {
+    "title": "What is a Min Heap?",
+    "description": "A Min Heap is a complete binary tree where each parent node is smaller than or equal to its children. The minimum element is always at the root, making it perfect for priority queues.",
+    "codeExample": "       [1]  <- Min at root\n      /    \\\n    [3]    [2]\n   /  \\    /\n [7]  [6][4]\n\nArray: [1, 3, 2, 7, 6, 4]\nParent always <= Children",
+    "analogy": "Like a tournament bracket where the winner (smallest) rises to the top - the champion is always at the root!"
+  },
+  "properties": {
+    "title": "Min Heap Properties",
+    "items": [
+      { "label": "Heap Property", "value": "Parent <= Children" },
+      { "label": "Complete Tree", "value": "Filled level by level" },
+      { "label": "Array Storage", "value": "Parent(i)=(i-1)/2" },
+      { "label": "Min Access", "value": "O(1) to get minimum" }
+    ]
+  },
+  "operations": {
+    "insert": {
+      "label": "Insert Value",
+      "placeholder": "Value",
+      "buttonText": "Insert"
+    },
+    "extract": {
+      "label": "Extract Min",
+      "buttonText": "Extract Min"
+    },
+    "peek": {
+      "label": "Peek Min",
+      "buttonText": "Peek"
+    },
+    "build": {
+      "label": "Build from Array",
+      "placeholder": "e.g., 5,3,8,1,2",
+      "buttonText": "Build Heap"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    }
+  },
+  "heapOperations": {
+    "title": "Heap Operations",
+    "items": [
+      { "name": "Insert", "description": "Add at end, bubble up (heapify up)", "complexity": "O(log n)" },
+      { "name": "Extract Min", "description": "Remove root, replace with last, bubble down", "complexity": "O(log n)" },
+      { "name": "Peek", "description": "Return root without removing", "complexity": "O(1)" },
+      { "name": "Build Heap", "description": "Heapify from array (bottom-up)", "complexity": "O(n)" }
+    ]
+  },
+  "arrayRepresentation": {
+    "title": "Array Representation",
+    "items": [
+      { "formula": "Parent(i)", "value": "(i - 1) / 2" },
+      { "formula": "Left Child(i)", "value": "2*i + 1" },
+      { "formula": "Right Child(i)", "value": "2*i + 2" }
+    ]
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Insert", "average": "O(log n)", "worst": "O(log n)", "description": "Bubble up to root" },
+      { "name": "Extract Min", "average": "O(log n)", "worst": "O(log n)", "description": "Bubble down" },
+      { "name": "Peek/Get Min", "average": "O(1)", "worst": "O(1)", "description": "Always at root" },
+      { "name": "Build Heap", "average": "O(n)", "worst": "O(n)", "description": "Bottom-up heapify" }
+    ],
+    "note": "Space complexity is O(n). Complete tree structure ensures height is always O(log n)."
+  },
+  "useCases": {
+    "title": "Common Use Cases",
+    "items": [
+      "Priority Queues (process by priority)",
+      "Dijkstra's shortest path algorithm",
+      "Prim's minimum spanning tree",
+      "Huffman coding (compression)",
+      "Event-driven simulation",
+      "K smallest/largest elements"
+    ]
+  },
+  "comparison": {
+    "title": "Min Heap vs Other Structures",
+    "items": [
+      { "vs": "Sorted Array", "advantage": "O(log n) insert vs O(n)" },
+      { "vs": "BST", "advantage": "O(1) get min vs O(log n)" },
+      { "vs": "Max Heap", "advantage": "Fast min access vs fast max" }
+    ]
+  },
+  "infoLabels": {
+    "size": "Size",
+    "height": "Height",
+    "min": "Min"
+  },
+  "messages": {
+    "emptyHeap": "Min Heap is empty. Insert some values!",
+    "insertSuccess": "Inserted {value}",
+    "extractSuccess": "Extracted minimum: {value}",
+    "peekSuccess": "Minimum element is {value}",
+    "buildSuccess": "Built heap from array",
+    "clearSuccess": "Heap cleared!",
+    "errorNoValue": "Please enter a value!",
+    "errorEmpty": "Heap is empty!",
+    "errorFull": "Heap is full!",
+    "errorInsert": "Error inserting value",
+    "errorExtract": "Error extracting minimum"
+  },
+  "legend": [
+    { "type": "color", "className": "root-color", "label": "Root (Min)" },
+    { "type": "color", "className": "node-color", "label": "Internal Node" },
+    { "type": "color", "className": "leaf-color", "label": "Leaf" },
+    { "type": "color", "className": "highlight-color", "label": "Current/Swapping" }
+  ]
+}

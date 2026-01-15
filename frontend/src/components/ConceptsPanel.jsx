@@ -9,6 +9,10 @@ import hashtableConcepts from '../data/concepts/hashtable.json';
 import hashtableChainingConcepts from '../data/concepts/hashTableChaining.json';
 import hashtableQuadraticConcepts from '../data/concepts/hashtableQuadratic.json';
 import bstConcepts from '../data/concepts/bst.json';
+import avlConcepts from '../data/concepts/avl.json';
+import splayConcepts from '../data/concepts/splay.json';
+import minheapConcepts from '../data/concepts/minheap.json';
+import maxheapConcepts from '../data/concepts/maxheap.json';
 
 // Map data structure names to their concept data
 const conceptsData = {
@@ -19,7 +23,11 @@ const conceptsData = {
   hashtable: hashtableConcepts,
   hashtableChaining: hashtableChainingConcepts,
   hashtableQuadratic: hashtableQuadraticConcepts,
-  bst: bstConcepts
+  bst: bstConcepts,
+  avl: avlConcepts,
+  splay: splayConcepts,
+  minheap: minheapConcepts,
+  maxheap: maxheapConcepts
 };
 
 function ConceptsPanel({ dataStructure }) {

@@ -1,0 +1,115 @@
+{
+  "concept": {
+    "title": "What is an AVL Tree?",
+    "description": "An AVL Tree is a self-balancing Binary Search Tree where the height difference between left and right subtrees (balance factor) is at most 1 for every node.",
+    "codeExample": "       [50]  BF=0\n      /    \\\n   [30]    [70]  \n  BF=0     BF=0\n   /  \\      \\\n [20][40]   [80]\n\nBalance Factor = Height(Left) - Height(Right)\nBF must be -1, 0, or 1",
+    "analogy": "Like a well-organized library that automatically reorganizes shelves whenever books are added or removed to ensure quick access!"
+  },
+  "properties": {
+    "title": "AVL Properties",
+    "items": [
+      { "label": "Balance Factor", "value": "-1, 0, or 1 for all nodes" },
+      { "label": "Height", "value": "O(log n) guaranteed" },
+      { "label": "Self-Balancing", "value": "Rotations on insert/delete" },
+      { "label": "BST Property", "value": "Left < Parent < Right" }
+    ]
+  },
+  "operations": {
+    "insert": {
+      "label": "Insert Value",
+      "placeholder": "Value",
+      "buttonText": "Insert"
+    },
+    "delete": {
+      "label": "Delete Value",
+      "placeholder": "Value",
+      "buttonText": "Delete"
+    },
+    "search": {
+      "label": "Search Value",
+      "placeholder": "Value",
+      "buttonText": "Search"
+    },
+    "traversals": {
+      "inorder": "Inorder (Sorted)",
+      "preorder": "Preorder",
+      "postorder": "Postorder",
+      "levelorder": "Level Order"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    }
+  },
+  "rotations": {
+    "title": "AVL Rotations",
+    "items": [
+      { "name": "Left-Left (LL)", "description": "Right rotation", "when": "BF > 1, Left child BF >= 0" },
+      { "name": "Right-Right (RR)", "description": "Left rotation", "when": "BF < -1, Right child BF <= 0" },
+      { "name": "Left-Right (LR)", "description": "Left then Right rotation", "when": "BF > 1, Left child BF < 0" },
+      { "name": "Right-Left (RL)", "description": "Right then Left rotation", "when": "BF < -1, Right child BF > 0" }
+    ]
+  },
+  "traversals": {
+    "title": "Tree Traversals",
+    "items": [
+      { "name": "Inorder", "order": "Left -> Root -> Right", "use": "Returns SORTED order" },
+      { "name": "Preorder", "order": "Root -> Left -> Right", "use": "Copy/serialize tree" },
+      { "name": "Postorder", "order": "Left -> Right -> Root", "use": "Delete tree safely" },
+      { "name": "Level Order", "order": "Level by level (BFS)", "use": "Print by levels" }
+    ]
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Search", "average": "O(log n)", "worst": "O(log n)", "description": "Height always balanced" },
+      { "name": "Insert", "average": "O(log n)", "worst": "O(log n)", "description": "Insert + rebalance" },
+      { "name": "Delete", "average": "O(log n)", "worst": "O(log n)", "description": "Delete + rebalance" },
+      { "name": "Rotation", "average": "O(1)", "worst": "O(1)", "description": "Constant time fix" }
+    ],
+    "note": "Unlike regular BST, AVL guarantees O(log n) even in worst case because the tree is always balanced!"
+  },
+  "useCases": {
+    "title": "Common Use Cases",
+    "items": [
+      "Database indexing with frequent lookups",
+      "In-memory databases",
+      "Dictionary implementations",
+      "When guaranteed O(log n) is critical",
+      "Real-time systems needing predictable performance"
+    ]
+  },
+  "comparison": {
+    "title": "AVL vs Other Trees",
+    "items": [
+      { "vs": "BST", "advantage": "Guaranteed O(log n) vs O(n) worst case" },
+      { "vs": "Red-Black", "advantage": "More rigidly balanced (faster lookup)" },
+      { "vs": "B-Tree", "advantage": "Better for in-memory operations" }
+    ]
+  },
+  "infoLabels": {
+    "size": "Nodes",
+    "height": "Height",
+    "root": "Root"
+  },
+  "messages": {
+    "emptyTree": "AVL Tree is empty. Insert some values!",
+    "insertSuccess": "Inserted {value} (tree rebalanced)",
+    "deleteSuccess": "Deleted {value} (tree rebalanced)",
+    "deleteNotFound": "Value {value} not found",
+    "searchFound": "Found {value}",
+    "searchNotFound": "Value {value} not found",
+    "clearSuccess": "AVL Tree cleared!",
+    "traversalResult": "{type}: {result}",
+    "errorNoValue": "Please enter a value!",
+    "errorInsert": "Error inserting value",
+    "errorDelete": "Error deleting value",
+    "errorSearch": "Error searching value",
+    "errorClear": "Error clearing AVL Tree"
+  },
+  "legend": [
+    { "type": "color", "className": "root-color", "label": "Root" },
+    { "type": "color", "className": "balanced-color", "label": "Balanced (|BF| <= 1)" },
+    { "type": "color", "className": "leaf-color", "label": "Leaf" },
+    { "type": "color", "className": "highlight-color", "label": "Current/Found" }
+  ]
+}

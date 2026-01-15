@@ -1,0 +1,110 @@
+{
+  "concept": {
+    "title": "What is a Max Heap?",
+    "description": "A Max Heap is a complete binary tree where each parent node is greater than or equal to its children. The maximum element is always at the root, ideal for priority queues where largest = highest priority.",
+    "codeExample": "       [9]  <- Max at root\n      /    \\\n    [7]    [8]\n   /  \\    /\n [3]  [5][6]\n\nArray: [9, 7, 8, 3, 5, 6]\nParent always >= Children",
+    "analogy": "Like a corporate hierarchy - the CEO (maximum) is at the top, and each manager has authority over their subordinates!"
+  },
+  "properties": {
+    "title": "Max Heap Properties",
+    "items": [
+      { "label": "Heap Property", "value": "Parent >= Children" },
+      { "label": "Complete Tree", "value": "Filled level by level" },
+      { "label": "Array Storage", "value": "Parent(i)=(i-1)/2" },
+      { "label": "Max Access", "value": "O(1) to get maximum" }
+    ]
+  },
+  "operations": {
+    "insert": {
+      "label": "Insert Value",
+      "placeholder": "Value",
+      "buttonText": "Insert"
+    },
+    "extract": {
+      "label": "Extract Max",
+      "buttonText": "Extract Max"
+    },
+    "peek": {
+      "label": "Peek Max",
+      "buttonText": "Peek"
+    },
+    "build": {
+      "label": "Build from Array",
+      "placeholder": "e.g., 5,3,8,1,2",
+      "buttonText": "Build Heap"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    }
+  },
+  "heapOperations": {
+    "title": "Heap Operations",
+    "items": [
+      { "name": "Insert", "description": "Add at end, bubble up (heapify up)", "complexity": "O(log n)" },
+      { "name": "Extract Max", "description": "Remove root, replace with last, bubble down", "complexity": "O(log n)" },
+      { "name": "Peek", "description": "Return root without removing", "complexity": "O(1)" },
+      { "name": "Build Heap", "description": "Heapify from array (bottom-up)", "complexity": "O(n)" }
+    ]
+  },
+  "arrayRepresentation": {
+    "title": "Array Representation",
+    "items": [
+      { "formula": "Parent(i)", "value": "(i - 1) / 2" },
+      { "formula": "Left Child(i)", "value": "2*i + 1" },
+      { "formula": "Right Child(i)", "value": "2*i + 2" }
+    ]
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Insert", "average": "O(log n)", "worst": "O(log n)", "description": "Bubble up to root" },
+      { "name": "Extract Max", "average": "O(log n)", "worst": "O(log n)", "description": "Bubble down" },
+      { "name": "Peek/Get Max", "average": "O(1)", "worst": "O(1)", "description": "Always at root" },
+      { "name": "Build Heap", "average": "O(n)", "worst": "O(n)", "description": "Bottom-up heapify" }
+    ],
+    "note": "Space complexity is O(n). Complete tree structure ensures height is always O(log n)."
+  },
+  "useCases": {
+    "title": "Common Use Cases",
+    "items": [
+      "Priority Queues (largest = highest priority)",
+      "Heap Sort algorithm",
+      "Job scheduling (highest priority first)",
+      "Finding K largest elements",
+      "Median maintenance (with min heap)",
+      "Stock trading (highest bid)"
+    ]
+  },
+  "comparison": {
+    "title": "Max Heap vs Other Structures",
+    "items": [
+      { "vs": "Sorted Array", "advantage": "O(log n) insert vs O(n)" },
+      { "vs": "BST", "advantage": "O(1) get max vs O(log n)" },
+      { "vs": "Min Heap", "advantage": "Fast max access vs fast min" }
+    ]
+  },
+  "infoLabels": {
+    "size": "Size",
+    "height": "Height",
+    "max": "Max"
+  },
+  "messages": {
+    "emptyHeap": "Max Heap is empty. Insert some values!",
+    "insertSuccess": "Inserted {value}",
+    "extractSuccess": "Extracted maximum: {value}",
+    "peekSuccess": "Maximum element is {value}",
+    "buildSuccess": "Built heap from array",
+    "clearSuccess": "Heap cleared!",
+    "errorNoValue": "Please enter a value!",
+    "errorEmpty": "Heap is empty!",
+    "errorFull": "Heap is full!",
+    "errorInsert": "Error inserting value",
+    "errorExtract": "Error extracting maximum"
+  },
+  "legend": [
+    { "type": "color", "className": "root-color", "label": "Root (Max)" },
+    { "type": "color", "className": "node-color", "label": "Internal Node" },
+    { "type": "color", "className": "leaf-color", "label": "Leaf" },
+    { "type": "color", "className": "highlight-color", "label": "Current/Swapping" }
+  ]
+}

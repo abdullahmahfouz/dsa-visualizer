@@ -24,6 +24,9 @@
 @import './visualizer-styles/hash/hashtable-chaining.css';
 @import './visualizer-styles/binarytrees/binarytree.css';
 @import './visualizer-styles/binarytrees/bst.css';
+@import './visualizer-styles/binarytrees/avl.css';
+@import './visualizer-styles/binarytrees/splay.css';
+@import './visualizer-styles/heaps/heap.css';
 
 /* Mobile Responsive - Must be last to override other styles */
 @import './base-styles/responsive.css';

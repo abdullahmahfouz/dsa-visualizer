@@ -22,6 +22,12 @@ import HashTableQuadratic from './visualizers/hash/HashTableQuadratic';
 // Visualizers - Trees
 import BinaryTreeVisualizer from './visualizers/binarytrees/BinaryTreeTraversals/BinaryTreeTraversals';
 import BSTVisualizer from './visualizers/binarytrees/BST/BSTVisualizer';
+import AVLVisualizer from './visualizers/binarytrees/AVL/AVLVisualizer';
+import SplayVisualizer from './visualizers/binarytrees/Splay/SplayVisualizer';
+
+// Visualizers - Heaps
+import MinHeapVisualizer from './visualizers/heaps/MinHeapVisualizer';
+import MaxHeapVisualizer from './visualizers/heaps/MaxHeapVisualizer';
 
 function App() {
   return (
@@ -41,6 +47,10 @@ function App() {
           <Route path="/hashtable_chaining" element={<HashTableChaining />} />
           <Route path="/binarytree" element={<BinaryTreeVisualizer />} />
           <Route path="/bst" element={<BSTVisualizer />} />
+          <Route path="/avl" element={<AVLVisualizer />} />
+          <Route path="/splay" element={<SplayVisualizer />} />
+          <Route path="/minheap" element={<MinHeapVisualizer />} />
+          <Route path="/maxheap" element={<MaxHeapVisualizer />} />
         </Routes>
         <Footer />
       </main>

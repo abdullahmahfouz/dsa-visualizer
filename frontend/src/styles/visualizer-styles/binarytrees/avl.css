@@ -1,0 +1,75 @@
+/* ============================================
+   AVL Tree Specific Styles
+   ============================================ */
+
+/* Balance Factor Display */
+.avl-balance-factor {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    background: #10b981;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 50%;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+}
+
+.avl-balance-factor.unbalanced {
+    background: #ef4444;
+}
+
+/* Rotation Indicator */
+.rotation-indicator {
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid #f59e0b;
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #f59e0b;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rotation-indicator svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* AVL Node Animation */
+.avl-node-rotating {
+    animation: rotateHighlight 0.5s ease-in-out;
+}
+
+@keyframes rotateHighlight {
+    0%, 100% {
+        filter: none;
+    }
+    50% {
+        filter: drop-shadow(0 0 20px #f59e0b);
+    }
+}
+
+/* Balance Status Box */
+.balance-status-box {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.2) 100%);
+    border: 1px solid #10b981;
+    border-radius: var(--radius-md);
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: #10b981;
+    text-align: center;
+}
+
+.balance-status-box.warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.2) 100%);
+    border-color: #f59e0b;
+    color: #f59e0b;
+}

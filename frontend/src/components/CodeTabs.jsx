@@ -9,6 +9,10 @@ import binarytreeSnippets from '../data/snippets/binarytree.json';
 import hashtableSnippets from '../data/snippets/hashtable.json';
 import hashtableChainingSnippets from '../data/snippets/hashtableChaining.json';
 import bstSnippets from '../data/snippets/bst.json';
+import avlSnippets from '../data/snippets/avl.json';
+import splaySnippets from '../data/snippets/splay.json';
+import minheapSnippets from '../data/snippets/minheap.json';
+import maxheapSnippets from '../data/snippets/maxheap.json';
 
 // Combine all snippets into one object
 const codeSnippets = {
@@ -18,7 +22,11 @@ const codeSnippets = {
   binarytree: binarytreeSnippets,
   hashtable: hashtableSnippets,
   hashtableChaining: hashtableChainingSnippets,
-  bst: bstSnippets
+  bst: bstSnippets,
+  avl: avlSnippets,
+  splay: splaySnippets,
+  minheap: minheapSnippets,
+  maxheap: maxheapSnippets
 };
 
 function CodeTabs({ dataStructure }) {

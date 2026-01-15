@@ -1,0 +1,114 @@
+{
+  "concept": {
+    "title": "What is a Splay Tree?",
+    "description": "A Splay Tree is a self-adjusting Binary Search Tree that moves frequently accessed elements closer to the root through rotations (splaying), providing amortized O(log n) performance.",
+    "codeExample": "After searching for 20:\n\nBefore:        After Splay:\n   [50]           [20]\n   /                  \\\n [30]                [50]\n /                   /\n[20]  <-- found   [30]\n\nAccessed node moves to root!",
+    "analogy": "Like keeping frequently used items at the front of your desk - recently used elements stay easily accessible!"
+  },
+  "properties": {
+    "title": "Splay Tree Properties",
+    "items": [
+      { "label": "Self-Adjusting", "value": "Accessed nodes move to root" },
+      { "label": "No Balance Info", "value": "No height/color stored" },
+      { "label": "Amortized O(log n)", "value": "Good average performance" },
+      { "label": "Cache Friendly", "value": "Hot nodes stay near root" }
+    ]
+  },
+  "operations": {
+    "insert": {
+      "label": "Insert Value",
+      "placeholder": "Value",
+      "buttonText": "Insert"
+    },
+    "delete": {
+      "label": "Delete Value",
+      "placeholder": "Value",
+      "buttonText": "Delete"
+    },
+    "search": {
+      "label": "Search Value",
+      "placeholder": "Value",
+      "buttonText": "Search"
+    },
+    "traversals": {
+      "inorder": "Inorder (Sorted)",
+      "preorder": "Preorder",
+      "postorder": "Postorder",
+      "levelorder": "Level Order"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    }
+  },
+  "splayOperations": {
+    "title": "Splay Operations",
+    "items": [
+      { "name": "Zig", "description": "Single rotation when parent is root", "when": "Parent is root" },
+      { "name": "Zig-Zig", "description": "Both node and parent are left (or both right) children", "when": "Same side grandchild" },
+      { "name": "Zig-Zag", "description": "Node is left child, parent is right (or vice versa)", "when": "Opposite side grandchild" }
+    ]
+  },
+  "traversals": {
+    "title": "Tree Traversals",
+    "items": [
+      { "name": "Inorder", "order": "Left -> Root -> Right", "use": "Returns SORTED order" },
+      { "name": "Preorder", "order": "Root -> Left -> Right", "use": "Copy/serialize tree" },
+      { "name": "Postorder", "order": "Left -> Right -> Root", "use": "Delete tree safely" },
+      { "name": "Level Order", "order": "Level by level (BFS)", "use": "Print by levels" }
+    ]
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Search", "average": "O(log n)*", "worst": "O(n)", "description": "Amortized logarithmic" },
+      { "name": "Insert", "average": "O(log n)*", "worst": "O(n)", "description": "Amortized logarithmic" },
+      { "name": "Delete", "average": "O(log n)*", "worst": "O(n)", "description": "Amortized logarithmic" },
+      { "name": "Splay", "average": "O(log n)*", "worst": "O(n)", "description": "Brings node to root" }
+    ],
+    "note": "* Amortized - while single operations can be O(n), any sequence of m operations takes O(m log n) total time."
+  },
+  "useCases": {
+    "title": "Common Use Cases",
+    "items": [
+      "Cache implementations (LRU-like behavior)",
+      "Garbage collectors",
+      "Network routers (IP lookup)",
+      "Situations with temporal locality",
+      "When same elements accessed repeatedly"
+    ]
+  },
+  "comparison": {
+    "title": "Splay Tree vs Other Trees",
+    "items": [
+      { "vs": "AVL", "advantage": "Simpler (no balance info), better for skewed access" },
+      { "vs": "Red-Black", "advantage": "Self-optimizing for access patterns" },
+      { "vs": "BST", "advantage": "Better amortized performance" }
+    ]
+  },
+  "infoLabels": {
+    "size": "Nodes",
+    "height": "Height",
+    "root": "Root"
+  },
+  "messages": {
+    "emptyTree": "Splay Tree is empty. Insert some values!",
+    "insertSuccess": "Inserted {value} (now at root)",
+    "deleteSuccess": "Deleted {value}",
+    "deleteNotFound": "Value {value} not found",
+    "searchFound": "Found {value} (splayed to root)",
+    "searchNotFound": "Value {value} not found",
+    "clearSuccess": "Splay Tree cleared!",
+    "traversalResult": "{type}: {result}",
+    "errorNoValue": "Please enter a value!",
+    "errorInsert": "Error inserting value",
+    "errorDelete": "Error deleting value",
+    "errorSearch": "Error searching value",
+    "errorClear": "Error clearing Splay Tree"
+  },
+  "legend": [
+    { "type": "color", "className": "root-color", "label": "Root (Most Recent)" },
+    { "type": "color", "className": "node-color", "label": "Node" },
+    { "type": "color", "className": "leaf-color", "label": "Leaf" },
+    { "type": "color", "className": "highlight-color", "label": "Current/Found" }
+  ]
+}

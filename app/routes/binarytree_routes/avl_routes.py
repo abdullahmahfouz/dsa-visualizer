@@ -1,45 +1,46 @@
 """
-Binary Search Tree API Routes
-=============================
-All routes related to the Binary Search Tree data structure.
+AVL Tree API Routes
+===================
+All routes related to the AVL Tree data structure.
+Self-balancing BST with height difference at most 1.
 
-BST operations:
-- insert: Add a node maintaining BST property
-- delete: Remove a node from the tree
+AVL Tree operations:
+- insert: Add a node with automatic balancing
+- delete: Remove a node with automatic balancing
 - search: Check if a value exists
 - Traversals: inorder, preorder, postorder, level-order
 """
 
 from flask import Blueprint, jsonify, request
-from ...models.binarytrees.bst import BST
+from ...models.binarytrees.avl import AVLTree
 
-# Create Blueprint with /api/bst prefix
-bst_bp = Blueprint('bst', __name__, url_prefix='/api/bst')
+# Create Blueprint with /api/avl prefix
+avl_bp = Blueprint('avl', __name__, url_prefix='/api/avl')
 
-# Create BST instance
-bst_tree = BST()
+# Create AVL Tree instance
+avl_tree = AVLTree()
 
 
-@bst_bp.route("", methods=["GET"])
-def get_bst():
+@avl_bp.route("", methods=["GET"])
+def get_avl():
     """
-    GET /api/bst
-    Returns the current BST state.
+    GET /api/avl
+    Returns the current AVL tree state.
     """
     return jsonify({
-        "tree": bst_tree.to_dict(),
-        "tree_list": bst_tree.to_list(),
-        "size": bst_tree.size(),
-        "height": bst_tree.height(),
-        "is_empty": bst_tree.is_empty()
+        "tree": avl_tree.to_dict(),
+        "tree_list": avl_tree.to_list(),
+        "size": avl_tree.size(),
+        "height": avl_tree.height(),
+        "is_empty": avl_tree.is_empty()
     })
 
 
-@bst_bp.route("/insert", methods=["POST"])
+@avl_bp.route("/insert", methods=["POST"])
 def insert_node():
     """
-    POST /api/bst/insert
-    Insert a node into the BST.
+    POST /api/avl/insert
+    Insert a node into the AVL tree with automatic balancing.
     Expects: {"value": 42}
     """
     MAX_TREE_SIZE = 20
@@ -53,25 +54,29 @@ def insert_node():
     if value is None:
         return jsonify({"error": "No value provided"}), 400
 
-    if bst_tree.size() >= MAX_TREE_SIZE:
+    if avl_tree.size() >= MAX_TREE_SIZE:
         return jsonify({"error": f"Tree is full! Maximum size is {MAX_TREE_SIZE}"}), 400
 
-    bst_tree.insert(value)
+    # Check if value already exists
+    if avl_tree.search(value):
+        return jsonify({"error": f"Value {value} already exists in tree"}), 400
+
+    avl_tree.insert(value)
 
     return jsonify({
         "message": f"Inserted {value}",
-        "tree": bst_tree.to_dict(),
-        "tree_list": bst_tree.to_list(),
-        "size": bst_tree.size(),
-        "height": bst_tree.height()
+        "tree": avl_tree.to_dict(),
+        "tree_list": avl_tree.to_list(),
+        "size": avl_tree.size(),
+        "height": avl_tree.height()
     })
 
 
-@bst_bp.route("/delete", methods=["POST"])
+@avl_bp.route("/delete", methods=["POST"])
 def delete_node():
     """
-    POST /api/bst/delete
-    Delete a node from the BST.
+    POST /api/avl/delete
+    Delete a node from the AVL tree with automatic balancing.
     Expects: {"value": 42}
     """
     data = request.json
@@ -83,45 +88,44 @@ def delete_node():
     if value is None:
         return jsonify({"error": "No value provided"}), 400
 
-    if bst_tree.is_empty():
+    if avl_tree.is_empty():
         return jsonify({"error": "Tree is empty!"}), 400
 
     # Check if value exists before deleting
-    if not bst_tree.search(value):
+    if not avl_tree.search(value):
         return jsonify({"error": f"Value {value} not found in tree"}), 404
 
-    bst_tree.delete(value)
+    avl_tree.delete(value)
 
     return jsonify({
         "message": f"Deleted {value}",
-        "tree": bst_tree.to_dict(),
-        "tree_list": bst_tree.to_list(),
-        "size": bst_tree.size(),
-        "height": bst_tree.height()
+        "tree": avl_tree.to_dict(),
+        "tree_list": avl_tree.to_list(),
+        "size": avl_tree.size(),
+        "height": avl_tree.height()
     })
 
 
-@bst_bp.route("/search", methods=["GET"])
+@avl_bp.route("/search", methods=["GET"])
 def search_node():
     """
-    GET /api/bst/search?value=42
-    Search for a value in the BST.
+    GET /api/avl/search?value=42
+    Search for a value in the AVL tree.
     """
     value = request.args.get("value")
 
     if value is None:
         return jsonify({"error": "No value provided"}), 400
 
-    # Convert value to appropriate type (number if numeric, otherwise string)
     try:
         if value.isdigit() or (value.startswith('-') and value[1:].isdigit()):
             value = int(value)
         elif '.' in value and value.replace('.', '').replace('-', '').isdigit():
             value = float(value)
     except:
-        pass  # Keep as string if conversion fails
+        pass
 
-    found = bst_tree.search(value) is not None
+    found = avl_tree.search(value) is not None
 
     return jsonify({
         "found": found,
@@ -129,28 +133,28 @@ def search_node():
         "message": f"Value {value} {'found' if found else 'not found'} in tree"
     })
 
-@bst_bp.route("/inorder", methods=["GET"])
+
+@avl_bp.route("/inorder", methods=["GET"])
 def inorder_traversal():
     """
-    GET /api/bst/inorder
+    GET /api/avl/inorder
     Get inorder traversal (Left, Root, Right).
-    For BST, this returns sorted order.
     """
-    traversal = bst_tree.inorder()
+    traversal = avl_tree.inorder()
     return jsonify({
         "traversal": traversal,
         "order": "Left, Root, Right",
-        "description": "Inorder traversal (sorted order for BST)"
+        "description": "Inorder traversal (sorted order)"
     })
 
 
-@bst_bp.route("/preorder", methods=["GET"])
+@avl_bp.route("/preorder", methods=["GET"])
 def preorder_traversal():
     """
-    GET /api/bst/preorder
+    GET /api/avl/preorder
     Get preorder traversal (Root, Left, Right).
     """
-    traversal = bst_tree.preorder()
+    traversal = avl_tree.preorder()
     return jsonify({
         "traversal": traversal,
         "order": "Root, Left, Right",
@@ -158,13 +162,13 @@ def preorder_traversal():
     })
 
 
-@bst_bp.route("/postorder", methods=["GET"])
+@avl_bp.route("/postorder", methods=["GET"])
 def postorder_traversal():
     """
-    GET /api/bst/postorder
+    GET /api/avl/postorder
     Get postorder traversal (Left, Right, Root).
     """
-    traversal = bst_tree.postorder()
+    traversal = avl_tree.postorder()
     return jsonify({
         "traversal": traversal,
         "order": "Left, Right, Root",
@@ -172,13 +176,13 @@ def postorder_traversal():
     })
 
 
-@bst_bp.route("/levelorder", methods=["GET"])
+@avl_bp.route("/levelorder", methods=["GET"])
 def levelorder_traversal():
     """
-    GET /api/bst/levelorder
-    Get level-order traversal (BFS - Breadth-First Search).
+    GET /api/avl/levelorder
+    Get level-order traversal (BFS).
     """
-    traversal = bst_tree.level_order()
+    traversal = avl_tree.level_order()
     return jsonify({
         "traversal": traversal,
         "order": "Level by level (BFS)",
@@ -186,13 +190,13 @@ def levelorder_traversal():
     })
 
 
-@bst_bp.route("/clear", methods=["POST"])
+@avl_bp.route("/clear", methods=["POST"])
 def clear_tree():
     """
-    POST /api/bst/clear
-    Remove all nodes from the BST.
+    POST /api/avl/clear
+    Remove all nodes from the AVL tree.
     """
-    bst_tree.clear()
+    avl_tree.clear()
     return jsonify({
         "message": "Tree cleared",
         "tree": None,
