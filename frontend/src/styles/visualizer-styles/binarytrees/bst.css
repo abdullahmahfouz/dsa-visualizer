@@ -1,0 +1,260 @@
+/* ============================================
+   BST (Binary Search Tree) Specific Styles
+   ============================================ */
+
+/* BST Property Box */
+.bst-property-box {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+    border: 2px solid var(--accent-primary);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    text-align: center;
+}
+
+.bst-property-box code {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    background: transparent;
+}
+
+.bst-property-reminder {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.bst-property-reminder code {
+    color: var(--accent-primary);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+/* Complexity Highlight */
+.complexity-highlight {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+}
+
+.complexity-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.complexity-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.complexity-good {
+    color: #10b981;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.complexity-bad {
+    color: #ef4444;
+    font-weight: 600;
+    background: rgba(239, 68, 68, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.complexity-note {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+/* Search Button */
+.btn-search {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-search:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Search Path Display */
+.search-path-display {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: var(--radius-md);
+}
+
+.search-path-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-right: 0.5rem;
+}
+
+.search-path-nodes {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.search-path-node {
+    background: #3b82f6;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.search-path-node.found {
+    background: #10b981;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+}
+
+.search-path-node.not-found {
+    background: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+.search-path-arrow {
+    color: var(--text-muted);
+    margin: 0 0.25rem;
+}
+
+/* Legend for Search */
+.legend-dot--search {
+    background: #3b82f6;
+    box-shadow: 0 0 6px #3b82f6;
+}
+
+/* Sorted Badge */
+.sorted-badge {
+    font-size: 0.65rem;
+    background: #10b981;
+    color: white;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+}
+
+.btn-traversal-primary {
+    border-color: #10b981 !important;
+    position: relative;
+}
+
+.sorted-indicator {
+    font-size: 0.7rem;
+    color: #10b981;
+    margin-left: 0.5rem;
+    font-weight: normal;
+}
+
+.traversal-sorted-note {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #10b981;
+    font-style: italic;
+}
+
+/* Delete Cases Info */
+.delete-cases-info {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.delete-cases-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.delete-case {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.case-number {
+    width: 28px;
+    height: 28px;
+    background: var(--accent-gradient);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.delete-case strong {
+    display: block;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.delete-case p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Tree Empty Hint */
+.tree-empty-hint {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+    font-style: normal;
+}
+
+/* Info Section */
+.info-section {
+    margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .complexity-highlight {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .search-path-nodes {
+        gap: 0.15rem;
+    }
+
+    .search-path-node {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    .delete-cases-list {
+        grid-template-columns: 1fr;
+    }
+}

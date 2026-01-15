@@ -21,6 +21,7 @@ import HashTableQuadratic from './visualizers/hash/HashTableQuadratic';
 
 // Visualizers - Trees
 import BinaryTreeVisualizer from './visualizers/binarytrees/BinaryTreeTraversals/BinaryTreeTraversals';
+import BSTVisualizer from './visualizers/binarytrees/BST/BSTVisualizer';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/hashtable_quadratic" element={<HashTableQuadratic />} />
           <Route path="/hashtable_chaining" element={<HashTableChaining />} />
           <Route path="/binarytree" element={<BinaryTreeVisualizer />} />
+          <Route path="/bst" element={<BSTVisualizer />} />
         </Routes>
         <Footer />
       </main>

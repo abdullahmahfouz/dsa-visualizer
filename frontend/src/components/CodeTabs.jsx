@@ -8,6 +8,7 @@ import linkedlistSnippets from '../data/snippets/linkedlist.json';
 import binarytreeSnippets from '../data/snippets/binarytree.json';
 import hashtableSnippets from '../data/snippets/hashtable.json';
 import hashtableChainingSnippets from '../data/snippets/hashtableChaining.json';
+import bstSnippets from '../data/snippets/bst.json';
 
 // Combine all snippets into one object
 const codeSnippets = {
@@ -16,7 +17,8 @@ const codeSnippets = {
   linkedlist: linkedlistSnippets,
   binarytree: binarytreeSnippets,
   hashtable: hashtableSnippets,
-  hashtableChaining: hashtableChainingSnippets
+  hashtableChaining: hashtableChainingSnippets,
+  bst: bstSnippets
 };
 
 function CodeTabs({ dataStructure }) {

@@ -11,6 +11,7 @@
 @import './component-styles/info.css';
 @import './component-styles/forms.css';
 @import './component-styles/code-tabs.css';
+@import './component-styles/concepts-panel.css';
 
 /* Pages */
 @import './page-styles/homepage.css';
@@ -22,6 +23,7 @@
 @import './visualizer-styles/hash/hashtable.css';
 @import './visualizer-styles/hash/hashtable-chaining.css';
 @import './visualizer-styles/binarytrees/binarytree.css';
+@import './visualizer-styles/binarytrees/bst.css';
 
 /* Mobile Responsive - Must be last to override other styles */
 @import './base-styles/responsive.css';

@@ -1,0 +1,114 @@
+{
+  "concept": {
+    "title": "What is a Binary Search Tree?",
+    "description": "A Binary Search Tree (BST) is a binary tree where each node follows the ordering property: all left descendants < node < all right descendants.",
+    "codeExample": "       [50]\n      /    \\\n   [30]    [70]\n   /  \\    /  \\\n [20][40][60][80]\n\nLeft < Parent < Right",
+    "analogy": "Like a dictionary - words are sorted alphabetically, so you can quickly find any word by comparing!"
+  },
+  "properties": {
+    "title": "BST Properties",
+    "items": [
+      { "label": "Ordering", "value": "Left < Parent < Right" },
+      { "label": "Search", "value": "O(log n) average" },
+      { "label": "Inorder", "value": "Gives sorted sequence" },
+      { "label": "No Duplicates", "value": "Typically unique keys" }
+    ]
+  },
+  "operations": {
+    "insert": {
+      "label": "Insert Value",
+      "placeholder": "Value",
+      "buttonText": "Insert"
+    },
+    "delete": {
+      "label": "Delete Value",
+      "placeholder": "Value",
+      "buttonText": "Delete"
+    },
+    "search": {
+      "label": "Search Value",
+      "placeholder": "Value",
+      "buttonText": "Search"
+    },
+    "traversals": {
+      "inorder": "Inorder (Sorted)",
+      "preorder": "Preorder",
+      "postorder": "Postorder",
+      "levelorder": "Level Order"
+    },
+    "clear": {
+      "buttonText": "Clear"
+    }
+  },
+  "deleteCases": {
+    "title": "BST Delete Cases",
+    "items": [
+      { "name": "Leaf Node", "description": "Simply remove (no children)" },
+      { "name": "One Child", "description": "Replace with child" },
+      { "name": "Two Children", "description": "Replace with inorder successor (smallest in right subtree)" }
+    ]
+  },
+  "traversals": {
+    "title": "Tree Traversals",
+    "items": [
+      { "name": "Inorder", "order": "Left -> Root -> Right", "use": "Returns SORTED order in BST" },
+      { "name": "Preorder", "order": "Root -> Left -> Right", "use": "Copy/serialize tree" },
+      { "name": "Postorder", "order": "Left -> Right -> Root", "use": "Delete tree safely" },
+      { "name": "Level Order", "order": "Level by level (BFS)", "use": "Print by levels" }
+    ]
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Search", "average": "O(log n)", "worst": "O(n)", "description": "Binary search principle" },
+      { "name": "Insert", "average": "O(log n)", "worst": "O(n)", "description": "Find position + insert" },
+      { "name": "Delete", "average": "O(log n)", "worst": "O(n)", "description": "Find + restructure" },
+      { "name": "Min/Max", "average": "O(log n)", "worst": "O(n)", "description": "Leftmost/rightmost" }
+    ],
+    "note": "Worst case O(n) when tree is unbalanced (degenerates to linked list). Use AVL/Red-Black trees for guaranteed O(log n)."
+  },
+  "useCases": {
+    "title": "Common Use Cases",
+    "items": [
+      "Database indexing (B-trees)",
+      "Symbol tables in compilers",
+      "Priority queues",
+      "Auto-complete suggestions",
+      "Range queries (find all values between X and Y)"
+    ]
+  },
+  "comparison": {
+    "title": "BST vs Other Structures",
+    "items": [
+      { "vs": "Array", "advantage": "O(log n) insert/delete vs O(n)" },
+      { "vs": "Hash Table", "advantage": "Ordered data, range queries" },
+      { "vs": "Linked List", "advantage": "O(log n) search vs O(n)" }
+    ]
+  },
+  "infoLabels": {
+    "size": "Nodes",
+    "height": "Height",
+    "root": "Root"
+  },
+  "messages": {
+    "emptyTree": "BST is empty. Insert some values!",
+    "insertSuccess": "Inserted {value}",
+    "deleteSuccess": "Deleted {value}",
+    "deleteNotFound": "Value {value} not found",
+    "searchFound": "Found {value}",
+    "searchNotFound": "Value {value} not found",
+    "clearSuccess": "BST cleared!",
+    "traversalResult": "{type}: {result}",
+    "errorNoValue": "Please enter a value!",
+    "errorInsert": "Error inserting value",
+    "errorDelete": "Error deleting value",
+    "errorSearch": "Error searching value",
+    "errorClear": "Error clearing BST"
+  },
+  "legend": [
+    { "type": "color", "className": "root-color", "label": "Root" },
+    { "type": "color", "className": "node-color", "label": "Node" },
+    { "type": "color", "className": "leaf-color", "label": "Leaf" },
+    { "type": "color", "className": "highlight-color", "label": "Current/Found" }
+  ]
+}

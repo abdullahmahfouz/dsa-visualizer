@@ -93,7 +93,7 @@ function Algorithms() {
           icon: GitFork, 
           title: 'Binary Search Tree', 
           description: 'The fundamental ordered tree: every node\'s left subtree contains only smaller values, right subtree only larger values. This property enables O(log n) search by eliminating half the tree at each step — like binary search but in tree form. Supports efficient range queries. Caveat: can degrade to O(n) if insertions create an unbalanced "stick". Foundation for databases, symbol tables, and more advanced balanced trees.', 
-          available: false 
+          available: true 
         },
         { 
           to: '/avl', 
