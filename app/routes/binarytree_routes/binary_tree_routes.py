@@ -43,7 +43,7 @@ def insert_node():
     Expects: {"value": 42}
     """
     # Maximum tree size to prevent crashes
-    MAX_TREE_SIZE = 20
+    MAX_TREE_SIZE = 7
     
     data = request.json
     if not data:

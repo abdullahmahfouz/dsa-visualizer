@@ -43,7 +43,7 @@ def insert_node():
     Insert a node into the AVL tree with automatic balancing.
     Expects: {"value": 42}
     """
-    MAX_TREE_SIZE = 20
+    MAX_TREE_SIZE = 7
 
     data = request.json
     if not data:

@@ -1,7 +1,7 @@
 import React from 'react';
 import { AlertTriangle, Search, ArrowRight } from 'lucide-react';
 
-export const MAX_TREE_SIZE = 20;
+export const MAX_TREE_SIZE = 7;
 
 // Traversal metadata
 export const traversalDescriptions = {

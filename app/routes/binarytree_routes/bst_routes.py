@@ -42,7 +42,7 @@ def insert_node():
     Insert a node into the BST.
     Expects: {"value": 42}
     """
-    MAX_TREE_SIZE = 20
+    MAX_TREE_SIZE = 7
 
     data = request.json
     if not data:
