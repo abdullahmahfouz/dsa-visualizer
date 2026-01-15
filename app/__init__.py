@@ -31,6 +31,7 @@ from .routes.hashing_routes.hashtable_routes import hashtable_bp
 from .routes.hashing_routes.chaning_routes import hs_bp
 from .routes.hashing_routes.hashtable_quadratic_routes import quadratic_bp
 from .routes.binarytree_routes.binary_tree_routes import binarytree_bp
+from .routes.binarytree_routes.bst_routes import bst_bp
 from .api.gemini_api import api_bp
 
 
@@ -51,5 +52,6 @@ app.register_blueprint(hashtable_bp)   # API routes: /api/hashtable/*
 app.register_blueprint(hs_bp)          # API routes: /api/hashtable_chaining/*
 app.register_blueprint(quadratic_bp)   # API routes: /api/hashtable_quadratic/*
 app.register_blueprint(binarytree_bp)  # API routes: /api/binarytree/*
+app.register_blueprint(bst_bp)         # API routes: /api/bst/*
 app.register_blueprint(api_bp)         # AI API routes: /api/ask-ai
 

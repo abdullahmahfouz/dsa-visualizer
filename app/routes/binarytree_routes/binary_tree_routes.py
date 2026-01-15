@@ -49,40 +49,7 @@ def insert_node():
     if not data:
         return jsonify({"error": "No data provided"}), 400
     
-    value = data.get("value")
-    
-    if value is None or value == "":
-        return jsonify({"error": "No value provided"}), 400
-    
-    # Convert string numbers to actual numbers if applicable
-    if isinstance(value, str):
-        value = value.strip()
-        if value == "":
-            return jsonify({"error": "No value provided"}), 400
-        # Try to convert to number if it's numeric
-        try:
-            if '.' in value:
-                value = float(value)
-            elif value.isdigit() or (value.startswith('-') and value[1:].isdigit()):
-                value = int(value)
-        except ValueError:
-            pass  # Keep as string if conversion fails
-    
-    # Check size limit before inserting
-    if tree.size() >= MAX_TREE_SIZE:
-        return jsonify({"error": f"Tree is full! Maximum size is {MAX_TREE_SIZE} nodes. Please delete some nodes first."}), 400
-    
-    try:
-        tree.insert(value)
-        return jsonify({
-            "message": f"Inserted {value}",
-            "tree": tree.to_dict(),
-            "tree_list": tree.to_list(),
-            "size": tree.size(),
-            "height": tree.height()
-        })
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
+    value = data.ged
 
 
 @binarytree_bp.route("/delete", methods=["POST"])
