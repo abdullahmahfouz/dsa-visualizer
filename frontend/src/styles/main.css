@@ -15,6 +15,7 @@
 
 /* Pages */
 @import './page-styles/homepage.css';
+@import './page-styles/home-advanced.css';
 
 /* Visualizers */
 @import './visualizer-styles/linear/stack.css';
