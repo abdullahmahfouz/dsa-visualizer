@@ -1,0 +1,658 @@
+/* ============================================
+   Graph Visualizer Styles
+   ============================================ */
+
+/* Graph Container */
+.graph-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-color);
+}
+
+.graph-svg {
+  width: 100%;
+  max-width: 450px;
+  height: 300px;
+}
+
+/* Empty State */
+.graph-empty {
+  padding: 3rem 2rem;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border-color);
+}
+
+/* Graph Edges */
+.graph-edge {
+  stroke: var(--border-color);
+  stroke-width: 2;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.graph-edge.highlighted {
+  stroke: #10b981;
+  stroke-width: 3;
+  opacity: 1;
+  animation: edgePulse 0.5s ease-out;
+}
+
+@keyframes edgePulse {
+  0% { stroke-width: 2; }
+  50% { stroke-width: 5; }
+  100% { stroke-width: 3; }
+}
+
+/* Weight label on edges */
+.weight-bg {
+  fill: var(--bg-secondary);
+  stroke: var(--border-color);
+  stroke-width: 1;
+}
+
+.weight-label {
+  fill: var(--text-primary);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+/* Graph Nodes */
+.graph-node .node-circle {
+  fill: var(--bg-secondary);
+  stroke: var(--accent);
+  stroke-width: 3;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.graph-node .node-label {
+  fill: var(--text-primary);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  pointer-events: none;
+}
+
+.graph-node:hover .node-circle {
+  fill: var(--accent);
+}
+
+.graph-node:hover .node-label {
+  fill: white;
+}
+
+/* Node States */
+.graph-node.highlighted-new .node-circle {
+  fill: #10b981;
+  stroke: #059669;
+  stroke-width: 4;
+  animation: nodeAppear 0.5s ease-out;
+}
+
+.graph-node.highlighted-new .node-label {
+  fill: white;
+}
+
+.graph-node.highlighted-edge .node-circle {
+  fill: #f59e0b;
+  stroke: #d97706;
+  stroke-width: 3;
+}
+
+.graph-node.highlighted-edge .node-label {
+  fill: white;
+}
+
+.graph-node.current .node-circle {
+  fill: #f59e0b;
+  stroke: #d97706;
+  stroke-width: 4;
+  animation: pulse 0.8s ease-in-out infinite;
+}
+
+.graph-node.current .node-label {
+  fill: white;
+}
+
+.graph-node.visited .node-circle {
+  fill: #10b981;
+  stroke: #059669;
+  stroke-width: 3;
+}
+
+.graph-node.visited .node-label {
+  fill: white;
+}
+
+.graph-node.queued .node-circle,
+.graph-node.stacked .node-circle {
+  fill: #8b5cf6;
+  stroke: #7c3aed;
+  stroke-width: 3;
+}
+
+.graph-node.queued .node-label,
+.graph-node.stacked .node-label {
+  fill: white;
+}
+
+@keyframes nodeAppear {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
+  }
+  50% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.8));
+  }
+}
+
+/* ============================================
+   Adjacency List Section - Behind the Scenes
+   ============================================ */
+
+.adjacency-list-section {
+  margin-top: 1.5rem;
+  width: 100%;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  border: 1px solid var(--border-color);
+}
+
+.adjacency-list-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.adj-explanation {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.adj-list-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+/* Each row in the adjacency list */
+.adj-row-visual {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  min-width: fit-content;
+}
+
+.adj-row-visual.highlighted {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid #10b981;
+}
+
+/* Vertex box (array index representation) */
+.adj-vertex-box {
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  font-family: var(--font-mono);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Arrow pointer */
+.adj-pointer {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+/* Linked list container */
+.adj-linked-list {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+/* Neighbor node in linked list */
+.adj-neighbor-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+  padding: 0.4rem 0.6rem;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+}
+
+.adj-neighbor-node.highlighted {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10b981;
+  animation: nodeHighlight 0.5s ease-out;
+}
+
+@keyframes nodeHighlight {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.neighbor-vertex {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.neighbor-weight {
+  font-size: 0.7rem;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+/* Link arrow between nodes */
+.adj-link {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+}
+
+/* Null terminator */
+.adj-null {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-muted);
+  padding: 0.4rem 0.6rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-color);
+}
+
+/* Remove button */
+.adj-remove-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.adj-row-visual:hover .adj-remove-btn {
+  opacity: 1;
+}
+
+.adj-remove-btn:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Memory hint */
+.memory-hint {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border-left: 3px solid var(--accent);
+}
+
+.memory-hint strong {
+  color: var(--accent);
+}
+
+/* ============================================
+   Control Panel Styles
+   ============================================ */
+
+.edge-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.edge-arrow {
+  color: var(--text-muted);
+  font-size: 1.2rem;
+}
+
+.vertex-select {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.vertex-select.full-width {
+  width: 100%;
+}
+
+/* Weight input */
+.weight-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.weight-input label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.weight-field {
+  width: 60px;
+  padding: 0.4rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Operation hint */
+.operation-hint {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
+/* Button Styles */
+.btn-add {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.btn-add:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+.btn-remove {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.btn-remove:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.btn-bfs {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.btn-bfs:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.btn-dfs {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.btn-dfs:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+}
+
+.btn-preset {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  padding: 0.4rem 0.8rem;
+}
+
+.btn-preset:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+
+.btn-pause,
+.btn-step {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.5rem;
+}
+
+.btn-pause:hover,
+.btn-step:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.btn-reset {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-reset:hover {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+.preset-group {
+  flex-wrap: wrap;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Info Panel Extensions */
+.queue-display,
+.stack-display {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.queue-items,
+.stack-items {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: #8b5cf6;
+  word-break: break-all;
+}
+
+.traversal-result {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.traversal-result .info-value {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  word-break: break-all;
+}
+
+/* Legend */
+.legend {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+.legend h3 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+
+.legend-color.unvisited {
+  background: var(--bg-secondary);
+  border-color: var(--accent);
+}
+
+.legend-color.queued,
+.legend-color.stacked {
+  background: #8b5cf6;
+  border-color: #7c3aed;
+}
+
+.legend-color.current {
+  background: #f59e0b;
+  border-color: #d97706;
+}
+
+.legend-color.visited {
+  background: #10b981;
+  border-color: #059669;
+}
+
+/* Algorithm Steps */
+.algorithm-steps {
+  margin-top: 1.5rem;
+  width: 100%;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.algorithm-steps h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.steps-content ol {
+  margin: 0;
+  padding-left: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.steps-content li {
+  padding: 0.3rem 0;
+  transition: all 0.3s ease;
+}
+
+.steps-content li.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .graph-container {
+    min-height: 250px;
+  }
+
+  .graph-svg {
+    height: 250px;
+  }
+
+  .edge-inputs {
+    flex-direction: column;
+  }
+
+  .edge-arrow {
+    display: none;
+  }
+
+  .vertex-select {
+    width: 100%;
+  }
+
+  .legend-items {
+    flex-direction: column;
+  }
+
+  .adj-row-visual {
+    flex-wrap: wrap;
+  }
+
+  .adj-linked-list {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}

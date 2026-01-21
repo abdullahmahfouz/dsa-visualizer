@@ -141,36 +141,36 @@ function Algorithms() {
       id: 'Graphs',
       name: 'Graphs',
       icon: GitGraph,
-      description: '',
+      description: 'Graphs model relationships between objects using vertices (nodes) and edges (connections). They power social networks, GPS navigation, recommendation systems, and the internet itself. Understanding graphs unlocks solutions to complex real-world problems like finding shortest paths, detecting communities, and optimizing networks.',
       color: '#ef4444',
       items: [
-        { 
-          to: '/adjacency-matrix', 
-          icon: Database, 
-          title: 'Adjacency Matrix', 
-          description: 'A 2D array used to represent a finite graph. Each cell at (i, j) indicates if there is an edge from vertex i to vertex j. Simple and fast for dense graphs, but uses O(V^2) space. Not practical for large, sparse graphs.', 
-          available: false 
+        {
+          to: '/adjacency-matrix',
+          icon: Database,
+          title: 'Adjacency Matrix',
+          description: 'A 2D array used to represent a finite graph. Each cell at (i, j) indicates if there is an edge from vertex i to vertex j. Simple and fast for dense graphs, but uses O(V^2) space. Not practical for large, sparse graphs.',
+          available: true
         },
-        { 
-          to: '/adjacency-list', 
-          icon: LinkIcon, 
-          title: 'Adjacency List', 
-          description: 'A space-efficient way to represent a graph. Each vertex stores a list of adjacent vertices. Ideal for sparse graphs, supports efficient iteration over neighbors. Commonly used in network routing, social networks, and recommendation systems.', 
-          available: false 
+        {
+          to: '/adjacency-list',
+          icon: LinkIcon,
+          title: 'Adjacency List',
+          description: 'A space-efficient way to represent a graph. Each vertex stores a list of adjacent vertices. Ideal for sparse graphs, supports efficient iteration over neighbors. Commonly used in network routing, social networks, and recommendation systems.',
+          available: true
         },
-        { 
-          to: '/bfs', 
-          icon: ArrowRightLeft, 
-          title: 'Breadth-First Search (BFS)', 
-          description: 'A fundamental graph traversal algorithm that explores neighbors level by level. Used for finding shortest paths in unweighted graphs, peer-to-peer networks, and web crawlers.', 
-          available: false 
+        {
+          to: '/bfs',
+          icon: ArrowRightLeft,
+          title: 'Breadth-First Search (BFS)',
+          description: 'A fundamental graph traversal algorithm that explores neighbors level by level. Used for finding shortest paths in unweighted graphs, peer-to-peer networks, and web crawlers.',
+          available: true
         },
-        { 
-          to: '/dfs', 
-          icon: GitBranch, 
-          title: 'Depth-First Search (DFS)', 
-          description: 'A classic graph traversal technique that explores as far as possible along each branch before backtracking. Used for topological sorting, cycle detection, and solving puzzles like mazes.', 
-          available: false 
+        {
+          to: '/dfs',
+          icon: GitBranch,
+          title: 'Depth-First Search (DFS)',
+          description: 'A classic graph traversal technique that explores as far as possible along each branch before backtracking. Used for topological sorting, cycle detection, and solving puzzles like mazes.',
+          available: true
         },
       ]
     },

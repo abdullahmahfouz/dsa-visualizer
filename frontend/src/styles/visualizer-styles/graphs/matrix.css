@@ -1,0 +1,310 @@
+/* ============================================
+   Adjacency Matrix Visualizer Styles
+   ============================================ */
+
+/* Mini Graph Section */
+.mini-graph-section {
+  margin-bottom: 1.5rem;
+}
+
+.mini-graph-section h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.mini-graph-container {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.mini-graph-svg {
+  width: 100%;
+  max-width: 350px;
+  height: 200px;
+}
+
+.graph-empty-mini {
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.mini-edge {
+  stroke: var(--border-color);
+  stroke-width: 2;
+  opacity: 0.6;
+}
+
+.mini-node circle {
+  fill: var(--bg-secondary);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.mini-node text {
+  fill: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+/* Matrix Section */
+.matrix-section {
+  width: 100%;
+}
+
+.matrix-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.matrix-explanation {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.matrix-explanation code {
+  background: var(--bg-tertiary);
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+}
+
+.matrix-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--border-color);
+}
+
+.matrix-container {
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+/* Adjacency Matrix Table */
+.adjacency-matrix {
+  border-collapse: collapse;
+  margin: 0 auto;
+  font-family: var(--font-mono);
+}
+
+.adjacency-matrix th,
+.adjacency-matrix td {
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.9rem;
+}
+
+/* Matrix corner cell */
+.matrix-corner {
+  background: transparent;
+}
+
+/* Matrix headers */
+.matrix-header {
+  background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
+  color: white;
+  font-weight: 700;
+  position: relative;
+}
+
+.col-header {
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.row-header {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  position: relative;
+}
+
+.remove-vertex-btn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.row-header:hover .remove-vertex-btn {
+  opacity: 1;
+}
+
+.remove-vertex-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Matrix cells */
+.matrix-cell {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.matrix-cell:hover {
+  background: var(--bg-tertiary);
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  position: relative;
+}
+
+/* Cell with edge */
+.matrix-cell.has-edge {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  font-weight: 700;
+}
+
+/* Diagonal cells (self-loops) */
+.matrix-cell.diagonal {
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+}
+
+/* Highlighted cell */
+.matrix-cell.highlighted {
+  animation: cellPulse 0.5s ease-out;
+  box-shadow: 0 0 0 3px #f59e0b, 0 0 15px rgba(245, 158, 11, 0.5);
+  z-index: 2;
+  position: relative;
+}
+
+@keyframes cellPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Lookup Result Box */
+.lookup-result {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.lookup-result.exists {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid #10b981;
+  color: #10b981;
+}
+
+.lookup-result.not-exists {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid #f59e0b;
+  color: #f59e0b;
+}
+
+.lookup-result code {
+  font-family: var(--font-mono);
+  background: var(--bg-tertiary);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  color: var(--text-primary);
+}
+
+.lookup-result strong {
+  color: var(--text-primary);
+}
+
+/* Comparison Hint */
+.comparison-hint {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  font-size: 0.85rem;
+}
+
+.comparison-hint strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.comparison-hint ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--text-muted);
+}
+
+.comparison-hint li {
+  margin-bottom: 0.25rem;
+}
+
+.comparison-hint .pro {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.comparison-hint .con {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Check button */
+.btn-check {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.btn-check:hover {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .adjacency-matrix th,
+  .adjacency-matrix td {
+    width: 38px;
+    height: 38px;
+    font-size: 0.8rem;
+  }
+
+  .mini-graph-container {
+    min-height: 150px;
+  }
+
+  .mini-graph-svg {
+    height: 150px;
+  }
+}

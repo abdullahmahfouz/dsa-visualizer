@@ -29,6 +29,12 @@ import SplayVisualizer from './visualizers/binarytrees/Splay/SplayVisualizer';
 import MinHeapVisualizer from './visualizers/heaps/MinHeapVisualizer';
 import MaxHeapVisualizer from './visualizers/heaps/MaxHeapVisualizer';
 
+// Visualizers - Graphs
+import GraphVisualizer from './visualizers/graphs/GraphVisualizer';
+import AdjacencyMatrixVisualizer from './visualizers/graphs/AdjacencyMatrixVisualizer';
+import BFSVisualizer from './visualizers/graphs/BFSVisualizer';
+import DFSVisualizer from './visualizers/graphs/DFSVisualizer';
+
 function App() {
   return (
     <div className="homepage-body">
@@ -51,6 +57,10 @@ function App() {
           <Route path="/splay" element={<SplayVisualizer />} />
           <Route path="/minheap" element={<MinHeapVisualizer />} />
           <Route path="/maxheap" element={<MaxHeapVisualizer />} />
+          <Route path="/adjacency-list" element={<GraphVisualizer />} />
+          <Route path="/adjacency-matrix" element={<AdjacencyMatrixVisualizer />} />
+          <Route path="/bfs" element={<BFSVisualizer />} />
+          <Route path="/dfs" element={<DFSVisualizer />} />
         </Routes>
         <Footer />
       </main>

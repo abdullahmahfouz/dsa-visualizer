@@ -12,3 +12,15 @@ export async function postJson(url, body) {
   return await res.json();
 }
 
+export async function deleteJson(url, body = null) {
+  const options = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' }
+  };
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+  const res = await fetch(url, options);
+  return await res.json();
+}
+
