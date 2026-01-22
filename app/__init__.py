@@ -37,6 +37,7 @@ from .routes.binarytree_routes.splay_routes import splay_bp
 from .routes.heap_routes.minheap_routes import minheap_bp
 from .routes.heap_routes.maxheap_routes import maxheap_bp
 from .routes.graph_routes.graph_routes import graph_bp
+from .routes.practice_routes.practice_routes import practice_bp
 from .api.gemini_api import api_bp
 
 
@@ -49,7 +50,7 @@ def favicon():
     return send_from_directory(app.static_folder, 'favicon.svg')
 
 # Register blueprints - this connects all the routes to the app
-app.register_blueprint(pages_bp)       # Page routes: /, /stack, /queue, /linkedlist
+# NOTE: API blueprints must be registered BEFORE pages_bp (which has a catch-all route)
 app.register_blueprint(stack_bp)       # API routes: /api/stack/*
 app.register_blueprint(queue_bp)       # API routes: /api/queue/*
 app.register_blueprint(linkedlist_bp)  # API routes: /api/linkedlist/*
@@ -63,5 +64,7 @@ app.register_blueprint(splay_bp)       # API routes: /api/splay/*
 app.register_blueprint(minheap_bp)     # API routes: /api/minheap/*
 app.register_blueprint(maxheap_bp)     # API routes: /api/maxheap/*
 app.register_blueprint(graph_bp)       # API routes: /api/graph/*
+app.register_blueprint(practice_bp)    # API routes: /api/practice/*
 app.register_blueprint(api_bp)         # AI API routes: /api/ask-ai
+app.register_blueprint(pages_bp)       # Page routes (catch-all) - MUST BE LAST
 

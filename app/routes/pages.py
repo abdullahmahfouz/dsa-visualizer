@@ -28,16 +28,22 @@ def index():
 @pages_bp.route("/<path:path>")
 def serve_react_app(path):
     """Serve React app for all routes (React Router handles routing)."""
+    # Don't intercept API routes - they're handled by other blueprints
+    if path.startswith('api/'):
+        # Return 404 to let Flask know this route doesn't handle api paths
+        from flask import abort
+        abort(404)
+
     # Check if it's a static file request (assets, images, etc.)
     if path.startswith('assets/') or path.endswith(('.js', '.css', '.json', '.png', '.jpg', '.svg', '.ico', '.woff', '.woff2', '.ttf')):
         file_path = os.path.join(REACT_BUILD_DIR, path)
         if os.path.exists(file_path):
             return send_from_directory(REACT_BUILD_DIR, path)
-    
+
     # For all other routes, serve index.html (React Router will handle routing)
     index_path = os.path.join(REACT_BUILD_DIR, 'index.html')
     if os.path.exists(index_path):
         return send_file(index_path)
-    
+
     return "React build not found. Please run 'npm run build' in the frontend directory.", 404
 

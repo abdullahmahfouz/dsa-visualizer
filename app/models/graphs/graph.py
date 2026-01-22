@@ -439,6 +439,259 @@ class Graph:
             'steps': steps
         }
 
+    def bellman_ford(self, start):
+        """
+        Bellman-Ford Algorithm - Find shortest paths from start vertex.
+        Can handle negative edge weights (unlike Dijkstra).
+        Time Complexity: O(V * E)
+
+        Args:
+            start: The starting vertex
+
+        Returns:
+            Dict with distances, previous, paths, steps, and has_negative_cycle
+        """
+        start = str(start)
+        if start not in self._adjacency_list:
+            raise ValueError(f"Vertex '{start}' does not exist")
+
+        vertices = list(self._adjacency_list.keys())
+
+        # Initialize distances
+        distances = {v: float('infinity') for v in vertices}
+        distances[start] = 0
+        previous = {v: None for v in vertices}
+        steps = []
+
+        steps.append({
+            'action': 'init',
+            'current': start,
+            'distances': {k: v if v != float('infinity') else 'inf' for k, v in distances.items()},
+            'iteration': 0,
+            'message': f'Initialize: Set distance to {start} = 0, all others = infinity'
+        })
+
+        # Get all edges
+        all_edges = []
+        for v1 in self._adjacency_list:
+            for v2, weight in self._adjacency_list[v1]:
+                if self._directed:
+                    all_edges.append((v1, v2, weight))
+                else:
+                    # For undirected, only add each edge once
+                    edge = tuple(sorted([v1, v2]))
+                    if (edge[0], edge[1], weight) not in all_edges and (edge[1], edge[0], weight) not in all_edges:
+                        all_edges.append((v1, v2, weight))
+                        all_edges.append((v2, v1, weight))
+
+        # Relax all edges V-1 times
+        for i in range(len(vertices) - 1):
+            updated = False
+
+            steps.append({
+                'action': 'iteration_start',
+                'iteration': i + 1,
+                'distances': {k: v if v != float('infinity') else 'inf' for k, v in distances.items()},
+                'message': f'Iteration {i + 1}: Relaxing all edges'
+            })
+
+            for v1, v2, weight in all_edges:
+                if distances[v1] == float('infinity'):
+                    continue
+
+                new_dist = distances[v1] + weight
+
+                steps.append({
+                    'action': 'check',
+                    'from': v1,
+                    'to': v2,
+                    'edge_weight': weight,
+                    'current_dist': distances[v2] if distances[v2] != float('infinity') else 'inf',
+                    'new_dist': new_dist,
+                    'distances': {k: v if v != float('infinity') else 'inf' for k, v in distances.items()},
+                    'iteration': i + 1,
+                    'message': f'Check edge {v1}→{v2}: {distances[v1]} + {weight} = {new_dist}'
+                })
+
+                if new_dist < distances[v2]:
+                    distances[v2] = new_dist
+                    previous[v2] = v1
+                    updated = True
+
+                    steps.append({
+                        'action': 'update',
+                        'from': v1,
+                        'to': v2,
+                        'new_dist': new_dist,
+                        'distances': {k: v if v != float('infinity') else 'inf' for k, v in distances.items()},
+                        'iteration': i + 1,
+                        'message': f'Update: distance[{v2}] = {new_dist} (via {v1})'
+                    })
+
+            # Early termination if no updates
+            if not updated:
+                steps.append({
+                    'action': 'early_stop',
+                    'iteration': i + 1,
+                    'distances': {k: v if v != float('infinity') else 'inf' for k, v in distances.items()},
+                    'message': f'No updates in iteration {i + 1} - algorithm converged early'
+                })
+                break
+
+        # Check for negative cycles
+        has_negative_cycle = False
+        for v1, v2, weight in all_edges:
+            if distances[v1] != float('infinity') and distances[v1] + weight < distances[v2]:
+                has_negative_cycle = True
+                steps.append({
+                    'action': 'negative_cycle',
+                    'from': v1,
+                    'to': v2,
+                    'message': f'Negative cycle detected via edge {v1}→{v2}'
+                })
+                break
+
+        if not has_negative_cycle:
+            steps.append({
+                'action': 'complete',
+                'distances': {k: v if v != float('infinity') else 'inf' for k, v in distances.items()},
+                'message': 'Algorithm complete - no negative cycles'
+            })
+
+        # Build paths
+        paths = {}
+        if not has_negative_cycle:
+            for vertex in vertices:
+                if distances[vertex] != float('infinity'):
+                    path = []
+                    current = vertex
+                    while current is not None:
+                        path.append(current)
+                        current = previous[current]
+                    paths[vertex] = list(reversed(path))
+
+        return {
+            'distances': {k: v if v != float('infinity') else None for k, v in distances.items()},
+            'previous': previous,
+            'paths': paths,
+            'steps': steps,
+            'has_negative_cycle': has_negative_cycle
+        }
+
+    def kruskal_mst(self):
+        """
+        Kruskal's Algorithm - Find Minimum Spanning Tree using Union-Find.
+        Time Complexity: O(E log E) for sorting edges
+
+        Returns:
+            Dict with mst_edges, total_weight, and steps
+        """
+        if not self._adjacency_list:
+            raise ValueError("Graph is empty")
+
+        vertices = list(self._adjacency_list.keys())
+
+        # Union-Find data structure
+        parent = {v: v for v in vertices}
+        rank = {v: 0 for v in vertices}
+
+        def find(v):
+            if parent[v] != v:
+                parent[v] = find(parent[v])  # Path compression
+            return parent[v]
+
+        def union(v1, v2):
+            root1, root2 = find(v1), find(v2)
+            if root1 == root2:
+                return False
+            # Union by rank
+            if rank[root1] < rank[root2]:
+                parent[root1] = root2
+            elif rank[root1] > rank[root2]:
+                parent[root2] = root1
+            else:
+                parent[root2] = root1
+                rank[root1] += 1
+            return True
+
+        # Get all edges and sort by weight
+        edges = []
+        seen = set()
+        for v1 in self._adjacency_list:
+            for v2, weight in self._adjacency_list[v1]:
+                edge_key = tuple(sorted([v1, v2]))
+                if edge_key not in seen:
+                    seen.add(edge_key)
+                    edges.append((weight, v1, v2))
+
+        edges.sort()  # Sort by weight
+
+        mst_edges = []
+        total_weight = 0
+        steps = []
+
+        steps.append({
+            'action': 'init',
+            'edges_sorted': [(v1, v2, w) for w, v1, v2 in edges],
+            'mst_edges': [],
+            'total_weight': 0,
+            'message': f'Sort all {len(edges)} edges by weight'
+        })
+
+        for weight, v1, v2 in edges:
+            steps.append({
+                'action': 'consider',
+                'from': v1,
+                'to': v2,
+                'weight': weight,
+                'mst_edges': list(mst_edges),
+                'total_weight': total_weight,
+                'message': f'Consider edge {v1}—{v2} (weight: {weight})'
+            })
+
+            if find(v1) != find(v2):
+                # No cycle - add edge to MST
+                union(v1, v2)
+                mst_edges.append((v1, v2, weight))
+                total_weight += weight
+
+                steps.append({
+                    'action': 'add',
+                    'from': v1,
+                    'to': v2,
+                    'weight': weight,
+                    'mst_edges': list(mst_edges),
+                    'total_weight': total_weight,
+                    'message': f'Add edge {v1}—{v2} to MST (no cycle formed)'
+                })
+            else:
+                steps.append({
+                    'action': 'reject',
+                    'from': v1,
+                    'to': v2,
+                    'weight': weight,
+                    'mst_edges': list(mst_edges),
+                    'total_weight': total_weight,
+                    'message': f'Reject edge {v1}—{v2} (would create cycle)'
+                })
+
+            # Check if MST is complete
+            if len(mst_edges) == len(vertices) - 1:
+                break
+
+        steps.append({
+            'action': 'complete',
+            'mst_edges': list(mst_edges),
+            'total_weight': total_weight,
+            'message': f'MST complete with {len(mst_edges)} edges, total weight: {total_weight}'
+        })
+
+        return {
+            'mst_edges': mst_edges,
+            'total_weight': total_weight,
+            'steps': steps
+        }
+
     def topological_sort(self):
         """
         Topological Sort using Kahn's Algorithm (BFS-based).

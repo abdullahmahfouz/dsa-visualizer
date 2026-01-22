@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
@@ -34,6 +33,14 @@ import GraphVisualizer from './visualizers/graphs/GraphVisualizer';
 import AdjacencyMatrixVisualizer from './visualizers/graphs/AdjacencyMatrixVisualizer';
 import BFSVisualizer from './visualizers/graphs/BFSVisualizer';
 import DFSVisualizer from './visualizers/graphs/DFSVisualizer';
+import DijkstraVisualizer from './visualizers/graphs/DijkstraVisualizer';
+import MSTVisualizer from './visualizers/graphs/MSTVisualizer';
+import TopologicalSortVisualizer from './visualizers/graphs/TopologicalSortVisualizer';
+import BellmanFordVisualizer from './visualizers/graphs/BellmanFordVisualizer';
+import KruskalVisualizer from './visualizers/graphs/KruskalVisualizer';
+
+// Practice
+import PracticePage from './practice/PracticePage';
 
 function App() {
   return (
@@ -61,6 +68,13 @@ function App() {
           <Route path="/adjacency-matrix" element={<AdjacencyMatrixVisualizer />} />
           <Route path="/bfs" element={<BFSVisualizer />} />
           <Route path="/dfs" element={<DFSVisualizer />} />
+          <Route path="/dijkstra" element={<DijkstraVisualizer />} />
+          <Route path="/bellman-ford" element={<BellmanFordVisualizer />} />
+          <Route path="/prim-mst" element={<MSTVisualizer />} />
+          <Route path="/kruskal-mst" element={<KruskalVisualizer />} />
+          <Route path="/topological-sort" element={<TopologicalSortVisualizer />} />
+          <Route path="/practice" element={<PracticePage />} />
+          <Route path="/practice/:problemId" element={<PracticePage />} />
         </Routes>
         <Footer />
       </main>

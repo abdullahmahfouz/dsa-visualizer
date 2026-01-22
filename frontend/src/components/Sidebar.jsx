@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  Menu, X, Home, Code2, Layers, ArrowRightLeft, Link as LinkIcon, 
-  Hash, GitBranch, Mail, HeartHandshake, BrainCircuit, Github, Linkedin 
+import {
+  Menu, X, Home, Code2, Layers, ArrowRightLeft, Link as LinkIcon,
+  Hash, GitBranch, Mail, HeartHandshake, BrainCircuit, Github, Linkedin,
+  Trophy
 } from 'lucide-react';
 
 function Sidebar() {
@@ -76,6 +77,7 @@ function Sidebar() {
             <div className="nav-section-title">Explore</div>
             <NavItem to="/" icon={Home} pageName="home">Home</NavItem>
             <NavItem to="/algorithms" icon={Code2} pageName="algorithms">Algorithms</NavItem>
+            <NavItem to="/practice" icon={Trophy} pageName="practice">Practice</NavItem>
           </div>
           
          

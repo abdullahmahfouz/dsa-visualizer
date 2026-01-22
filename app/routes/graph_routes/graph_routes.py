@@ -246,6 +246,39 @@ def topological_sort():
         return jsonify({"error": str(e)}), 400
 
 
+@graph_bp.route("/bellman-ford/<start>", methods=["GET"])
+def bellman_ford_algorithm(start):
+    """
+    GET /api/graph/bellman-ford/<start>
+    Run Bellman-Ford algorithm from the given vertex.
+    Can handle negative edge weights (unlike Dijkstra).
+    """
+    try:
+        result = graph.bellman_ford(start)
+        return jsonify({
+            **result,
+            **graph.to_dict()
+        })
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+
+@graph_bp.route("/kruskal", methods=["GET"])
+def kruskal_mst():
+    """
+    GET /api/graph/kruskal
+    Run Kruskal's MST algorithm using Union-Find.
+    """
+    try:
+        result = graph.kruskal_mst()
+        return jsonify({
+            **result,
+            **graph.to_dict()
+        })
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+
+
 @graph_bp.route("/preset/<name>", methods=["POST"])
 def load_preset(name):
     """
