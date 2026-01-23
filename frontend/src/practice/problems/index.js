@@ -116,13 +116,7 @@ You can return the answer in any order.`,
     pass
 
 # Test
-print(solution([2,7,11,15], 9))`,
-      javascript: `function solution(nums, target) {
-    // Use a hash map for O(n) time complexity
-
-}
-
-console.log(solution([2,7,11,15], 9));`
+print(solution([2,7,11,15], 9))`
     },
     hints: [
       'A brute force approach is O(n²). Can you do better with a hash map?',

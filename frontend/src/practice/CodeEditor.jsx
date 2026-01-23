@@ -8,59 +8,6 @@ const LANGUAGE_CONFIG = {
     pass
 `,
   },
-  javascript: {
-    monacoLang: 'javascript',
-    defaultCode: `function solution(nums) {
-    // Write your solution here
-
-}
-`,
-  },
-  cpp: {
-    monacoLang: 'cpp',
-    defaultCode: `#include <iostream>
-#include <vector>
-using namespace std;
-
-class Solution {
-public:
-    vector<int> solution(vector<int>& nums) {
-        // Write your solution here
-
-    }
-};
-`,
-  },
-  java: {
-    monacoLang: 'java',
-    defaultCode: `class Solution {
-    public int[] solution(int[] nums) {
-        // Write your solution here
-
-    }
-}
-`,
-  },
-  go: {
-    monacoLang: 'go',
-    defaultCode: `package main
-
-func solution(nums []int) []int {
-    // Write your solution here
-
-}
-`,
-  },
-  rust: {
-    monacoLang: 'rust',
-    defaultCode: `impl Solution {
-    pub fn solution(nums: Vec<i32>) -> Vec<i32> {
-        // Write your solution here
-
-    }
-}
-`,
-  },
 };
 
 function CodeEditor({ language, code, onChange, theme = 'vs-dark' }) {

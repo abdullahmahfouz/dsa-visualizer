@@ -540,13 +540,7 @@ function PracticePage() {
           <div className="editor-header">
             <div className="language-selector">
               <Code size={16} />
-              <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-                {Object.keys(LANGUAGE_CONFIG).map(lang => (
-                  <option key={lang} value={lang}>
-                    {lang.charAt(0).toUpperCase() + lang.slice(1)}
-                  </option>
-                ))}
-              </select>
+              <span className="language-label">Python</span>
             </div>
             <div className="editor-actions">
               <button
