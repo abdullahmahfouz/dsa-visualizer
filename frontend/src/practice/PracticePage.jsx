@@ -20,7 +20,12 @@ import {
   GitBranch,
   Network,
   Puzzle,
-  ArrowUpDown
+  ArrowUpDown,
+  BookOpen,
+  Clock,
+  Database,
+  Copy,
+  Check
 } from 'lucide-react';
 
 // Icon mapping for roadmap sections
@@ -60,6 +65,8 @@ function PracticePage() {
   });
   const [expandedSection, setExpandedSection] = useState(null);
   const [viewMode, setViewMode] = useState('map'); // 'map' or 'list'
+  const [selectedSolution, setSelectedSolution] = useState(null);
+  const [copiedSolution, setCopiedSolution] = useState(null);
 
   // Save completed problems to localStorage
   useEffect(() => {
@@ -471,6 +478,13 @@ function PracticePage() {
             >
               Hints
             </button>
+            <button
+              className={activeTab === 'solutions' ? 'active' : ''}
+              onClick={() => setActiveTab('solutions')}
+            >
+              <BookOpen size={14} />
+              Solutions
+            </button>
           </div>
 
           <div className="problem-content">
@@ -530,6 +544,97 @@ function PracticePage() {
                 {currentHint >= currentProblem.hints.length && (
                   <div className="all-hints-shown">All hints revealed!</div>
                 )}
+              </div>
+            )}
+
+            {activeTab === 'solutions' && currentProblem.solutions && (
+              <div className="solutions-section">
+                <div className="solutions-header">
+                  <BookOpen size={20} />
+                  <span>Multiple approaches with different time/space complexities</span>
+                </div>
+                <div className="solutions-list">
+                  {Object.entries(currentProblem.solutions).map(([key, solution]) => {
+                    const isExpanded = selectedSolution === key;
+                    const isCopied = copiedSolution === key;
+
+                    return (
+                      <div
+                        key={key}
+                        className={`solution-card ${isExpanded ? 'expanded' : ''}`}
+                      >
+                        <div
+                          className="solution-card-header"
+                          onClick={() => setSelectedSolution(isExpanded ? null : key)}
+                        >
+                          <div className="solution-info">
+                            <h4 className="solution-name">{solution.name}</h4>
+                            <div className="solution-complexity">
+                              <span className="complexity-badge time">
+                                <Clock size={12} />
+                                {solution.timeComplexity}
+                              </span>
+                              <span className="complexity-badge space">
+                                <Database size={12} />
+                                {solution.spaceComplexity}
+                              </span>
+                            </div>
+                          </div>
+                          <ChevronRight
+                            size={18}
+                            className={`solution-expand-icon ${isExpanded ? 'rotated' : ''}`}
+                          />
+                        </div>
+
+                        {isExpanded && (
+                          <div className="solution-card-body">
+                            <p className="solution-description">{solution.description}</p>
+                            <div className="solution-code-container">
+                              <div className="solution-code-header">
+                                <span>Python</span>
+                                <button
+                                  className="copy-solution-btn"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigator.clipboard.writeText(solution.code);
+                                    setCopiedSolution(key);
+                                    setTimeout(() => setCopiedSolution(null), 2000);
+                                  }}
+                                >
+                                  {isCopied ? (
+                                    <>
+                                      <Check size={14} />
+                                      Copied!
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Copy size={14} />
+                                      Copy
+                                    </>
+                                  )}
+                                </button>
+                              </div>
+                              <pre className="solution-code">
+                                <code>{solution.code}</code>
+                              </pre>
+                            </div>
+                            <button
+                              className="use-solution-btn"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setCode(solution.code);
+                                setActiveTab('description');
+                              }}
+                            >
+                              <Code size={14} />
+                              Use This Solution
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
