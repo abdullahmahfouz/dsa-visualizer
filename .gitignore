@@ -76,3 +76,9 @@ yarn-error.log*
 # Build output
 dist/
 dist-ssr/
+
+claude/
+.codex/
+.cursor/
+.gemini/
+.agents/

@@ -10,9 +10,31 @@ import {
   Code,
   List,
   Map,
-  Lock,
-  Unlock
+  LayoutGrid,
+  X,
+  Grid3X3,
+  MousePointer2,
+  Layers,
+  Search,
+  Link,
+  GitBranch,
+  Network,
+  Puzzle,
+  ArrowUpDown
 } from 'lucide-react';
+
+// Icon mapping for roadmap sections
+const sectionIcons = {
+  grid: Grid3X3,
+  pointer: MousePointer2,
+  layers: Layers,
+  search: Search,
+  link: Link,
+  tree: GitBranch,
+  network: Network,
+  puzzle: Puzzle,
+  sort: ArrowUpDown
+};
 import CodeEditor, { LANGUAGE_CONFIG } from './CodeEditor';
 import { problems, problemList, roadmap } from './problems';
 import './practice.css';
@@ -36,6 +58,8 @@ function PracticePage() {
     const saved = localStorage.getItem('completedProblems');
     return saved ? JSON.parse(saved) : [];
   });
+  const [expandedSection, setExpandedSection] = useState(null);
+  const [viewMode, setViewMode] = useState('map'); // 'map' or 'list'
 
   // Save completed problems to localStorage
   useEffect(() => {
@@ -175,88 +199,232 @@ function PracticePage() {
                 <p>Master data structures and algorithms step by step</p>
               </div>
             </div>
-            <div className="progress-stats">
-              <div className="progress-circle">
-                <svg viewBox="0 0 36 36">
-                  <path
-                    className="progress-bg"
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                  <path
-                    className="progress-fill"
-                    strokeDasharray={`${progressPercent}, 100`}
-                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                  />
-                </svg>
-                <span className="progress-text">{progressPercent}%</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div className="view-toggle">
+                <button
+                  className={`view-toggle-btn ${viewMode === 'map' ? 'active' : ''}`}
+                  onClick={() => setViewMode('map')}
+                >
+                  <LayoutGrid size={16} />
+                  Map
+                </button>
+                <button
+                  className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+                  onClick={() => setViewMode('list')}
+                >
+                  <List size={16} />
+                  List
+                </button>
               </div>
-              <div className="progress-info">
-                <span className="completed-count">{completedCount}/{totalProblems}</span>
-                <span className="completed-label">Problems Solved</span>
+              <div className="progress-stats">
+                <div className="progress-circle">
+                  <svg viewBox="0 0 36 36">
+                    <path
+                      className="progress-bg"
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                    <path
+                      className="progress-fill"
+                      strokeDasharray={`${progressPercent}, 100`}
+                      d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                    />
+                  </svg>
+                  <span className="progress-text">{progressPercent}%</span>
+                </div>
+                <div className="progress-info">
+                  <span className="completed-count">{completedCount}/{totalProblems}</span>
+                  <span className="completed-label">Problems Solved</span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="roadmap-container">
-            {roadmap.map((section, sectionIndex) => {
-              const sectionProblems = section.problems.map(id => problems[id]).filter(Boolean);
-              const completedInSection = sectionProblems.filter(p => completedProblems.includes(p.id)).length;
+          {/* NeetCode-Style Visual Map View */}
+          {viewMode === 'map' && (
+            <>
+              <div className="roadmap-visual-map">
+                {roadmap.map((section) => {
+                  const sectionProblems = section.problems.map(id => problems[id]).filter(Boolean);
+                  const completedInSection = sectionProblems.filter(p => completedProblems.includes(p.id)).length;
+                  const sectionProgress = Math.round((completedInSection / sectionProblems.length) * 100);
+                  const isExpanded = expandedSection === section.id;
 
-              return (
-                <div key={section.id} className="roadmap-section">
-                  {/* Connector line */}
-                  {sectionIndex > 0 && <div className="roadmap-connector" />}
+                  return (
+                    <div
+                      key={section.id}
+                      className={`map-node ${isExpanded ? 'active' : ''}`}
+                      style={{ '--node-color': section.color }}
+                      onClick={() => setExpandedSection(isExpanded ? null : section.id)}
+                    >
+                      {completedInSection === sectionProblems.length ? (
+                        <div className="map-node-badge completed">
+                          <CheckCircle size={14} />
+                        </div>
+                      ) : completedInSection > 0 ? (
+                        <div className="map-node-badge in-progress">
+                          {completedInSection}
+                        </div>
+                      ) : null}
 
-                  <div
-                    className="section-card"
-                    style={{ '--section-color': section.color }}
-                  >
-                    <div className="section-header">
-                      <span className="section-icon">{section.icon}</span>
-                      <div className="section-info">
-                        <h2>{section.title}</h2>
-                        <p>{section.description}</p>
+                      <div className="map-node-header">
+                        <span className="map-node-icon">
+                          {(() => {
+                            const IconComponent = sectionIcons[section.icon];
+                            return IconComponent ? <IconComponent size={20} /> : null;
+                          })()}
+                        </span>
+                        <span className="map-node-title">{section.title}</span>
                       </div>
-                      <div className="section-progress">
-                        <span>{completedInSection}/{sectionProblems.length}</span>
+                      <p className="map-node-description">{section.description}</p>
+                      <div className="map-node-progress">
+                        <div className="map-node-progress-bar">
+                          <div
+                            className="map-node-progress-fill"
+                            style={{ width: `${sectionProgress}%` }}
+                          />
+                        </div>
+                        <span className="map-node-progress-text">
+                          {completedInSection}/{sectionProblems.length}
+                        </span>
                       </div>
                     </div>
+                  );
+                })}
+              </div>
 
-                    <div className="section-problems">
-                      {sectionProblems.map((problem, problemIndex) => {
-                        const isCompleted = completedProblems.includes(problem.id);
-                        return (
-                          <div
-                            key={problem.id}
-                            className={`problem-node ${isCompleted ? 'completed' : ''}`}
-                            onClick={() => navigate(`/practice/${problem.id}`)}
-                          >
-                            {/* Node connector */}
-                            {problemIndex > 0 && <div className="node-connector" />}
-
-                            <div className="node-circle">
-                              {isCompleted ? (
-                                <CheckCircle size={16} />
-                              ) : (
-                                <span className="node-number">{problemIndex + 1}</span>
-                              )}
-                            </div>
-                            <div className="node-info">
-                              <span className="node-title">{problem.title}</span>
-                              <span className={`node-difficulty ${problem.difficulty.toLowerCase()}`}>
-                                {problem.difficulty}
-                              </span>
-                            </div>
-                            <ChevronRight size={16} className="node-arrow" />
+              {/* Expanded Section Problems */}
+              {expandedSection && (
+                <div className="expanded-section">
+                  {(() => {
+                    const section = roadmap.find(s => s.id === expandedSection);
+                    const sectionProblems = section.problems.map(id => problems[id]).filter(Boolean);
+                    return (
+                      <>
+                        <div className="expanded-section-header">
+                          <div className="expanded-section-title">
+                            <span className="section-icon-wrapper">
+                              {(() => {
+                                const IconComponent = sectionIcons[section.icon];
+                                return IconComponent ? <IconComponent size={24} /> : null;
+                              })()}
+                            </span>
+                            <h3>{section.title}</h3>
                           </div>
-                        );
-                      })}
+                          <button
+                            className="close-section-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setExpandedSection(null);
+                            }}
+                          >
+                            <X size={16} />
+                          </button>
+                        </div>
+                        <div className="problem-grid">
+                          {sectionProblems.map((problem) => {
+                            const isCompleted = completedProblems.includes(problem.id);
+                            return (
+                              <div
+                                key={problem.id}
+                                className={`problem-item ${isCompleted ? 'completed' : ''}`}
+                                onClick={() => navigate(`/practice/${problem.id}`)}
+                              >
+                                <div className={`problem-status-icon ${isCompleted ? 'done' : 'pending'}`}>
+                                  {isCompleted ? (
+                                    <CheckCircle size={16} />
+                                  ) : (
+                                    <Code size={16} />
+                                  )}
+                                </div>
+                                <div className="problem-item-info">
+                                  <div className="problem-item-title">{problem.title}</div>
+                                  <div className="problem-item-meta">
+                                    <span className={`problem-item-difficulty ${problem.difficulty.toLowerCase()}`}>
+                                      {problem.difficulty}
+                                    </span>
+                                  </div>
+                                </div>
+                                <ChevronRight size={16} className="problem-item-arrow" />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </>
+                    );
+                  })()}
+                </div>
+              )}
+            </>
+          )}
+
+          {/* List View (original) */}
+          {viewMode === 'list' && (
+            <div className="roadmap-container">
+              {roadmap.map((section, sectionIndex) => {
+                const sectionProblems = section.problems.map(id => problems[id]).filter(Boolean);
+                const completedInSection = sectionProblems.filter(p => completedProblems.includes(p.id)).length;
+
+                return (
+                  <div key={section.id} className="roadmap-section">
+                    {/* Connector line */}
+                    {sectionIndex > 0 && <div className="roadmap-connector" />}
+
+                    <div
+                      className="section-card"
+                      style={{ '--section-color': section.color }}
+                    >
+                      <div className="section-header">
+                        <span className="section-icon">
+                          {(() => {
+                            const IconComponent = sectionIcons[section.icon];
+                            return IconComponent ? <IconComponent size={24} /> : null;
+                          })()}
+                        </span>
+                        <div className="section-info">
+                          <h2>{section.title}</h2>
+                          <p>{section.description}</p>
+                        </div>
+                        <div className="section-progress">
+                          <span>{completedInSection}/{sectionProblems.length}</span>
+                        </div>
+                      </div>
+
+                      <div className="section-problems">
+                        {sectionProblems.map((problem, problemIndex) => {
+                          const isCompleted = completedProblems.includes(problem.id);
+                          return (
+                            <div
+                              key={problem.id}
+                              className={`problem-node ${isCompleted ? 'completed' : ''}`}
+                              onClick={() => navigate(`/practice/${problem.id}`)}
+                            >
+                              {/* Node connector */}
+                              {problemIndex > 0 && <div className="node-connector" />}
+
+                              <div className="node-circle">
+                                {isCompleted ? (
+                                  <CheckCircle size={16} />
+                                ) : (
+                                  <span className="node-number">{problemIndex + 1}</span>
+                                )}
+                              </div>
+                              <div className="node-info">
+                                <span className="node-title">{problem.title}</span>
+                                <span className={`node-difficulty ${problem.difficulty.toLowerCase()}`}>
+                                  {problem.difficulty}
+                                </span>
+                              </div>
+                              <ChevronRight size={16} className="node-arrow" />
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     );

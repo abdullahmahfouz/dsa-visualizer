@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  ArrowRight, Play, Eye, Brain, Layers, GitBranch, Database, Binary, Hash, TreePine,
-  Sparkles, Zap, Code2, Terminal, ChevronRight, Box
+  ArrowRight, Play, Eye, Brain, Layers, GitBranch, Database, Hash, TreePine,
+  Zap, Code2, Terminal, ChevronRight, Box, Trophy, Target, BookOpen,
+  CheckCircle, Network, Cpu, BarChart3, GraduationCap
 } from 'lucide-react';
 
 function Home() {
@@ -39,32 +40,32 @@ function Home() {
         <div className="hero-content-advanced">
           {/* Badge */}
           <div className="hero-badge-advanced">
-            <Sparkles className="badge-icon" />
-            <span>Free & Open Source Learning Platform</span>
+            <GraduationCap className="badge-icon" />
+            <span>Interactive Learning Platform</span>
           </div>
 
           {/* Main Title */}
           <h1 className="hero-title-advanced">
-            <span className="title-line">Master</span>
+            <span className="title-line">Learn</span>
             <span className="title-line gradient-text-animated">Data Structures</span>
             <span className="title-line">& <span className="gradient-text-animated">Algorithms</span></span>
           </h1>
 
           {/* Description */}
           <p className="hero-description-advanced">
-            Interactive visualizations that transform complex DSA concepts into
-            intuitive, step-by-step learning experiences. Built for students, by students.
+            The complete DSA learning platform. Visualize data structures in real-time,
+            practice coding problems, and master algorithms with step-by-step animations.
           </p>
 
           {/* CTA Buttons */}
           <div className="hero-cta-group">
             <Link to="/algorithms" className="btn-glow-primary">
-              <span>Start Learning</span>
-              <ArrowRight className="btn-icon" />
+              <Eye className="btn-icon-left" />
+              <span>Explore Visualizers</span>
             </Link>
-            <Link to="/stack" className="btn-glass">
-              <Play className="btn-icon-left" />
-              <span>Try Stack Visualizer</span>
+            <Link to="/practice" className="btn-glass">
+              <Trophy className="btn-icon-left" />
+              <span>Practice Problems</span>
             </Link>
           </div>
 
@@ -72,17 +73,17 @@ function Home() {
           <div className="hero-stats">
             <div className="stat-item">
               <span className="stat-number">12+</span>
-              <span className="stat-label">Data Structures</span>
+              <span className="stat-label">Visualizers</span>
             </div>
             <div className="stat-divider"></div>
             <div className="stat-item">
-              <span className="stat-number">100%</span>
-              <span className="stat-label">Free Forever</span>
+              <span className="stat-number">22+</span>
+              <span className="stat-label">Practice Problems</span>
             </div>
             <div className="stat-divider"></div>
             <div className="stat-item">
-              <span className="stat-number">AI</span>
-              <span className="stat-label">Powered Assistant</span>
+              <span className="stat-number">9</span>
+              <span className="stat-label">Topic Categories</span>
             </div>
           </div>
         </div>
@@ -125,7 +126,7 @@ function Home() {
             <Code2 />
           </div>
           <div className="floating-element float-2">
-            <Binary />
+            <Trophy />
           </div>
           <div className="floating-element float-3">
             <Box />
@@ -133,10 +134,74 @@ function Home() {
         </div>
       </section>
 
+      {/* Two Main Features Section */}
+      <section className="main-features-section">
+        <div className="section-header-advanced">
+          <span className="section-tag">What We Offer</span>
+          <h2>Two Ways to Master DSA</h2>
+          <p>Combine visual learning with hands-on practice for complete understanding</p>
+        </div>
+
+        <div className="main-features-grid">
+          {/* Visualizers Card */}
+          <Link to="/algorithms" className="main-feature-card">
+            <div className="main-feature-card-bg visualizers"></div>
+            <div className="main-feature-content">
+              <div className="main-feature-icon" style={{ '--feature-color': '#6366f1' }}>
+                <Eye />
+              </div>
+              <div className="main-feature-badge">12+ Structures</div>
+              <h3>Interactive Visualizers</h3>
+              <p>
+                Watch data structures come alive with real-time animations.
+                See exactly how operations like push, pop, insert, and delete work
+                at every step.
+              </p>
+              <ul className="main-feature-list">
+                <li><CheckCircle size={16} /> Stack, Queue, Linked List</li>
+                <li><CheckCircle size={16} /> Binary Trees, BST, AVL, Heaps</li>
+                <li><CheckCircle size={16} /> Hash Tables with collision handling</li>
+                <li><CheckCircle size={16} /> Graph algorithms (BFS, DFS, Dijkstra)</li>
+              </ul>
+              <div className="main-feature-cta">
+                <span>Start Visualizing</span>
+                <ArrowRight />
+              </div>
+            </div>
+          </Link>
+
+          {/* Practice Card */}
+          <Link to="/practice" className="main-feature-card">
+            <div className="main-feature-card-bg practice"></div>
+            <div className="main-feature-content">
+              <div className="main-feature-icon" style={{ '--feature-color': '#10b981' }}>
+                <Trophy />
+              </div>
+              <div className="main-feature-badge">22+ Problems</div>
+              <h3>Practice Problems</h3>
+              <p>
+                Solve curated coding challenges organized in a structured roadmap.
+                Write code, run tests, and track your progress as you level up your skills.
+              </p>
+              <ul className="main-feature-list">
+                <li><CheckCircle size={16} /> NeetCode-style learning roadmap</li>
+                <li><CheckCircle size={16} /> Built-in code editor with syntax highlighting</li>
+                <li><CheckCircle size={16} /> Instant test case feedback</li>
+                <li><CheckCircle size={16} /> Hints and solution guidance</li>
+              </ul>
+              <div className="main-feature-cta">
+                <span>Start Practicing</span>
+                <ArrowRight />
+              </div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
       {/* Data Structures Showcase */}
       <section className="ds-showcase-section">
         <div className="section-header-advanced">
-          <span className="section-tag">Explore</span>
+          <span className="section-tag">Visualizers</span>
           <h2>Interactive Data Structures</h2>
           <p>Click to visualize, interact, and truly understand how each structure works</p>
         </div>
@@ -221,16 +286,16 @@ function Home() {
             </div>
           </Link>
 
-          <Link to="/minheap" className="ds-card" style={{ '--ds-color': '#06b6d4' }}>
+          <Link to="/dijkstra" className="ds-card" style={{ '--ds-color': '#06b6d4' }}>
             <div className="ds-card-glow"></div>
             <div className="ds-card-content">
               <div className="ds-icon">
-                <Database />
+                <Network />
               </div>
-              <h3>Heap</h3>
-              <p>Priority Queue</p>
+              <h3>Graph Algorithms</h3>
+              <p>BFS, DFS, Dijkstra</p>
               <div className="ds-card-footer">
-                <span className="ds-complexity">O(log n) insert</span>
+                <span className="ds-complexity">Pathfinding</span>
                 <ArrowRight className="ds-arrow" />
               </div>
             </div>
@@ -239,8 +304,83 @@ function Home() {
 
         <div className="showcase-cta">
           <Link to="/algorithms" className="btn-outline-glow">
-            <span>View All Data Structures</span>
+            <span>View All Visualizers</span>
             <ArrowRight />
+          </Link>
+        </div>
+      </section>
+
+      {/* Practice Roadmap Preview */}
+      <section className="practice-preview-section">
+        <div className="section-header-advanced">
+          <span className="section-tag">Practice</span>
+          <h2>Structured Learning Roadmap</h2>
+          <p>Follow a proven path to master DSA concepts step by step</p>
+        </div>
+
+        <div className="roadmap-preview-grid">
+          <div className="roadmap-preview-item" style={{ '--item-color': '#10b981' }}>
+            <div className="roadmap-preview-icon"><Target size={20} /></div>
+            <div className="roadmap-preview-info">
+              <h4>Arrays & Hashing</h4>
+              <span>3 problems</span>
+            </div>
+          </div>
+          <div className="roadmap-preview-item" style={{ '--item-color': '#3b82f6' }}>
+            <div className="roadmap-preview-icon"><Cpu size={20} /></div>
+            <div className="roadmap-preview-info">
+              <h4>Two Pointers</h4>
+              <span>2 problems</span>
+            </div>
+          </div>
+          <div className="roadmap-preview-item" style={{ '--item-color': '#8b5cf6' }}>
+            <div className="roadmap-preview-icon"><Layers size={20} /></div>
+            <div className="roadmap-preview-info">
+              <h4>Stack</h4>
+              <span>2 problems</span>
+            </div>
+          </div>
+          <div className="roadmap-preview-item" style={{ '--item-color': '#f59e0b' }}>
+            <div className="roadmap-preview-icon"><BarChart3 size={20} /></div>
+            <div className="roadmap-preview-info">
+              <h4>Binary Search</h4>
+              <span>2 problems</span>
+            </div>
+          </div>
+          <div className="roadmap-preview-item" style={{ '--item-color': '#ec4899' }}>
+            <div className="roadmap-preview-icon"><GitBranch size={20} /></div>
+            <div className="roadmap-preview-info">
+              <h4>Trees</h4>
+              <span>3 problems</span>
+            </div>
+          </div>
+          <div className="roadmap-preview-item" style={{ '--item-color': '#6366f1' }}>
+            <div className="roadmap-preview-icon"><Network size={20} /></div>
+            <div className="roadmap-preview-info">
+              <h4>Graphs</h4>
+              <span>3 problems</span>
+            </div>
+          </div>
+          <div className="roadmap-preview-item" style={{ '--item-color': '#ef4444' }}>
+            <div className="roadmap-preview-icon"><Brain size={20} /></div>
+            <div className="roadmap-preview-info">
+              <h4>Dynamic Programming</h4>
+              <span>2 problems</span>
+            </div>
+          </div>
+          <div className="roadmap-preview-item" style={{ '--item-color': '#84cc16' }}>
+            <div className="roadmap-preview-icon"><BarChart3 size={20} /></div>
+            <div className="roadmap-preview-info">
+              <h4>Sorting</h4>
+              <span>2 problems</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="showcase-cta">
+          <Link to="/practice" className="btn-glow-primary">
+            <Trophy className="btn-icon-left" />
+            <span>Start the Roadmap</span>
           </Link>
         </div>
       </section>
@@ -248,9 +388,9 @@ function Home() {
       {/* Features Section */}
       <section className="features-section-advanced">
         <div className="section-header-advanced">
-          <span className="section-tag">Why Choose Us</span>
-          <h2>Built for Visual Learners</h2>
-          <p>Everything you need to master DSA concepts</p>
+          <span className="section-tag">Features</span>
+          <h2>Everything You Need</h2>
+          <p>Built for visual learners who want to truly understand DSA</p>
         </div>
 
         <div className="features-grid-advanced">
@@ -266,28 +406,28 @@ function Home() {
           <div className="feature-card-advanced">
             <div className="feature-card-bg"></div>
             <div className="feature-icon-advanced" style={{ '--icon-color': '#10b981' }}>
-              <Zap />
+              <Code2 />
             </div>
-            <h3>Step-by-Step Execution</h3>
-            <p>Control the pace of operations. Pause, step through, and understand every single state change.</p>
+            <h3>Built-in Code Editor</h3>
+            <p>Write and test your solutions with a full-featured editor supporting Python, JavaScript, C++, and more.</p>
           </div>
 
           <div className="feature-card-advanced">
             <div className="feature-card-bg"></div>
             <div className="feature-icon-advanced" style={{ '--icon-color': '#f59e0b' }}>
-              <Brain />
+              <Zap />
             </div>
-            <h3>AI Study Assistant</h3>
-            <p>Get instant answers to your DSA questions. Our AI explains concepts in ways that make sense to you.</p>
+            <h3>Instant Feedback</h3>
+            <p>Run your code against test cases and get immediate results. See exactly what passed and what failed.</p>
           </div>
 
           <div className="feature-card-advanced">
             <div className="feature-card-bg"></div>
             <div className="feature-icon-advanced" style={{ '--icon-color': '#ec4899' }}>
-              <Code2 />
+              <BookOpen />
             </div>
-            <h3>Code Implementation</h3>
-            <p>See the actual code behind each operation. Copy, learn, and implement in your own projects.</p>
+            <h3>Structured Learning</h3>
+            <p>Follow a curated roadmap that builds your skills progressively from fundamentals to advanced topics.</p>
           </div>
         </div>
       </section>
@@ -297,33 +437,33 @@ function Home() {
         <div className="section-header-advanced">
           <span className="section-tag">Get Started</span>
           <h2>Start Learning in Seconds</h2>
-          <p>No signup required. Just pick a data structure and start visualizing.</p>
+          <p>No signup required. Just pick what you want to learn.</p>
         </div>
 
         <div className="steps-container">
           <div className="step-card">
             <div className="step-number">1</div>
-            <h3>Choose a Topic</h3>
-            <p>Browse our collection of data structures and algorithms</p>
+            <h3>Choose Your Path</h3>
+            <p>Explore visualizers to understand concepts or practice problems to test your skills</p>
           </div>
           <div className="step-connector"></div>
           <div className="step-card">
             <div className="step-number">2</div>
-            <h3>Interact & Visualize</h3>
-            <p>Add elements, perform operations, and watch the magic happen</p>
+            <h3>Learn Interactively</h3>
+            <p>Visualize operations step-by-step or solve coding challenges with instant feedback</p>
           </div>
           <div className="step-connector"></div>
           <div className="step-card">
             <div className="step-number">3</div>
-            <h3>Master the Concept</h3>
-            <p>Read explanations, view code, and ask the AI for help</p>
+            <h3>Track Progress</h3>
+            <p>Complete problems, mark them as solved, and watch your skills grow</p>
           </div>
         </div>
 
         <div className="final-cta">
-          <Link to="/stack" className="btn-glow-large">
+          <Link to="/algorithms" className="btn-glow-large">
             <Play className="btn-icon-left" />
-            <span>Start with Stack Visualizer</span>
+            <span>Start Learning Now</span>
           </Link>
         </div>
       </section>
@@ -332,4 +472,3 @@ function Home() {
 }
 
 export default Home;
-

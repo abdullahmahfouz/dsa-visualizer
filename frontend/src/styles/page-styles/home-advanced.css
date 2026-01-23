@@ -494,6 +494,216 @@
 }
 
 /* ============================================
+   Main Features Section (Two Ways to Learn)
+   ============================================ */
+.main-features-section {
+    padding: 6rem 4rem;
+    background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+.main-features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.main-feature-card {
+    position: relative;
+    padding: 2.5rem;
+    background: rgba(26, 26, 36, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 24px;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.main-feature-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--feature-color);
+    box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.4),
+        0 0 80px rgba(99, 102, 241, 0.1);
+}
+
+.main-feature-card-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.main-feature-card-bg.visualizers {
+    background: radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
+}
+
+.main-feature-card-bg.practice {
+    background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 50%);
+}
+
+.main-feature-card:hover .main-feature-card-bg {
+    opacity: 1;
+}
+
+.main-feature-content {
+    position: relative;
+    z-index: 1;
+}
+
+.main-feature-icon {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--feature-color) 0%, rgba(168, 85, 247, 0.7) 100%);
+    border-radius: 18px;
+    margin-bottom: 1.5rem;
+    transition: transform 0.4s ease;
+}
+
+.main-feature-card:hover .main-feature-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.main-feature-icon svg {
+    width: 36px;
+    height: 36px;
+    color: white;
+}
+
+.main-feature-badge {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.main-feature-card h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.main-feature-card p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.main-feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.main-feature-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+.main-feature-list li svg {
+    color: var(--feature-color);
+    flex-shrink: 0;
+}
+
+.main-feature-cta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--feature-color);
+    transition: all 0.3s ease;
+}
+
+.main-feature-cta svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+}
+
+.main-feature-card:hover .main-feature-cta svg {
+    transform: translateX(6px);
+}
+
+/* ============================================
+   Practice Preview Section
+   ============================================ */
+.practice-preview-section {
+    padding: 6rem 4rem;
+    background: var(--bg-secondary);
+}
+
+.roadmap-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+}
+
+.roadmap-preview-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(26, 26, 36, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    border-left: 4px solid var(--item-color);
+    transition: all 0.3s ease;
+}
+
+.roadmap-preview-item:hover {
+    background: rgba(26, 26, 36, 0.9);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.roadmap-preview-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.roadmap-preview-icon svg {
+    color: var(--item-color);
+}
+
+.roadmap-preview-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.roadmap-preview-info span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ============================================
    Data Structures Showcase Section
    ============================================ */
 .ds-showcase-section {
@@ -905,6 +1115,14 @@
         gap: 3rem;
     }
 
+    .main-features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .roadmap-preview-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .ds-showcase-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -976,6 +1194,8 @@
         display: none;
     }
 
+    .main-features-section,
+    .practice-preview-section,
     .ds-showcase-section,
     .features-section-advanced,
     .how-it-works-section {
@@ -984,6 +1204,18 @@
 
     .section-header-advanced h2 {
         font-size: 2rem;
+    }
+
+    .main-feature-card {
+        padding: 1.75rem;
+    }
+
+    .main-feature-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .roadmap-preview-grid {
+        grid-template-columns: 1fr;
     }
 
     .ds-showcase-grid {
