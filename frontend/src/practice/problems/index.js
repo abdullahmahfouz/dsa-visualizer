@@ -147,13 +147,7 @@ An anagram is a word formed by rearranging the letters of another word.`,
     # Count character frequencies
     pass
 
-print(solution("anagram", "nagaram"))`,
-      javascript: `function solution(s, t) {
-    // Count character frequencies
-
-}
-
-console.log(solution("anagram", "nagaram"));`
+print(solution("anagram", "nagaram"))`
     },
     hints: ['Compare character frequencies in both strings.', 'You can use a hash map or sort both strings.']
   },
@@ -178,13 +172,7 @@ console.log(solution("anagram", "nagaram"));`
     # Use a set for O(n) lookup
     pass
 
-print(solution([1,2,3,1]))`,
-      javascript: `function solution(nums) {
-    // Use a Set for O(n) lookup
-
-}
-
-console.log(solution([1,2,3,1]));`
+print(solution([1,2,3,1]))`
     },
     hints: ['A set only stores unique values.', 'Compare the length of the set vs the original array.']
   },
@@ -212,13 +200,7 @@ Consider only alphanumeric characters and ignore cases.`,
     # Use two pointers from both ends
     pass
 
-print(solution("A man, a plan, a canal: Panama"))`,
-      javascript: `function solution(s) {
-    // Use two pointers from both ends
-
-}
-
-console.log(solution("A man, a plan, a canal: Panama"));`
+print(solution("A man, a plan, a canal: Panama"))`
     },
     hints: ['Clean the string first (remove non-alphanumeric, lowercase).', 'Compare characters from start and end moving inward.']
   },
@@ -244,13 +226,7 @@ Return the indices of the two numbers (1-indexed).`,
     # Two pointers - no extra space needed!
     pass
 
-print(solution([2,7,11,15], 9))`,
-      javascript: `function solution(numbers, target) {
-    // Two pointers - no extra space needed!
-
-}
-
-console.log(solution([2,7,11,15], 9));`
+print(solution([2,7,11,15], 9))`
     },
     hints: ['Since array is sorted, use two pointers.', 'If sum < target, move left pointer. If sum > target, move right pointer.']
   },
@@ -280,13 +256,7 @@ Valid if: brackets closed by same type, in correct order.`,
     # Use a stack to track opening brackets
     pass
 
-print(solution("()[]{}"))`,
-      javascript: `function solution(s) {
-    // Use a stack to track opening brackets
-
-}
-
-console.log(solution("()[]{}"));`
+print(solution("()[]{}"))`
     },
     hints: ['Push opening brackets onto stack.', 'For closing brackets, check if it matches top of stack.', 'Stack should be empty at the end.']
   },
@@ -324,32 +294,7 @@ console.log(solution("()[]{}"));`
 # Test
 s = MinStack()
 s.push(-2); s.push(0); s.push(-3)
-print(s.getMin())  # -3`,
-      javascript: `class MinStack {
-    constructor() {
-
-    }
-
-    push(val) {
-
-    }
-
-    pop() {
-
-    }
-
-    top() {
-
-    }
-
-    getMin() {
-
-    }
-}
-
-const s = new MinStack();
-s.push(-2); s.push(0); s.push(-3);
-console.log(s.getMin()); // -3`
+print(s.getMin())  # -3`
     },
     hints: ['Use two stacks - one for values, one for minimums.', 'Or store (value, currentMin) pairs in a single stack.']
   },
@@ -377,13 +322,7 @@ Must be O(log n) time complexity.`,
     # Classic binary search
     pass
 
-print(solution([-1,0,3,5,9,12], 9))`,
-      javascript: `function solution(nums, target) {
-    // Classic binary search
-
-}
-
-console.log(solution([-1,0,3,5,9,12], 9));`
+print(solution([-1,0,3,5,9,12], 9))`
     },
     hints: ['Use left and right pointers.', 'mid = (left + right) // 2', 'Adjust left or right based on comparison.']
   },
@@ -407,13 +346,7 @@ console.log(solution([-1,0,3,5,9,12], 9));`
     # Modified binary search
     pass
 
-print(solution([4,5,6,7,0,1,2], 0))`,
-      javascript: `function solution(nums, target) {
-    // Modified binary search
-
-}
-
-console.log(solution([4,5,6,7,0,1,2], 0));`
+print(solution([4,5,6,7,0,1,2], 0))`
     },
     hints: ['One half is always sorted.', 'Check which half is sorted, then decide which half to search.']
   },
@@ -460,21 +393,7 @@ def to_array(head):
         head = head.next
     return result
 
-print(to_array(solution(create_list([1,2,3,4,5]))))`,
-      javascript: `class ListNode {
-    constructor(val = 0, next = null) {
-        this.val = val;
-        this.next = next;
-    }
-}
-
-function solution(head) {
-    // Use three pointers: prev, curr, next
-
-}
-
-// Test helpers omitted for brevity
-console.log("Implement and test!");`
+print(to_array(solution(create_list([1,2,3,4,5]))))`
     },
     hints: ['Track previous, current, and next nodes.', 'Reverse the link: curr.next = prev', 'Move all pointers forward.']
   },
@@ -497,13 +416,7 @@ console.log("Implement and test!");`
     # Compare heads, build merged list
     pass
 
-print("Implement merge two lists")`,
-      javascript: `function solution(list1, list2) {
-    // Compare heads, build merged list
-
-}
-
-console.log("Implement merge two lists");`
+print("Implement merge two lists")`
     },
     hints: ['Use a dummy head node.', 'Compare values and append smaller one.', 'Attach remaining nodes at the end.']
   },
@@ -527,13 +440,7 @@ console.log("Implement merge two lists");`
     # Floyd's cycle detection (slow & fast pointers)
     pass
 
-print("Implement cycle detection")`,
-      javascript: `function solution(head) {
-    // Floyd's cycle detection (slow & fast pointers)
-
-}
-
-console.log("Implement cycle detection");`
+print("Implement cycle detection")`
     },
     hints: ['Use slow (1 step) and fast (2 steps) pointers.', 'If they meet, there\'s a cycle.', 'If fast reaches null, no cycle.']
   },
@@ -557,13 +464,7 @@ console.log("Implement cycle detection");`
     # Swap left and right recursively
     pass
 
-print("Implement invert tree")`,
-      javascript: `function solution(root) {
-    // Swap left and right recursively
-
-}
-
-console.log("Implement invert tree");`
+print("Implement invert tree")`
     },
     hints: ['Base case: null node.', 'Swap left and right children.', 'Recursively invert both subtrees.']
   },
@@ -586,13 +487,7 @@ console.log("Implement invert tree");`
     # DFS: 1 + max(left depth, right depth)
     pass
 
-print("Implement max depth")`,
-      javascript: `function solution(root) {
-    // DFS: 1 + max(left depth, right depth)
-
-}
-
-console.log("Implement max depth");`
+print("Implement max depth")`
     },
     hints: ['Base case: null node has depth 0.', 'Recursively find max of left and right depths.', 'Add 1 for current node.']
   },
@@ -616,13 +511,7 @@ console.log("Implement max depth");`
     # Compare nodes recursively
     pass
 
-print("Implement same tree")`,
-      javascript: `function solution(p, q) {
-    // Compare nodes recursively
-
-}
-
-console.log("Implement same tree");`
+print("Implement same tree")`
     },
     hints: ['Both null = same.', 'One null = different.', 'Compare values, then recurse on children.']
   },
@@ -649,14 +538,7 @@ def solution(graph, start):
     pass
 
 graph = {0: [1,2], 1: [2], 2: [0,3], 3: [3]}
-print(solution(graph, 2))`,
-      javascript: `function solution(graph, start) {
-    // Use queue, track visited
-
-}
-
-const graph = {0: [1,2], 1: [2], 2: [0,3], 3: [3]};
-console.log(solution(graph, 2));`
+print(solution(graph, 2))`
     },
     hints: ['Use a queue (FIFO).', 'Mark nodes as visited when adding to queue.', 'Process neighbors level by level.']
   },
@@ -680,14 +562,7 @@ console.log(solution(graph, 2));`
     pass
 
 graph = {0: [1,2], 1: [2], 2: [3], 3: []}
-print(solution(graph, 0))`,
-      javascript: `function solution(graph, start) {
-    // Use stack or recursion, track visited
-
-}
-
-const graph = {0: [1,2], 1: [2], 2: [3], 3: []};
-console.log(solution(graph, 0));`
+print(solution(graph, 0))`
     },
     hints: ['Use a stack (LIFO) or recursion.', 'Mark visited before exploring.', 'Go deep before going wide.']
   },
@@ -711,14 +586,7 @@ console.log(solution(graph, 0));`
     pass
 
 grid = [["1","1","0"],["1","1","0"],["0","0","1"]]
-print(solution(grid))`,
-      javascript: `function solution(grid) {
-    // DFS/BFS from each unvisited land cell
-
-}
-
-const grid = [["1","1","0"],["1","1","0"],["0","0","1"]];
-console.log(solution(grid));`
+print(solution(grid))`
     },
     hints: ['Iterate through grid.', 'When you find "1", increment count and flood-fill (DFS/BFS) to mark all connected land.']
   },
@@ -743,13 +611,7 @@ console.log(solution(grid));`
     # Fibonacci pattern! dp[i] = dp[i-1] + dp[i-2]
     pass
 
-print(solution(3))`,
-      javascript: `function solution(n) {
-    // Fibonacci pattern! dp[i] = dp[i-1] + dp[i-2]
-
-}
-
-console.log(solution(3));`
+print(solution(3))`
     },
     hints: ['Base cases: dp[1]=1, dp[2]=2', 'dp[i] = ways to reach from i-1 + ways from i-2', 'This is Fibonacci!']
   },
@@ -773,13 +635,7 @@ console.log(solution(3));`
     # dp[i] = max(rob this + dp[i-2], skip + dp[i-1])
     pass
 
-print(solution([1,2,3,1]))`,
-      javascript: `function solution(nums) {
-    // dp[i] = max(rob this + dp[i-2], skip + dp[i-1])
-
-}
-
-console.log(solution([1,2,3,1]));`
+print(solution([1,2,3,1]))`
     },
     hints: ['At each house: rob it or skip it.', 'Rob: nums[i] + dp[i-2]', 'Skip: dp[i-1]', 'Take the max.']
   },
@@ -803,13 +659,7 @@ console.log(solution([1,2,3,1]));`
     # Divide, conquer, merge
     pass
 
-print(solution([5,2,3,1]))`,
-      javascript: `function solution(nums) {
-    // Divide, conquer, merge
-
-}
-
-console.log(solution([5,2,3,1]));`
+print(solution([5,2,3,1]))`
     },
     hints: ['Base case: length <= 1.', 'Split at mid, recursively sort both.', 'Merge by comparing heads of both sorted halves.']
   },
@@ -832,13 +682,7 @@ console.log(solution([5,2,3,1]));`
     # Partition around pivot, recurse
     pass
 
-print(solution([3,6,8,10,1,2,1]))`,
-      javascript: `function solution(nums) {
-    // Partition around pivot, recurse
-
-}
-
-console.log(solution([3,6,8,10,1,2,1]));`
+print(solution([3,6,8,10,1,2,1]))`
     },
     hints: ['Pick a pivot (last element is common).', 'Partition: smaller left, larger right.', 'Recurse on both partitions.']
   }

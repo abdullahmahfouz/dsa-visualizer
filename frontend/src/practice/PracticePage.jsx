@@ -35,7 +35,7 @@ const sectionIcons = {
   puzzle: Puzzle,
   sort: ArrowUpDown
 };
-import CodeEditor, { LANGUAGE_CONFIG } from './CodeEditor';
+import CodeEditor from './CodeEditor';
 import { problems, problemList, roadmap } from './problems';
 import './practice.css';
 

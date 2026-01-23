@@ -367,6 +367,12 @@
   cursor: pointer;
 }
 
+.language-label {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
 .editor-actions {
   display: flex;
   gap: 0.5rem;
