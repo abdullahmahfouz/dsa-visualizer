@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Play,
@@ -68,6 +68,15 @@ function PracticePage() {
   const [selectedSolution, setSelectedSolution] = useState(null);
   const [copiedSolution, setCopiedSolution] = useState(null);
 
+  const contentRef = useRef(null);
+
+  // Scroll content to top when tab changes
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+  }, [activeTab, currentProblem]);
+
   // Save completed problems to localStorage
   useEffect(() => {
     localStorage.setItem('completedProblems', JSON.stringify(completedProblems));
@@ -84,8 +93,10 @@ function PracticePage() {
       setShowHints(false);
       setCurrentHint(0);
       setShowProblemList(false);
+      window.scrollTo(0, 0); // Reset window scroll
     } else if (!problemId) {
       setShowProblemList(true);
+      window.scrollTo(0, 0); // Reset window scroll on roadmap
     }
   }, [problemId]);
 
@@ -487,7 +498,7 @@ function PracticePage() {
             </button>
           </div>
 
-          <div className="problem-content">
+          <div className="problem-content" ref={contentRef}>
             {activeTab === 'description' && (
               <>
                 <div className="description">

@@ -186,8 +186,58 @@ def run_tests():
         expected = test.get('expected', '')
 
         # Build test runner code based on language
+        # Build test runner code based on language
         if language == 'python':
-            full_code = f"""{code}
+            # Check for class-based input (JSON with methods/args)
+            import json
+            is_class_test = False
+            try:
+                input_data = json.loads(test_input)
+                if isinstance(input_data, dict) and 'methods' in input_data and 'args' in input_data:
+                    is_class_test = True
+            except:
+                pass
+
+            if is_class_test:
+                # Generate class driver
+                methods = input_data['methods']
+                args = input_data['args']
+                class_name = methods[0]
+                
+                full_code = f"""import json
+{code}
+
+# Test Driver
+def run_test():
+    methods = {json.dumps(methods)}
+    args = {json.dumps(args)}
+    
+    obj = {class_name}(*args[0])
+    outputs = []
+    
+    for i in range(1, len(methods)):
+        method = methods[i]
+        arg = args[i]
+        
+        if method == 'getMin':
+            outputs.append(obj.getMin(*arg))
+        elif method == 'top':
+            outputs.append(obj.top(*arg))
+        elif method == 'pop':
+            obj.pop(*arg)
+        elif method == 'push':
+            obj.push(*arg)
+        # Add more generic handling if needed, but for MinStack this covers it
+        
+    # Filter out None values or just print list of non-void returns?
+    # The expected output is [-3, 0, -2], so we should print the list of collected returns.
+    print(json.dumps(outputs))
+
+run_test()
+"""
+            else:
+                # Function-based runner
+                full_code = f"""{code}
 
 # Test case {i + 1}
 result = {function_name}({test_input})
