@@ -111,12 +111,14 @@ You can return the answer in any order.`,
             { input: '[3,3], 6', expected: '[0, 1]' }
         ],
         starterCode: {
-            python: `def solution(nums, target):
-    # Use a hash map for O(n) time complexity
-    pass
+            python: `class Solution:
+    def solution(self, nums, target):
+        # Use a hash map for O(n) time complexity
+        pass
 
 # Test
-print(solution([2,7,11,15], 9))`
+s = Solution()
+print(s.solution([2,7,11,15], 9))`
         },
         solutions: {
             optimal: {
@@ -124,59 +126,65 @@ print(solution([2,7,11,15], 9))`
                 timeComplexity: 'O(n)',
                 spaceComplexity: 'O(n)',
                 description: 'Use a hash map to store seen numbers and their indices. For each number, check if complement exists.',
-                code: `def solution(nums, target):
-    # Hash map: number -> index
-    seen = {}
-    for i, num in enumerate(nums):
-        complement = target - num
-        if complement in seen:
-            return [seen[complement], i]
-        seen[num] = i
-    return []
+                code: `class Solution:
+    def solution(self, nums, target):
+        # Hash map: number -> index
+        seen = {}
+        for i, num in enumerate(nums):
+            complement = target - num
+            if complement in seen:
+                return [seen[complement], i]
+            seen[num] = i
+        return []
 
 # Test
-print(solution([2,7,11,15], 9))`
+s = Solution()
+print(s.solution([2,7,11,15], 9))`
             },
             bruteForce: {
                 name: 'Brute Force',
                 timeComplexity: 'O(n²)',
                 spaceComplexity: 'O(1)',
                 description: 'Check every pair of numbers to see if they sum to target.',
-                code: `def solution(nums, target):
-    # Check all pairs
-    n = len(nums)
-    for i in range(n):
-        for j in range(i + 1, n):
-            if nums[i] + nums[j] == target:
-                return [i, j]
-    return []
+                code: `class Solution:
+    def solution(self, nums, target):
+        # Check all pairs
+        n = len(nums)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if nums[i] + nums[j] == target:
+                    return [i, j]
+        return []
 
 # Test
-print(solution([2,7,11,15], 9))`
+s = Solution()
+print(s.solution([2,7,11,15], 9))`
             },
             sorting: {
                 name: 'Sorting + Two Pointers',
                 timeComplexity: 'O(n log n)',
                 spaceComplexity: 'O(n)',
                 description: 'Sort with indices, then use two pointers. Note: need to track original indices.',
-                code: `def solution(nums, target):
-    # Store (value, original_index) pairs
-    indexed = [(num, i) for i, num in enumerate(nums)]
-    indexed.sort(key=lambda x: x[0])
+                code: `class Solution:
+    def solution(self, nums, target):
+        # Store (value, original_index) pairs
+        indexed = [(num, i) for i, num in enumerate(nums)]
+        indexed.sort(key=lambda x: x[0])
 
-    left, right = 0, len(nums) - 1
-    while left < right:
-        current_sum = indexed[left][0] + indexed[right][0]
-        if current_sum == target:
-            return sorted([indexed[left][1], indexed[right][1]])
-        elif current_sum < target:
-            left += 1
-        else:
-            right -= 1
-    return []
+        left, right = 0, len(nums) - 1
+        while left < right:
+            current_sum = indexed[left][0] + indexed[right][0]
+            if current_sum == target:
+                return sorted([indexed[left][1], indexed[right][1]])
+            elif current_sum < target:
+                left += 1
+            else:
+                right -= 1
+        return []
 
 # Test
-print(solution([2,7,11,15], 9))`
+s = Solution()
+print(s.solution([2,7,11,15], 9))`
             }
         },
         hints: [
@@ -204,11 +212,13 @@ An anagram is a word formed by rearranging the letters of another word.`,
             { input: '"rat", "car"', expected: 'False' }
         ],
         starterCode: {
-            python: `def solution(s, t):
-    # Count character frequencies
-    pass
+            python: `class Solution:
+    def solution(self, s, t):
+        # Count character frequencies
+        pass
 
-print(solution("anagram", "nagaram"))`
+s = Solution()
+print(s.solution("anagram", "nagaram"))`
         },
         solutions: {
             optimal: {
@@ -216,56 +226,62 @@ print(solution("anagram", "nagaram"))`
                 timeComplexity: 'O(n)',
                 spaceComplexity: 'O(1)',
                 description: 'Count character frequencies using a hash map. Space is O(1) since alphabet is fixed (26 letters).',
-                code: `def solution(s, t):
-    if len(s) != len(t):
-        return False
-
-    # Count characters in s
-    count = {}
-    for char in s:
-        count[char] = count.get(char, 0) + 1
-
-    # Subtract counts for t
-    for char in t:
-        if char not in count:
-            return False
-        count[char] -= 1
-        if count[char] < 0:
+                code: `class Solution:
+    def solution(self, s, t):
+        if len(s) != len(t):
             return False
 
-    return True
+        # Count characters in s
+        count = {}
+        for char in s:
+            count[char] = count.get(char, 0) + 1
 
-print(solution("anagram", "nagaram"))`
+        # Subtract counts for t
+        for char in t:
+            if char not in count:
+                return False
+            count[char] -= 1
+            if count[char] < 0:
+                return False
+
+        return True
+
+s = Solution()
+print(s.solution("anagram", "nagaram"))`
             },
             sorting: {
                 name: 'Sorting',
                 timeComplexity: 'O(n log n)',
                 spaceComplexity: 'O(n)',
                 description: 'Sort both strings and compare. Simple but slower.',
-                code: `def solution(s, t):
-    return sorted(s) == sorted(t)
+                code: `class Solution:
+    def solution(self, s, t):
+        return sorted(s) == sorted(t)
 
-print(solution("anagram", "nagaram"))`
+s = Solution()
+print(s.solution("anagram", "nagaram"))`
             },
             arrayCounter: {
                 name: 'Array Counter (26 letters)',
                 timeComplexity: 'O(n)',
                 spaceComplexity: 'O(1)',
                 description: 'Use a fixed-size array of 26 for lowercase letters.',
-                code: `def solution(s, t):
-    if len(s) != len(t):
-        return False
+                code: `class Solution:
+    def solution(self, s, t):
+        if len(s) != len(t):
+            return False
 
-    # Use array for 26 lowercase letters
-    count = [0] * 26
+        # Use array for 26 lowercase letters
+        count = [0] * 26
 
-    for i in range(len(s)):
-        count[ord(s[i]) - ord('a')] += 1
-        count[ord(t[i]) - ord('a')] -= 1
+        for i in range(len(s)):
+            count[ord(s[i]) - ord('a')] += 1
+            count[ord(t[i]) - ord('a')] -= 1
 
-    return all(c == 0 for c in count)
+        return all(c == 0 for c in count)
 
-print(solution("anagram", "nagaram"))`
+s = Solution()
+print(s.solution("anagram", "nagaram"))`
             }
         },
         hints: ['Compare character frequencies in both strings.', 'You can use a hash map or sort both strings.']
@@ -287,11 +303,13 @@ print(solution("anagram", "nagaram"))`
             { input: '[1,2,3,4]', expected: 'False' }
         ],
         starterCode: {
-            python: `def solution(nums):
-    # Use a set for O(n) lookup
-    pass
+            python: `class Solution:
+    def solution(self, nums):
+        # Use a set for O(n) lookup
+        pass
 
-print(solution([1,2,3,1]))`
+s = Solution()
+print(s.solution([1,2,3,1]))`
         },
         solutions: {
             optimal: {
@@ -299,54 +317,62 @@ print(solution([1,2,3,1]))`
                 timeComplexity: 'O(n)',
                 spaceComplexity: 'O(n)',
                 description: 'Use a set to track seen numbers. Return true if we see a duplicate.',
-                code: `def solution(nums):
-    seen = set()
-    for num in nums:
-        if num in seen:
-            return True
-        seen.add(num)
-    return False
+                code: `class Solution:
+    def solution(self, nums):
+        seen = set()
+        for num in nums:
+            if num in seen:
+                return True
+            seen.add(num)
+        return False
 
-print(solution([1,2,3,1]))`
+s = Solution()
+print(s.solution([1,2,3,1]))`
             },
             setLength: {
                 name: 'Set Length Comparison',
                 timeComplexity: 'O(n)',
                 spaceComplexity: 'O(n)',
                 description: 'Compare length of set vs original array. One-liner approach.',
-                code: `def solution(nums):
-    return len(nums) != len(set(nums))
+                code: `class Solution:
+    def solution(self, nums):
+        return len(nums) != len(set(nums))
 
-print(solution([1,2,3,1]))`
+s = Solution()
+print(s.solution([1,2,3,1]))`
             },
             sorting: {
                 name: 'Sorting',
                 timeComplexity: 'O(n log n)',
                 spaceComplexity: 'O(1)',
                 description: 'Sort the array, then check adjacent elements for duplicates.',
-                code: `def solution(nums):
-    nums.sort()
-    for i in range(1, len(nums)):
-        if nums[i] == nums[i - 1]:
-            return True
-    return False
+                code: `class Solution:
+    def solution(self, nums):
+        nums.sort()
+        for i in range(1, len(nums)):
+            if nums[i] == nums[i - 1]:
+                return True
+        return False
 
-print(solution([1,2,3,1]))`
+s = Solution()
+print(s.solution([1,2,3,1]))`
             },
             bruteForce: {
                 name: 'Brute Force',
                 timeComplexity: 'O(n²)',
                 spaceComplexity: 'O(1)',
                 description: 'Compare each element with every other element.',
-                code: `def solution(nums):
-    n = len(nums)
-    for i in range(n):
-        for j in range(i + 1, n):
-            if nums[i] == nums[j]:
-                return True
-    return False
+                code: `class Solution:
+    def solution(self, nums):
+        n = len(nums)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if nums[i] == nums[j]:
+                    return True
+        return False
 
-print(solution([1,2,3,1]))`
+s = Solution()
+print(s.solution([1,2,3,1]))`
             }
         },
         hints: ['A set only stores unique values.', 'Compare the length of the set vs the original array.']

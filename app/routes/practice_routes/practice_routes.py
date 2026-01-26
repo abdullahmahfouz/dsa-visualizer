@@ -236,12 +236,29 @@ def run_test():
 run_test()
 """
             else:
-                # Function-based runner
+                # Standard runner (Function or Class Solution)
                 full_code = f"""{code}
 
 # Test case {i + 1}
-result = {function_name}({test_input})
-print(result)
+use_class = False
+try:
+    if 'Solution' in locals() or 'Solution' in globals():
+        use_class = True
+except:
+    pass
+
+try:
+    if use_class:
+        s = Solution()
+        result = s.{function_name}({test_input})
+    else:
+        result = {function_name}({test_input})
+    print(result)
+except Exception as e:
+    # Print error so it's captured in stderr
+    import sys
+    print(str(e), file=sys.stderr)
+    raise e
 """
         elif language == 'javascript':
             full_code = f"""{code}
