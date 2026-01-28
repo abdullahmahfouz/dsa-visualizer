@@ -12,6 +12,7 @@ import Contributions from './pages/Contributions';
 import StackVisualizer from './visualizers/linear/StackVisualizer';
 import QueueVisualizer from './visualizers/linear/QueueVisualizer';
 import LinkedListVisualizer from './visualizers/linear/LinkedListVisualizer';
+import SkipListVisualizer from './visualizers/linear/SkipList/SkipListVisualizer';
 
 // Visualizers - Hash
 import HashTableVisualizer from './visualizers/hash/HashTableVisualizer';
@@ -55,6 +56,7 @@ function App() {
           <Route path="/stack" element={<StackVisualizer />} />
           <Route path="/queue" element={<QueueVisualizer />} />
           <Route path="/linkedlist" element={<LinkedListVisualizer />} />
+          <Route path="/skiplist" element={<SkipListVisualizer />} />
           <Route path="/hashtable_linear" element={<HashTableVisualizer />} />
           <Route path="/hashtable_quadratic" element={<HashTableQuadratic />} />
           <Route path="/hashtable_chaining" element={<HashTableChaining />} />

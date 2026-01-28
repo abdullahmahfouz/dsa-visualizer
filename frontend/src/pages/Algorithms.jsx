@@ -36,12 +36,19 @@ function Algorithms() {
           description: 'FIFO (First In, First Out) — like waiting in line at a coffee shop. The first person to arrive gets served first. Enqueue adds to the back, Dequeue removes from front. Both O(1) operations. Used everywhere: print job scheduling, CPU task management, breadth-first search (BFS) in graphs, handling requests in web servers, and buffering data streams like video playback.', 
           available: true 
         },
-        { 
-          to: '/linkedlist', 
-          icon: LinkIcon, 
-          title: 'Linked List', 
-          description: 'A chain of nodes where each node stores data and a pointer to the next node. Unlike arrays, memory doesn\'t need to be contiguous — nodes can be scattered in memory. Insertion/deletion at known positions is O(1), but finding a position is O(n). Perfect for: implementing stacks/queues, music playlists (next/previous song), browser history, memory allocation in operating systems, and polynomial arithmetic.', 
-          available: true 
+        {
+          to: '/linkedlist',
+          icon: LinkIcon,
+          title: 'Linked List',
+          description: 'A chain of nodes where each node stores data and a pointer to the next node. Unlike arrays, memory doesn\'t need to be contiguous — nodes can be scattered in memory. Insertion/deletion at known positions is O(1), but finding a position is O(n). Perfect for: implementing stacks/queues, music playlists (next/previous song), browser history, memory allocation in operating systems, and polynomial arithmetic.',
+          available: true
+        },
+        {
+          to: '/skiplist',
+          icon: Layers,
+          title: 'Skip List',
+          description: 'A probabilistic data structure that uses multiple layers of linked lists with decreasing density. Express lanes skip over elements like a train system — higher levels let you "skip" to your destination faster. Achieves O(log n) average for search, insert, and delete. Used in Redis for sorted sets, LevelDB for in-memory indexing, and concurrent data structures where lock-free operation is critical.',
+          available: true
         },
       ]
     },

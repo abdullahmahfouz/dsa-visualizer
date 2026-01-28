@@ -5,6 +5,7 @@ import { FileCode, Copy } from 'lucide-react';
 import stackSnippets from '../data/snippets/stack.json';
 import queueSnippets from '../data/snippets/queue.json';
 import linkedlistSnippets from '../data/snippets/linkedlist.json';
+import skiplistSnippets from '../data/snippets/skiplist.json';
 import binarytreeSnippets from '../data/snippets/binarytree.json';
 import hashtableSnippets from '../data/snippets/hashtable.json';
 import hashtableChainingSnippets from '../data/snippets/hashtableChaining.json';
@@ -22,6 +23,7 @@ const codeSnippets = {
   stack: stackSnippets,
   queue: queueSnippets,
   linkedlist: linkedlistSnippets,
+  skiplist: skiplistSnippets,
   binarytree: binarytreeSnippets,
   hashtable: hashtableSnippets,
   hashtableChaining: hashtableChainingSnippets,

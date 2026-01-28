@@ -27,6 +27,7 @@ from .routes.pages import pages_bp
 from .routes.linear_routes.stack_routes import stack_bp
 from .routes.linear_routes.queue_routes import queue_bp
 from .routes.linear_routes.singly_linkedlist_routes import linkedlist_bp
+from .routes.linear_routes.skiplist_routes import skiplist_bp
 from .routes.hashing_routes.hashtable_routes import hashtable_bp
 from .routes.hashing_routes.chaning_routes import hs_bp
 from .routes.hashing_routes.hashtable_quadratic_routes import quadratic_bp
@@ -54,6 +55,7 @@ def favicon():
 app.register_blueprint(stack_bp)       # API routes: /api/stack/*
 app.register_blueprint(queue_bp)       # API routes: /api/queue/*
 app.register_blueprint(linkedlist_bp)  # API routes: /api/linkedlist/*
+app.register_blueprint(skiplist_bp)    # API routes: /api/skiplist/*
 app.register_blueprint(hashtable_bp)   # API routes: /api/hashtable/*
 app.register_blueprint(hs_bp)          # API routes: /api/hashtable_chaining/*
 app.register_blueprint(quadratic_bp)   # API routes: /api/hashtable_quadratic/*

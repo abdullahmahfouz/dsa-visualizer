@@ -1,0 +1,377 @@
+/**
+ * Skip List Visualizer Styles
+ * ===========================
+ */
+
+/* ============ Container ============ */
+
+.skiplist-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 200px;
+    justify-content: center;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.skiplist-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    position: relative;
+    padding: 1rem;
+    width: 100%;
+    min-width: max-content;
+}
+
+.skiplist-empty {
+    padding: 3rem 2rem;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--border-color);
+}
+
+
+/* ============ Level Styles ============ */
+
+.skiplist-level {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+}
+
+.level-label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 50px;
+    padding: 0.35rem 0.5rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
+
+.level-label svg {
+    color: var(--accent-primary);
+}
+
+.level-nodes {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex: 1;
+}
+
+
+/* ============ Node Styles ============ */
+
+.skiplist-head {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    background: linear-gradient(135deg, var(--success), #059669);
+    color: white;
+    font-weight: 700;
+    font-size: 0.7rem;
+    border-radius: var(--radius-sm);
+    min-width: 50px;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.skiplist-node {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--accent-gradient);
+    color: white;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border-radius: var(--radius-sm);
+    min-width: 45px;
+    box-shadow: var(--shadow-md), 0 0 10px rgba(99, 102, 241, 0.2);
+    transition: all 0.3s ease;
+    animation: nodeAppear 0.3s ease-out;
+}
+
+@keyframes nodeAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.skiplist-node:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(99, 102, 241, 0.4);
+}
+
+.skiplist-node.highlighted {
+    background: linear-gradient(135deg, var(--warning), #d97706);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+    animation: pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(245, 158, 11, 0.7);
+    }
+}
+
+.skiplist-null {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.7rem;
+    font-family: var(--font-mono);
+    border-radius: var(--radius-sm);
+    min-width: 45px;
+    border: 1px dashed var(--border-color);
+}
+
+
+/* ============ Arrow Styles ============ */
+
+.skiplist-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-secondary);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0 0.25rem;
+    min-width: 25px;
+    text-shadow: 0 0 5px rgba(168, 85, 247, 0.5);
+}
+
+
+/* ============ Gap (Skip) Styles ============ */
+
+.skiplist-gap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    height: 100%;
+    position: relative;
+}
+
+.gap-line {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        var(--border-color) 20%,
+        var(--border-color) 80%,
+        transparent 100%
+    );
+    opacity: 0.5;
+}
+
+
+/* ============ Vertical Connectors ============ */
+
+.vertical-connectors {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    display: none; /* Hidden for now, can enable for enhanced visualization */
+}
+
+.connector-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.vertical-line {
+    width: 2px;
+    height: 20px;
+    background: var(--accent-primary);
+    opacity: 0.3;
+}
+
+
+/* ============ Legend ============ */
+
+.skiplist-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+    padding: 1rem;
+    margin-top: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-sm);
+}
+
+.legend-color.head {
+    background: linear-gradient(135deg, var(--success), #059669);
+}
+
+.legend-color.node {
+    background: var(--accent-gradient);
+}
+
+.legend-color.highlighted {
+    background: linear-gradient(135deg, var(--warning), #d97706);
+}
+
+.legend-color.null {
+    background: var(--bg-tertiary);
+    border: 1px dashed var(--border-color);
+}
+
+
+/* ============ Complexity Info ============ */
+
+.complexity-info {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
+
+.complexity-info h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.complexity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.complexity-value {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--success);
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+}
+
+
+/* ============ Search Button ============ */
+
+.btn-search {
+    background: linear-gradient(135deg, var(--accent-secondary), #7c3aed);
+    color: white;
+    border: none;
+}
+
+.btn-search:hover {
+    background: linear-gradient(135deg, #7c3aed, var(--accent-secondary));
+    transform: translateY(-1px);
+}
+
+
+/* ============ Responsive ============ */
+
+@media (max-width: 768px) {
+    .skiplist-container {
+        padding: 1rem;
+    }
+
+    .skiplist-visual {
+        padding: 0.5rem;
+    }
+
+    .level-label {
+        min-width: 40px;
+        font-size: 0.65rem;
+        padding: 0.25rem 0.35rem;
+    }
+
+    .skiplist-head,
+    .skiplist-node,
+    .skiplist-null {
+        min-width: 35px;
+        padding: 0.35rem 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .skiplist-arrow {
+        min-width: 20px;
+        font-size: 0.9rem;
+    }
+
+    .skiplist-gap {
+        min-width: 55px;
+    }
+
+    .skiplist-legend {
+        gap: 1rem;
+        padding: 0.75rem;
+    }
+
+    .legend-item {
+        font-size: 0.7rem;
+    }
+
+    .legend-color {
+        width: 16px;
+        height: 16px;
+    }
+
+    .complexity-info {
+        padding: 0.75rem;
+    }
+
+    .complexity-info h3 {
+        font-size: 0.8rem;
+    }
+
+    .complexity-item {
+        font-size: 0.75rem;
+    }
+}
