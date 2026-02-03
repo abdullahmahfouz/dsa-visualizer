@@ -17,6 +17,7 @@ import maxheapSnippets from '../data/snippets/maxheap.json';
 import graphSnippets from '../data/snippets/graph.json';
 import bfsSnippets from '../data/snippets/bfs.json';
 import dfsSnippets from '../data/snippets/dfs.json';
+import treapSnippets from '../data/snippets/treap.json';
 
 // Combine all snippets into one object
 const codeSnippets = {
@@ -34,7 +35,8 @@ const codeSnippets = {
   maxheap: maxheapSnippets,
   graph: graphSnippets,
   bfs: bfsSnippets,
-  dfs: dfsSnippets
+  dfs: dfsSnippets,
+  treap: treapSnippets
 };
 
 function CodeTabs({ dataStructure }) {

@@ -1,0 +1,46 @@
+{
+  "concept": {
+    "title": "What is a Treap?",
+    "description": "A Treap is a combination of a Binary Search Tree (BST) and a Heap. Each node has a key (follows BST ordering: left < parent < right) and a random priority (follows max-heap ordering: parent priority >= child priority). Rotations maintain the heap property after insertions.",
+    "codeExample": "       [50, p:95]\n      /          \\\n  [30, p:80]   [70, p:60]\n   /     \\         \\\n[20,p:40][40,p:55] [80,p:30]\n\nBST on keys | Max-Heap on priorities",
+    "analogy": "Like a tournament bracket where seeded players (priorities) determine placement, but match order follows alphabetical (BST) rules!"
+  },
+  "properties": {
+    "title": "Treap Properties",
+    "items": [
+      { "label": "Keys", "value": "BST order (Left < Parent < Right)" },
+      { "label": "Priorities", "value": "Max-heap order (Parent >= Children)" },
+      { "label": "Balance", "value": "Expected O(log n) height" },
+      { "label": "Randomized", "value": "Priorities assigned randomly" }
+    ]
+  },
+  "complexity": {
+    "title": "Time Complexity",
+    "operations": [
+      { "name": "Search", "average": "O(log n)", "worst": "O(n)", "description": "BST search on keys" },
+      { "name": "Insert", "average": "O(log n)", "worst": "O(n)", "description": "BST insert + rotate up" },
+      { "name": "Delete", "average": "O(log n)", "worst": "O(n)", "description": "Rotate down + remove leaf" },
+      { "name": "Split/Merge", "average": "O(log n)", "worst": "O(n)", "description": "Divide/combine treaps" }
+    ],
+    "note": "Random priorities give O(log n) expected height, making worst-case O(n) extremely unlikely."
+  },
+  "useCases": {
+    "title": "Common Use Cases",
+    "items": [
+      "Implicit key treaps for sequence operations",
+      "Efficient split and merge operations",
+      "Randomized balanced BST without complex rebalancing",
+      "Competitive programming (flexible tree operations)",
+      "Persistent data structures"
+    ]
+  },
+  "comparison": {
+    "title": "Treap vs Other Trees",
+    "items": [
+      { "vs": "BST", "advantage": "Expected O(log n) balance via random priorities" },
+      { "vs": "AVL Tree", "advantage": "Simpler implementation, supports split/merge" },
+      { "vs": "Red-Black Tree", "advantage": "Easier to code, natural split/merge" },
+      { "vs": "Skip List", "advantage": "Tree structure, supports order statistics" }
+    ]
+  }
+}

@@ -24,6 +24,7 @@ import BinaryTreeVisualizer from './visualizers/binarytrees/BinaryTreeTraversals
 import BSTVisualizer from './visualizers/binarytrees/BST/BSTVisualizer';
 import AVLVisualizer from './visualizers/binarytrees/AVL/AVLVisualizer';
 import SplayVisualizer from './visualizers/binarytrees/Splay/SplayVisualizer';
+import TreapVisualizer from './visualizers/binarytrees/Treap/TreapVisualizer';
 
 // Visualizers - Heaps
 import MinHeapVisualizer from './visualizers/heaps/MinHeapVisualizer';
@@ -64,6 +65,7 @@ function App() {
           <Route path="/bst" element={<BSTVisualizer />} />
           <Route path="/avl" element={<AVLVisualizer />} />
           <Route path="/splay" element={<SplayVisualizer />} />
+          <Route path="/treap" element={<TreapVisualizer />} />
           <Route path="/minheap" element={<MinHeapVisualizer />} />
           <Route path="/maxheap" element={<MaxHeapVisualizer />} />
           <Route path="/adjacency-list" element={<GraphVisualizer />} />

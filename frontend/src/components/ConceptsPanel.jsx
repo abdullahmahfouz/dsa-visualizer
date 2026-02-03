@@ -13,6 +13,7 @@ import avlConcepts from '../data/concepts/avl.json';
 import splayConcepts from '../data/concepts/splay.json';
 import minheapConcepts from '../data/concepts/minheap.json';
 import maxheapConcepts from '../data/concepts/maxheap.json';
+import treapConcepts from '../data/concepts/treap.json';
 
 // Map data structure names to their concept data
 const conceptsData = {
@@ -27,7 +28,8 @@ const conceptsData = {
   avl: avlConcepts,
   splay: splayConcepts,
   minheap: minheapConcepts,
-  maxheap: maxheapConcepts
+  maxheap: maxheapConcepts,
+  treap: treapConcepts
 };
 
 function ConceptsPanel({ dataStructure }) {

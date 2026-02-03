@@ -141,6 +141,13 @@ function Algorithms() {
           description: 'A self-adjusting BST with a clever optimization: every accessed node is "splayed" (rotated) to the root. No explicit balance condition, yet achieves O(log n) amortized time. Recently accessed items stay near the root — perfect for caches where some items are accessed repeatedly (temporal locality). Used in Windows NT\'s virtual memory management, GCC\'s implementation of certain data structures, and network routers.',
           available: true
         },
+        {
+          to: '/treap',
+          icon: GitFork,
+          title: 'Treap',
+          description: 'A randomized BST that combines tree and heap properties. Each node has a key (BST-ordered) and a random priority (max-heap-ordered). Rotations restore heap order after insertion, giving O(log n) expected time for all operations without complex rebalancing logic. Supports efficient split and merge. Widely used in competitive programming and as a simpler alternative to AVL/Red-Black trees.',
+          available: true
+        },
       ]
     },
 
