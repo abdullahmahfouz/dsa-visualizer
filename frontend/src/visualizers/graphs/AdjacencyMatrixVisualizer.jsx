@@ -4,8 +4,7 @@ import AIAssistant from '../../components/AIAssistant';
 import CodeTabs from '../../components/CodeTabs';
 import MessageBanner from '../../components/MessageBanner';
 import { getJson, postJson, deleteJson } from '../../api/api';
-import { useTimedMessage } from '../../components/js-components/useTimedMessage';
-import '../../styles/visualizer-styles/graphs/matrix.css';
+import { useTimedMessage } from '../../hooks/useTimedMessage';
 
 function AdjacencyMatrixVisualizer() {
   const [graph, setGraph] = useState({ vertices: [], edges: [], adjacency_list: {} });

@@ -4,8 +4,7 @@ import AIAssistant from '../../components/AIAssistant';
 import CodeTabs from '../../components/CodeTabs';
 import MessageBanner from '../../components/MessageBanner';
 import { getJson, postJson } from '../../api/api';
-import { useTimedMessage } from '../../components/js-components/useTimedMessage';
-import '../../styles/visualizer-styles/graphs/graph.css';
+import { useTimedMessage } from '../../hooks/useTimedMessage';
 
 function BellmanFordVisualizer() {
   const [graph, setGraph] = useState({ vertices: [], edges: [], adjacency_list: {} });

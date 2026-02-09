@@ -1,82 +1,101 @@
 /* ============================================
    Stack Visualizer Styles
+   Refined Warm Theme
    ============================================ */
 
 /* Stack Container */
-
 .stack-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 80px;
-    padding: 0.25rem;
+    min-height: 100px;
+    padding: 0.5rem;
 }
 
 .stack-visual {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.15rem;
-    min-height: 30px;
+    gap: 0.2rem;
+    min-height: 50px;
     justify-content: flex-end;
-    padding: 0.1rem;
+    padding: 0.25rem;
     width: 100%;
-    max-width: 80px;
+    max-width: 100px;
 }
 
 /* Stack Base */
 .stack-base {
-    width: 200px;
-    padding: 0.75rem;
+    width: 220px;
+    padding: 0.85rem;
     background: var(--bg-tertiary);
-    border: 3px solid var(--border-color);
+    border: 2px solid var(--border-color);
     border-top: none;
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     text-align: center;
-    font-weight: 700;
-    font-size: 0.75rem;
+    font-weight: 600;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     color: var(--text-muted);
 }
 
 /* Empty State */
 .stack-empty {
-    padding: 3rem 2rem;
+    padding: 3.5rem 2.25rem;
     color: var(--text-muted);
     font-style: italic;
     text-align: center;
     background: var(--bg-tertiary);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     border: 2px dashed var(--border-color);
-    width: 200px;
+    width: 220px;
+    font-size: 0.9rem;
 }
 
 /* Stack Item */
 .stack-item {
-    width: 200px;
-    padding: 1rem 1.5rem;
+    width: 220px;
+    padding: 1.15rem 1.75rem;
     background: var(--accent-gradient);
     border-radius: var(--radius-md);
     text-align: center;
     font-weight: 700;
-    font-size: 1.2rem;
-    color: white;
+    font-size: 1.25rem;
+    color: var(--bg-primary);
     position: relative;
-    animation: stackPush 0.3s ease-out forwards;
-    box-shadow: var(--shadow-md), 0 0 15px rgba(99, 102, 241, 0.3);
-    transition: all 0.3s ease;
+    animation: stackPush 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    box-shadow:
+        var(--shadow-md),
+        0 0 20px rgba(201, 162, 126, 0.2);
+    transition: all var(--transition-normal);
 }
 
 .stack-item:hover {
-    transform: scale(1.05);
-    box-shadow: var(--shadow-lg), 0 0 25px rgba(99, 102, 241, 0.4);
+    transform: scale(1.03);
+    box-shadow:
+        var(--shadow-lg),
+        0 0 30px rgba(201, 162, 126, 0.3);
+}
+
+/* First item (top) gets special treatment */
+.stack-item:first-child {
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, #7a8a5d 100%);
+    box-shadow:
+        var(--shadow-md),
+        0 0 25px rgba(139, 154, 109, 0.3);
+}
+
+.stack-item:first-child:hover {
+    box-shadow:
+        var(--shadow-lg),
+        0 0 35px rgba(139, 154, 109, 0.4);
 }
 
 @keyframes stackPush {
     from {
         opacity: 0;
-        transform: translateY(-30px) scale(0.8);
+        transform: translateY(-35px) scale(0.85);
     }
     to {
         opacity: 1;
@@ -86,39 +105,39 @@
 
 /* Top Item Styling */
 .stack-top {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    box-shadow: var(--shadow-md), 0 0 20px rgba(16, 185, 129, 0.4);
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, #7a8a5d 100%);
+    box-shadow: var(--shadow-md), 0 0 25px rgba(139, 154, 109, 0.3);
 }
 
 .stack-top:hover {
-    box-shadow: var(--shadow-lg), 0 0 30px rgba(16, 185, 129, 0.5);
+    box-shadow: var(--shadow-lg), 0 0 35px rgba(139, 154, 109, 0.4);
 }
 
 /* Top Marker */
 .top-marker {
     position: absolute;
-    left: -60px;
+    left: -65px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--success);
+    letter-spacing: 0.06em;
+    color: var(--accent-secondary);
     white-space: nowrap;
 }
 
 /* Highlight Animation */
 .stack-highlight {
-    animation: stackHighlight 1s ease-in-out infinite;
+    animation: stackHighlight 1.2s ease-in-out infinite;
 }
 
 @keyframes stackHighlight {
     0%, 100% {
-        box-shadow: var(--shadow-md), 0 0 15px rgba(168, 85, 247, 0.4);
+        box-shadow: var(--shadow-md), 0 0 20px rgba(201, 162, 126, 0.3);
     }
     50% {
-        box-shadow: var(--shadow-lg), 0 0 35px rgba(168, 85, 247, 0.7);
+        box-shadow: var(--shadow-lg), 0 0 40px rgba(201, 162, 126, 0.5);
     }
 }
 

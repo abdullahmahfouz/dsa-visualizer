@@ -21,6 +21,7 @@
 @import './visualizer-styles/linear/stack.css';
 @import './visualizer-styles/linear/queue.css';
 @import './visualizer-styles/linear/linkedlist.css';
+@import './visualizer-styles/linear/skiplist.css';
 @import './visualizer-styles/hash/hashtable.css';
 @import './visualizer-styles/hash/hashtable-chaining.css';
 @import './visualizer-styles/binarytrees/binarytree.css';
@@ -29,6 +30,8 @@
 @import './visualizer-styles/binarytrees/splay.css';
 @import './visualizer-styles/binarytrees/treap.css';
 @import './visualizer-styles/heaps/heap.css';
+@import './visualizer-styles/graphs/graph.css';
+@import './visualizer-styles/graphs/matrix.css';
 
 /* Mobile Responsive - Must be last to override other styles */
 @import './base-styles/responsive.css';

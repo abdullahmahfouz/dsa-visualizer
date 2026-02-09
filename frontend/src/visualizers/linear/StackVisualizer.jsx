@@ -4,7 +4,7 @@ import AIAssistant from '../../components/AIAssistant';
 import CodeTabs from '../../components/CodeTabs';
 import MessageBanner from '../../components/MessageBanner';
 import { getJson, postJson } from '../../api/api';
-import { useTimedMessage } from '../../components/js-components/useTimedMessage';
+import { useTimedMessage } from '../../hooks/useTimedMessage';
 
 function StackVisualizer() {
   const [stack, setStack] = useState([]);
