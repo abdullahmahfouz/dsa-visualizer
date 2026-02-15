@@ -164,7 +164,7 @@
 
 .card:hover {
     border-color: var(--accent-primary);
-    box-shadow: 0 12px 32px rgba(201, 162, 126, 0.08);
+    box-shadow: 0 12px 32px rgba(0, 191, 255, 0.08); /* Uses new accent color for shadow */
 }
 
 /* Dividers */

@@ -1,6 +1,6 @@
 /* ============================================
    Base Styles - Reset & Global
-   Refined Editorial Aesthetic
+   Stark Black Theme Aesthetic
    ============================================ */
 
 * {
@@ -16,7 +16,7 @@ html {
 
 body {
     font-family: var(--font-sans);
-    background: var(--bg-primary);
+    background: var(--bg-primary); /* Uses pure black */
     color: var(--text-primary);
     line-height: 1.65;
     min-height: 100vh;
@@ -25,7 +25,7 @@ body {
     letter-spacing: -0.01em;
 }
 
-/* Refined Background Pattern - Subtle Grain */
+/* Refined Background Pattern - Removed complex gradients for stark look */
 body::before {
     content: '';
     position: fixed;
@@ -33,14 +33,12 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background:
-        radial-gradient(ellipse at 15% 20%, rgba(201, 162, 126, 0.04) 0%, transparent 45%),
-        radial-gradient(ellipse at 85% 80%, rgba(139, 154, 109, 0.03) 0%, transparent 45%);
+    background: transparent; /* Removed radial gradients */
     pointer-events: none;
     z-index: -1;
 }
 
-/* Subtle Noise Texture */
+/* Subtle Noise Texture - Reduced opacity for a cleaner look */
 body::after {
     content: '';
     position: fixed;
@@ -48,7 +46,7 @@ body::after {
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.025;
+    opacity: 0.01; /* More subtle */
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: -1;
@@ -61,16 +59,16 @@ a {
 }
 
 a:hover {
-    color: var(--accent-tertiary);
+    color: var(--accent-secondary); /* Changed to a cooler accent */
 }
 
-/* Display Headings - Serif */
+/* Display Headings - Sans-serif for consistency with modern theme */
 h1 {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 700; /* Bolder for impact */
     font-size: 3rem;
     line-height: 1.15;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em; /* Tighter letter-spacing */
     color: var(--text-primary);
 }
 
@@ -83,13 +81,13 @@ h2, h3, h4, h5, h6 {
 }
 
 h2 {
-    font-size: 1.5rem;
-    letter-spacing: -0.015em;
+    font-size: 1.8rem; /* Slightly larger */
+    letter-spacing: -0.02em;
     margin-bottom: 1rem;
 }
 
 h3 {
-    font-size: 1.15rem;
+    font-size: 1.25rem; /* Slightly larger */
     letter-spacing: -0.01em;
 }
 
@@ -98,7 +96,7 @@ p {
 }
 
 strong {
-    font-weight: 600;
+    font-weight: 700; /* Bolder */
     color: var(--text-primary);
 }
 
@@ -141,7 +139,7 @@ code {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-primary);
+    background: var(--accent-primary); /* Uses new accent */
 }
 
 /* Footer */
@@ -182,7 +180,7 @@ code {
     border-color: var(--accent-primary);
     color: var(--bg-primary);
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(201, 162, 126, 0.25);
+    box-shadow: 0 8px 24px rgba(0, 191, 255, 0.25); /* Uses new accent for shadow */
 }
 
 .social-links a [data-lucide] {
@@ -190,12 +188,12 @@ code {
     height: 20px;
 }
 
-/* AI Assistant Styles */
+/* AI Assistant Styles - Adjusted for cooler theme */
 .ai-assistant {
     width: 100%;
     padding: 1.5rem;
-    background: linear-gradient(135deg, rgba(109, 138, 154, 0.08) 0%, rgba(139, 154, 109, 0.06) 100%);
-    border: 1px solid rgba(109, 138, 154, 0.2);
+    background: var(--bg-elevated); /* Solid background instead of gradient */
+    border: 1px solid rgba(0, 191, 255, 0.2); /* Uses new accent */
     border-radius: var(--radius-lg);
     transition: all var(--transition-normal);
     position: sticky;
@@ -206,8 +204,8 @@ code {
 
 .ai-assistant:hover {
     transform: translateY(-2px);
-    border-color: rgba(109, 138, 154, 0.35);
-    box-shadow: 0 12px 32px rgba(109, 138, 154, 0.12);
+    border-color: rgba(0, 191, 255, 0.35); /* Uses new accent */
+    box-shadow: 0 12px 32px rgba(0, 191, 255, 0.15); /* Uses new accent */
 }
 
 .ai-assistant h3 {
@@ -215,7 +213,7 @@ code {
     align-items: center;
     gap: 0.6rem;
     font-weight: 600;
-    color: var(--accent-cool);
+    color: var(--accent-primary); /* Uses new accent */
     margin-bottom: 0.85rem;
     font-size: 1rem;
 }
@@ -223,7 +221,7 @@ code {
 .ai-assistant h3 [data-lucide] {
     width: 18px;
     height: 18px;
-    stroke: var(--accent-cool);
+    stroke: var(--accent-primary); /* Uses new accent */
 }
 
 .ai-assistant p {
@@ -242,7 +240,7 @@ code {
 .ai-input-group input {
     flex: 1;
     padding: 0.75rem 1rem;
-    background: rgba(0, 0, 0, 0.25);
+    background: var(--bg-secondary); /* Darker input background */
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     color: var(--text-primary);
@@ -257,14 +255,14 @@ code {
 
 .ai-input-group input:focus {
     outline: none;
-    border-color: var(--accent-cool);
-    box-shadow: 0 0 0 3px rgba(109, 138, 154, 0.1);
-    background: var(--bg-secondary);
+    border-color: var(--accent-primary); /* Uses new accent */
+    box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1); /* Uses new accent */
+    background: var(--bg-elevated); /* Slightly lighter on focus */
 }
 
 .ai-input-group button {
     padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, var(--accent-cool) 0%, var(--accent-secondary) 100%);
+    background: var(--accent-primary); /* Solid accent color */
     color: var(--bg-primary);
     border: none;
     border-radius: var(--radius-md);
@@ -278,7 +276,7 @@ code {
 
 .ai-input-group button:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 8px 20px rgba(109, 138, 154, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 191, 255, 0.3); /* Uses new accent for shadow */
 }
 
 .ai-input-group button:disabled {
@@ -314,16 +312,16 @@ code {
 }
 
 #ai-response::-webkit-scrollbar-thumb {
-    background: rgba(109, 138, 154, 0.3);
+    background: var(--accent-cool); /* Uses new accent */
     border-radius: var(--radius-sm);
 }
 
 #ai-response::-webkit-scrollbar-thumb:hover {
-    background: rgba(109, 138, 154, 0.5);
+    background: var(--accent-primary); /* Uses new accent */
 }
 
 .ai-loading {
-    color: var(--accent-cool);
+    color: var(--accent-primary); /* Uses new accent */
     font-style: italic;
 }
 
@@ -337,7 +335,7 @@ code {
     background: var(--danger-muted);
     padding: 0.65rem;
     border-radius: var(--radius-sm);
-    border: 1px solid rgba(201, 126, 126, 0.2);
+    border: 1px solid rgba(220, 53, 69, 0.2); /* Uses new danger muted */
 }
 
 @media (max-width: 900px) {

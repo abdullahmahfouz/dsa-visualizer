@@ -3,76 +3,76 @@
    Refined Dark Theme with Warm Accents
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500;600;700&display=swap');
 
 :root {
-    /* Colors - Warm Dark Theme */
-    --bg-primary: #0c0b0a;
-    --bg-secondary: #141311;
-    --bg-tertiary: #1c1a17;
-    --bg-elevated: #252320;
-    --bg-surface: #1f1d1a;
+    /* Colors - Stark Black Theme with Cool Accents */
+    --bg-primary: #000000; /* Pure black for primary background */
+    --bg-secondary: #0a0a0a;
+    --bg-tertiary: #141414;
+    --bg-elevated: #1f1f1f;
+    --bg-surface: #0a0a0a;
 
-    /* Text Colors - Warm Tones */
-    --text-primary: #f5f2ed;
-    --text-secondary: #b8b2a7;
-    --text-muted: #716b60;
-    --text-tertiary: #8a847a;
+    /* Text Colors - Crisp & Modern */
+    --text-primary: #e0e0e0; /* Light gray for primary text */
+    --text-secondary: #b0b0b0;
+    --text-muted: #707070;
+    --text-tertiary: #808080;
 
-    /* Accent Colors - Terracotta & Sage Palette */
-    --accent-primary: #c9a27e;
-    --accent-secondary: #8b9a6d;
-    --accent-tertiary: #d4856a;
-    --accent-cool: #6d8a9a;
-    --accent-warm: #c97e7e;
+    /* Accent Colors - Cool Blues & Cyans */
+    --accent-primary: #00bfff; /* Deep Sky Blue */
+    --accent-secondary: #00ced1; /* Dark Cyan */
+    --accent-tertiary: #1e90ff; /* Dodger Blue */
+    --accent-cool: #4682b4; /* Steel Blue */
+    --accent-warm: #ff6347; /* Tomato - retained for potential warning/danger, but less prominent */
 
-    /* Gradient - Subtle, Sophisticated */
-    --accent-gradient: linear-gradient(135deg, #c9a27e 0%, #d4856a 100%);
-    --accent-gradient-cool: linear-gradient(135deg, #6d8a9a 0%, #8b9a6d 100%);
-    --accent-gradient-subtle: linear-gradient(135deg, rgba(201, 162, 126, 0.15) 0%, rgba(212, 133, 106, 0.08) 100%);
+    /* Gradient - Modern & Clean */
+    --accent-gradient: linear-gradient(135deg, #00bfff 0%, #1e90ff 100%);
+    --accent-gradient-cool: linear-gradient(135deg, #00ced1 0%, #4682b4 100%);
+    --accent-gradient-subtle: linear-gradient(135deg, rgba(0, 191, 255, 0.1) 0%, rgba(30, 144, 255, 0.05) 100%);
 
     /* Extended Color Palette */
-    --terracotta: #c9a27e;
-    --sage: #8b9a6d;
-    --clay: #d4856a;
-    --slate: #6d8a9a;
-    --rust: #c97e7e;
-    --cream: #e8e2d8;
-    --sand: #d4cfc5;
-    --charcoal: #2d2a26;
+    --terracotta: #cc5500; /* Replaced with a more orange-red for contrast */
+    --sage: #008080; /* Teal */
+    --clay: #a52a2a; /* Brown */
+    --slate: #708090; /* Slate Gray */
+    --rust: #b82d00; /* Darker orange-red */
+    --cream: #f5f5dc; /* Behige */
+    --sand: #c2b280; /* Ecru */
+    --charcoal: #36454f; /* Charcoal Grey */
 
-    /* Status Colors - Refined */
-    --success: #8b9a6d;
-    --success-muted: rgba(139, 154, 109, 0.12);
-    --warning: #d4a76a;
-    --warning-muted: rgba(212, 167, 106, 0.12);
-    --danger: #c97e7e;
-    --danger-muted: rgba(201, 126, 126, 0.12);
-    --info: #6d8a9a;
-    --info-muted: rgba(109, 138, 154, 0.12);
+    /* Status Colors - Clear & Distinct */
+    --success: #28a745; /* Green */
+    --success-muted: rgba(40, 167, 69, 0.12);
+    --warning: #ffc107; /* Amber */
+    --warning-muted: rgba(255, 193, 7, 0.12);
+    --danger: #dc3545; /* Red */
+    --danger-muted: rgba(220, 53, 69, 0.12);
+    --info: #17a2b8; /* Light Blue */
+    --info-muted: rgba(23, 162, 184, 0.12);
 
-    /* Border & Shadow - Subtle */
-    --border-color: #2d2a26;
-    --border-color-light: #3d3a35;
-    --border-subtle: rgba(201, 162, 126, 0.1);
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.6);
-    --shadow-glow: 0 0 50px rgba(201, 162, 126, 0.15);
-    --shadow-glow-lg: 0 0 100px rgba(201, 162, 126, 0.2);
+    /* Border & Shadow - Sharp & Defined */
+    --border-color: #333333;
+    --border-color-light: #444444;
+    --border-subtle: rgba(0, 191, 255, 0.1);
+    --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.6);
+    --shadow-lg: 0 5px 15px rgba(0, 0, 0, 0.7);
+    --shadow-xl: 0 10px 25px rgba(0, 0, 0, 0.8);
+    --shadow-glow: 0 0 30px rgba(0, 191, 255, 0.2);
+    --shadow-glow-lg: 0 0 60px rgba(0, 191, 255, 0.3);
 
-    /* Glass Effects - Warmer */
-    --glass-bg: rgba(255, 250, 240, 0.02);
-    --glass-border: rgba(255, 250, 240, 0.06);
-    --glass-bg-hover: rgba(255, 250, 240, 0.04);
+    /* Glass Effects - Cooler */
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-bg-hover: rgba(255, 255, 255, 0.05);
 
-    /* Typography - Distinctive */
-    --font-display: 'Instrument Serif', Georgia, serif;
-    --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+    /* Typography - Modern & Legible */
+    --font-display: 'Montserrat', sans-serif; /* Modern sans-serif */
+    --font-sans: 'Open Sans', sans-serif; /* Highly legible body font */
+    --font-mono: 'Fira Code', monospace; /* Monospaced font for code */
 
-    /* Spacing - More Generous */
+    /* Spacing - Consistent */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
@@ -82,18 +82,18 @@
     --spacing-3xl: 4rem;
     --spacing-4xl: 6rem;
 
-    /* Border Radius - Softer */
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 14px;
-    --radius-xl: 20px;
-    --radius-2xl: 28px;
+    /* Border Radius - Modern */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
     --radius-full: 9999px;
 
-    /* Transitions - Refined Easing */
-    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    --transition-smooth: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Transitions - Snappy */
+    --transition-fast: 0.1s ease-out;
+    --transition-normal: 0.2s ease-out;
+    --transition-slow: 0.3s ease-out;
+    --transition-bounce: 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    --transition-smooth: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
