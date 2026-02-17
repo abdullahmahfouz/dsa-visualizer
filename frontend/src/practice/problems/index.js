@@ -8,7 +8,7 @@ export const roadmap = [
         icon: 'grid',
         color: '#10b981',
         description: 'Foundation of DSA - array manipulation and hash maps',
-        problems: ['two-sum', 'valid-anagram', 'contains-duplicate']
+        problems: ['two-sum', 'valid-anagram', 'contains-duplicate', 'group-anagrams']
     },
     {
         id: 'two-pointers',
@@ -16,7 +16,7 @@ export const roadmap = [
         icon: 'pointer',
         color: '#3b82f6',
         description: 'Efficient array traversal techniques',
-        problems: ['valid-palindrome', 'two-sum-sorted']
+        problems: ['valid-palindrome', 'two-sum-sorted', 'container-with-most-water']
     },
     {
         id: 'stack',
@@ -24,7 +24,7 @@ export const roadmap = [
         icon: 'layers',
         color: '#8b5cf6',
         description: 'LIFO data structure problems',
-        problems: ['valid-parentheses', 'min-stack']
+        problems: ['valid-parentheses', 'min-stack', 'evaluate-reverse-polish-notation']
     },
     {
         id: 'binary-search',
@@ -32,7 +32,7 @@ export const roadmap = [
         icon: 'search',
         color: '#f59e0b',
         description: 'Divide and conquer search technique',
-        problems: ['binary-search', 'search-rotated-array']
+        problems: ['binary-search', 'search-rotated-array', 'find-minimum-in-rotated-sorted-array']
     },
     {
         id: 'linked-list',
@@ -40,7 +40,7 @@ export const roadmap = [
         icon: 'link',
         color: '#ec4899',
         description: 'Pointer-based data structures',
-        problems: ['reverse-linked-list', 'merge-two-lists', 'linked-list-cycle']
+        problems: ['reverse-linked-list', 'merge-two-lists', 'linked-list-cycle', 'reorder-list']
     },
     {
         id: 'trees',
@@ -48,7 +48,7 @@ export const roadmap = [
         icon: 'tree',
         color: '#14b8a6',
         description: 'Hierarchical data structures',
-        problems: ['invert-tree', 'max-depth-tree', 'same-tree']
+        problems: ['invert-tree', 'max-depth-tree', 'same-tree', 'kth-smallest-element-in-a-bst']
     },
     {
         id: 'graphs',
@@ -378,7 +378,176 @@ print(s.solution([1,2,3,1]))`
         hints: ['A set only stores unique values.', 'Compare the length of the set vs the original array.']
     },
 
-    // Two Pointers
+    'contains-duplicate': {
+        id: 'contains-duplicate',
+        title: 'Contains Duplicate',
+        difficulty: 'Easy',
+        category: 'Arrays & Hashing',
+        description: `Given an integer array \`nums\`, return \`true\` if any value appears at least twice in the array, and return \`false\` if every element is distinct.`,
+        examples: [
+            { input: 'nums = [1,2,3,1]', output: 'true', explanation: '1 appears twice.' },
+            { input: 'nums = [1,2,3,4]', output: 'false', explanation: 'All elements are distinct.' }
+        ],
+        constraints: ['1 <= nums.length <= 10^5', '-10^9 <= nums[i] <= 10^9'],
+        testCases: [
+            { input: '[1,2,3,1]', expected: 'True' },
+            { input: '[1,2,3,4]', expected: 'False' }
+        ],
+        starterCode: {
+            python: `class Solution:
+    def solution(self, nums):
+        # Use a set for O(n) lookup
+        pass
+
+s = Solution()
+print(s.solution([1,2,3,1]))`
+        },
+        solutions: {
+            optimal: {
+                name: 'Hash Set',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(n)',
+                description: 'Use a set to track seen numbers. Return true if we see a duplicate.',
+                code: `class Solution:
+    def solution(self, nums):
+        seen = set()
+        for num in nums:
+            if num in seen:
+                return True
+            seen.add(num)
+        return False
+
+s = Solution()
+print(s.solution([1,2,3,1]))`
+            },
+            setLength: {
+                name: 'Set Length Comparison',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(n)',
+                description: 'Compare length of set vs original array. One-liner approach.',
+                code: `class Solution:
+    def solution(self, nums):
+        return len(nums) != len(set(nums))
+
+s = Solution()
+print(s.solution([1,2,3,1]))`
+            },
+            sorting: {
+                name: 'Sorting',
+                timeComplexity: 'O(n log n)',
+                spaceComplexity: 'O(1)',
+                description: 'Sort the array, then check adjacent elements for duplicates.',
+                code: `class Solution:
+    def solution(self, nums):
+        nums.sort()
+        for i in range(1, len(nums)):
+            if nums[i] == nums[i - 1]:
+                return True
+        return False
+
+s = Solution()
+print(s.solution([1,2,3,1]))`
+            },
+            bruteForce: {
+                name: 'Brute Force',
+                timeComplexity: 'O(n²)',
+                spaceComplexity: 'O(1)',
+                description: 'Compare each element with every other element.',
+                code: `class Solution:
+    def solution(self, nums):
+        n = len(nums)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if nums[i] == nums[j]:
+                    return True
+        return False
+
+s = Solution()
+print(s.solution([1,2,3,1]))`
+            }
+        },
+        hints: ['A set only stores unique values.', 'Compare the length of the set vs the original array.']
+    },
+    
+    'group-anagrams': {
+        id: 'group-anagrams',
+        title: 'Group Anagrams',
+        difficulty: 'Medium',
+        category: 'Arrays & Hashing',
+        description: `Given an array of strings \`strs\`, group the anagrams together. You can return the answer in any order.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.`,
+        examples: [
+            { input: 'strs = ["eat","tea","tan","ate","nat","bat"]', output: '[["bat"],["nat","tan"],["ate","eat","tea"]]', explanation: 'Grouped by anagrams.' },
+            { input: 'strs = [""]', output: '[[""]]', explanation: 'Empty string is an anagram of itself.' },
+            { input: 'strs = ["a"]', output: '[["a"]]', explanation: 'Single character string.' }
+        ],
+        constraints: ['1 <= strs.length <= 10^4', '0 <= strs[i].length <= 100', 'strs[i] consists of lowercase English letters.'],
+        testCases: [
+            { input: '["eat","tea","tan","ate","nat","bat"]', expected: '[["bat"],["nat","tan"],["ate","eat","tea"]]' },
+            { input: '[""]', expected: '[[""]]' },
+            { input: '["a"]', expected: '[["a"]]' }
+        ],
+        starterCode: {
+            python: `class Solution:
+    def solution(self, strs):
+        # Use a hash map where key is sorted string and value is list of anagrams
+        pass
+
+s = Solution()
+print(s.solution(["eat","tea","tan","ate","nat","bat"]))`
+        },
+        solutions: {
+            optimal: {
+                name: 'Hash Map with Sorted String Key',
+                timeComplexity: 'O(N * K log K)',
+                spaceComplexity: 'O(N * K)',
+                description: 'For each string, sort it to use as a key in a hash map. Group original strings by this key.',
+                code: `from collections import defaultdict
+
+class Solution:
+    def solution(self, strs):
+        # Defaultdict to store lists of anagrams
+        anagram_map = defaultdict(list)
+
+        for word in strs:
+            # Sort the word to create a unique key for anagrams
+            sorted_word = "".join(sorted(word))
+            anagram_map[sorted_word].append(word)
+
+        # Return the values (lists of anagrams) from the hash map
+        return list(anagram_map.values())
+
+s = Solution()
+print(s.solution(["eat","tea","tan","ate","nat","bat"]))`
+            },
+            countArrayKey: {
+                name: 'Hash Map with Character Count Tuple Key',
+                timeComplexity: 'O(N * K)',
+                spaceComplexity: 'O(N * K)',
+                description: 'Create a count array (tuple for hashability) for each word. Use this tuple as the hash map key.',
+                code: `from collections import defaultdict
+
+class Solution:
+    def solution(self, strs):
+        anagram_map = defaultdict(list)
+
+        for word in strs:
+            # Create a count array for characters (a-z)
+            count = [0] * 26
+            for char in word:
+                count[ord(char) - ord('a')] += 1
+            # Use the tuple of counts as the key
+            anagram_map[tuple(count)].append(word)
+
+        return list(anagram_map.values())
+
+s = Solution()
+print(s.solution(["eat","tea","tan","ate","nat","bat"]))`
+            }
+        },
+        hints: ['Anagrams have the same characters with the same frequencies.', 'A sorted version of an anagram is unique.', 'A character count array (or tuple) can also serve as a unique key for anagrams.']
+    },
     'valid-palindrome': {
         id: 'valid-palindrome',
         title: 'Valid Palindrome',
@@ -561,7 +730,170 @@ print(solution([2,7,11,15], 9))`
         hints: ['Since array is sorted, use two pointers.', 'If sum < target, move left pointer. If sum > target, move right pointer.']
     },
 
-    // Stack
+    'two-sum-sorted': {
+        id: 'two-sum-sorted',
+        title: 'Two Sum II - Sorted Array',
+        difficulty: 'Medium',
+        category: 'Two Pointers',
+        description: `Given a 1-indexed sorted array, find two numbers that add up to a target.
+
+Return the indices of the two numbers (1-indexed).`,
+        examples: [
+            { input: 'numbers = [2,7,11,15], target = 9', output: '[1,2]', explanation: '2 + 7 = 9' }
+        ],
+        constraints: ['2 <= numbers.length <= 3 * 10^4', 'numbers is sorted in non-decreasing order.'],
+        testCases: [
+            { input: '[2,7,11,15], 9', expected: '[1, 2]' },
+            { input: '[2,3,4], 6', expected: '[1, 3]' }
+        ],
+        starterCode: {
+            python: `def solution(numbers, target):
+    # Two pointers - no extra space needed!
+    pass
+
+print(solution([2,7,11,15], 9))`
+        },
+        solutions: {
+            optimal: {
+                name: 'Two Pointers',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(1)',
+                description: 'Use two pointers from both ends. Since array is sorted, adjust pointers based on sum.',
+                code: `def solution(numbers, target):
+    left, right = 0, len(numbers) - 1
+
+    while left < right:
+        current_sum = numbers[left] + numbers[right]
+
+        if current_sum == target:
+            return [left + 1, right + 1]  # 1-indexed
+        elif current_sum < target:
+            left += 1  # Need larger sum
+        else:
+            right -= 1  # Need smaller sum
+
+    return []
+
+print(solution([2,7,11,15], 9))`
+            },
+            binarySearch: {
+                name: 'Binary Search',
+                timeComplexity: 'O(n log n)',
+                spaceComplexity: 'O(1)',
+                description: 'For each element, binary search for its complement.',
+                code: `def solution(numbers, target):
+    def binary_search(arr, left, target):
+        right = len(arr) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if arr[mid] == target:
+                return mid
+            elif arr[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return -1
+
+    for i in range(len(numbers)):
+        complement = target - numbers[i]
+        j = binary_search(numbers, i + 1, complement)
+        if j != -1:
+            return [i + 1, j + 1]  # 1-indexed
+
+    return []
+
+print(solution([2,7,11,15], 9))`
+            },
+            hashMap: {
+                name: 'Hash Map',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(n)',
+                description: 'Same as regular Two Sum, but uses extra space.',
+                code: `def solution(numbers, target):
+    seen = {}
+    for i, num in enumerate(numbers):
+        complement = target - num
+        if complement in seen:
+            return [seen[complement] + 1, i + 1]  # 1-indexed
+        seen[num] = i
+    return []
+
+print(solution([2,7,11,15], 9))`
+            }
+        },
+        hints: ['Since array is sorted, use two pointers.', 'If sum < target, move left pointer. If sum > target, move right pointer.']
+    },
+
+    'container-with-most-water': {
+        id: 'container-with-most-water',
+        title: 'Container With Most Water',
+        difficulty: 'Medium',
+        category: 'Two Pointers',
+        description: `Given n non-negative integers a1, a2, ..., an, where each represents a point at coordinate (i, ai). n vertical lines are drawn such that the two endpoints of line i is at (i, ai) and (i, 0). Find two lines, which together with x-axis forms a container, such that the container contains the most water.
+
+Note: You may not slant the container and n is at least 2.`,
+        examples: [
+            { input: 'height = [1,8,6,2,5,4,8,3,7]', output: '49', explanation: 'The vertical lines are at x=1 and x=8 with heights 8 and 7 respectively. The area is 7 * (8 - 1) = 49.' }
+        ],
+        constraints: ['n == height.length', '2 <= n <= 10^5', '0 <= height[i] <= 10^4'],
+        testCases: [
+            { input: '[1,8,6,2,5,4,8,3,7]', expected: '49' },
+            { input: '[1,1]', expected: '1' }
+        ],
+        starterCode: {
+            python: `def solution(height):
+    # Two pointers from ends
+    pass
+
+print(solution([1,8,6,2,5,4,8,3,7]))`
+        },
+        solutions: {
+            optimal: {
+                name: 'Two Pointers',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(1)',
+                description: 'Start with pointers at both ends. Move the pointer pointing to the shorter line inward. This is because moving the taller line inward will definitely not increase the height, and thus the area, while moving the shorter line inward might find a taller line that can form a larger container.',
+                code: `def solution(height):
+    max_area = 0
+    left = 0
+    right = len(height) - 1
+
+    while left < right:
+        # Calculate current area
+        current_area = min(height[left], height[right]) * (right - left)
+        max_area = max(max_area, current_area)
+
+        # Move the pointer pointing to the shorter line
+        if height[left] < height[right]:
+            left += 1
+        else:
+            right -= 1
+
+    return max_area
+
+print(solution([1,8,6,2,5,4,8,3,7]))`
+            },
+            bruteForce: {
+                name: 'Brute Force',
+                timeComplexity: 'O(n²)',
+                spaceComplexity: 'O(1)',
+                description: 'Check every possible pair of lines and calculate the area. Keep track of the maximum area found.',
+                code: `def solution(height):
+    max_area = 0
+    n = len(height)
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            current_area = min(height[i], height[j]) * (j - i)
+            max_area = max(max_area, current_area)
+
+    return max_area
+
+print(solution([1,8,6,2,5,4,8,3,7]))`
+            }
+        },
+        hints: ['Use two pointers, one at each end of the array.', 'The area is limited by the shorter line.', 'To find a larger area, move the pointer of the shorter line inward.']
+    },
     'valid-parentheses': {
         id: 'valid-parentheses',
         title: 'Valid Parentheses',
@@ -804,7 +1136,215 @@ print(s.getMin())  # -2`
         hints: ['Use two stacks - one for values, one for minimums.', 'Or store (value, currentMin) pairs in a single stack.']
     },
 
-    // Binary Search
+    'min-stack': {
+        id: 'min-stack',
+        title: 'Min Stack',
+        difficulty: 'Medium',
+        category: 'Stack',
+        description: `Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.`,
+        examples: [
+            { input: 'push(-2), push(0), push(-3), getMin(), pop(), top(), getMin()', output: '-3, 0, -2', explanation: 'Track min at each level.' }
+        ],
+        constraints: ['Methods will be called at most 3 * 10^4 times.'],
+        testCases: [
+            {
+                input: '{"methods": ["MinStack", "push", "push", "push", "getMin", "pop", "top", "getMin"], "args": [[], [-2], [0], [-3], [], [], [], []]}',
+                expected: '[-3, 0, -2]'
+            }
+        ],
+        starterCode: {
+            python: `class MinStack:
+    def __init__(self):
+        pass
+
+    def push(self, val):
+        pass
+
+    def pop(self):
+        pass
+
+    def top(self):
+        pass
+
+    def getMin(self):
+        pass
+
+# Test
+s = MinStack()
+s.push(-2); s.push(0); s.push(-3)
+print(s.getMin())  # -3`
+        },
+        solutions: {
+            optimal: {
+                name: 'Two Stacks',
+                timeComplexity: 'O(1) all operations',
+                spaceComplexity: 'O(n)',
+                description: 'Use two stacks: one for values, one for minimums at each level.',
+                code: `class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        # Push minimum so far onto min_stack
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+        else:
+            self.min_stack.append(self.min_stack[-1])
+
+    def pop(self):
+        self.stack.pop()
+        self.min_stack.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def getMin(self):
+        return self.min_stack[-1]
+
+# Test
+s = MinStack()
+s.push(-2); s.push(0); s.push(-3)
+print(s.getMin())  # -3
+s.pop()
+print(s.top())     # 0
+print(s.getMin())  # -2`
+            },
+            singleStack: {
+                name: 'Single Stack with Tuples',
+                timeComplexity: 'O(1) all operations',
+                spaceComplexity: 'O(n)',
+                description: 'Store (value, currentMin) pairs in a single stack.',
+                code: `class MinStack:
+    def __init__(self):
+        self.stack = []  # Each element is (value, min_so_far)
+
+    def push(self, val):
+        if not self.stack:
+            self.stack.append((val, val))
+        else:
+            current_min = min(val, self.stack[-1][1])
+            self.stack.append((val, current_min))
+
+    def pop(self):
+        self.stack.pop()
+
+    def top(self):
+        return self.stack[-1][0]
+
+    def getMin(self):
+        return self.stack[-1][1]
+
+# Test
+s = MinStack()
+s.push(-2); s.push(0); s.push(-3)
+print(s.getMin())  # -3
+s.pop()
+print(s.top())     # 0
+print(s.getMin())  # -2`
+            },
+            optimizedMinStack: {
+                name: 'Optimized Min Stack',
+                timeComplexity: 'O(1) all operations',
+                spaceComplexity: 'O(n) worst case, better average',
+                description: 'Only push to min_stack when new value <= current min.',
+                code: `class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        # Only push if <= current min (handles duplicates)
+        if not self.min_stack or val <= self.min_stack[-1]:
+            self.min_stack.append(val)
+
+    def pop(self):
+        val = self.stack.pop()
+        # Only pop from min_stack if it matches
+        if val == self.min_stack[-1]:
+            self.min_stack.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def getMin(self):
+        return self.min_stack[-1]
+
+# Test
+s = MinStack()
+s.push(-2); s.push(0); s.push(-3)
+print(s.getMin())  # -3
+s.pop()
+print(s.top())     # 0
+print(s.getMin())  # -2`
+            }
+        },
+        hints: ['Use two stacks - one for values, one for minimums.', 'Or store (value, currentMin) pairs in a single stack.']
+    },
+
+    'evaluate-reverse-polish-notation': {
+        id: 'evaluate-reverse-polish-notation',
+        title: 'Evaluate Reverse Polish Notation',
+        difficulty: 'Medium',
+        category: 'Stack',
+        description: `Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+
+Valid operators are +, -, *, /. Each operand may be an integer or another expression.`,
+        examples: [
+            { input: 'tokens = ["2","1","+","3","*"]', output: '9', explanation: '((2 + 1) * 3) = 9' },
+            { input: 'tokens = ["4","13","5","/","+"]', output: '6', explanation: '(4 + (13 / 5)) = 6' }
+        ],
+        constraints: ['1 <= tokens.length <= 10^4', 'tokens[i] is an operator or an integer.'],
+        testCases: [
+            { input: '["2","1","+","3","*"]', expected: '9' },
+            { input: '["4","13","5","/","+"]', expected: '6' }
+        ],
+        starterCode: {
+            python: `def solution(tokens):
+    # Use a stack to store numbers
+    pass
+
+print(solution(["2","1","+","3","*"]))`
+        },
+        solutions: {
+            optimal: {
+                name: 'Stack',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(n)',
+                description: 'Iterate through tokens. If operand, push to stack. If operator, pop two operands, perform operation, push result back.',
+                code: `def solution(tokens):
+    stack = []
+    
+    for token in tokens:
+        if token == "+":
+            b = stack.pop()
+            a = stack.pop()
+            stack.append(a + b)
+        elif token == "-":
+            b = stack.pop()
+            a = stack.pop()
+            stack.append(a - b)
+        elif token == "*":
+            b = stack.pop()
+            a = stack.pop()
+            stack.append(a * b)
+        elif token == "/":
+            b = stack.pop()
+            a = stack.pop()
+            # Integer division towards zero
+            stack.append(int(a / b))
+        else:
+            stack.append(int(token))
+            
+    return stack[0]
+
+print(solution(["2","1","+","3","*"]))`
+            }
+        },
+        hints: ['Use a stack.', 'Push numbers onto the stack.', 'When an operator is encountered, pop two numbers, perform the operation, and push the result back onto the stack.']
+    },
     'binary-search': {
         id: 'binary-search',
         title: 'Binary Search',
@@ -1004,7 +1544,181 @@ print(solution([4,5,6,7,0,1,2], 0))`
         hints: ['One half is always sorted.', 'Check which half is sorted, then decide which half to search.']
     },
 
-    // Linked List
+    'search-rotated-array': {
+        id: 'search-rotated-array',
+        title: 'Search in Rotated Sorted Array',
+        difficulty: 'Medium',
+        category: 'Binary Search',
+        description: `Given a rotated sorted array (e.g., [4,5,6,7,0,1,2]), find a target in O(log n) time.`,
+        examples: [
+            { input: 'nums = [4,5,6,7,0,1,2], target = 0', output: '4', explanation: '0 is at index 4.' }
+        ],
+        constraints: ['1 <= nums.length <= 5000', 'nums contains distinct values.'],
+        testCases: [
+            { input: '[4,5,6,7,0,1,2], 0', expected: '4' },
+            { input: '[4,5,6,7,0,1,2], 3', expected: '-1' }
+        ],
+        starterCode: {
+            python: `def solution(nums, target):
+    # Modified binary search
+    pass
+
+print(solution([4,5,6,7,0,1,2], 0))`
+        },
+        solutions: {
+            optimal: {
+                name: 'Modified Binary Search',
+                timeComplexity: 'O(log n)',
+                spaceComplexity: 'O(1)',
+                description: 'One half is always sorted. Determine which half and if target is in that range.',
+                code: `def solution(nums, target):
+    left, right = 0, len(nums) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if nums[mid] == target:
+            return mid
+
+        # Check which half is sorted
+        if nums[left] <= nums[mid]:
+            # Left half is sorted
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        else:
+            # Right half is sorted
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+
+    return -1
+
+print(solution([4,5,6,7,0,1,2], 0))`
+            },
+            findPivotFirst: {
+                name: 'Find Pivot Then Search',
+                timeComplexity: 'O(log n)',
+                spaceComplexity: 'O(1)',
+                description: 'First find the rotation pivot, then binary search the correct half.',
+                code: `def solution(nums, target):
+    n = len(nums)
+
+    # Find the pivot (smallest element)
+    left, right = 0, n - 1
+    while left < right:
+        mid = (left + right) // 2
+        if nums[mid] > nums[right]:
+            left = mid + 1
+        else:
+            right = mid
+
+    pivot = left
+
+    # Binary search in the correct half
+    if target >= nums[pivot] and target <= nums[n - 1]:
+        left, right = pivot, n - 1
+    else:
+        left, right = 0, pivot - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1
+
+print(solution([4,5,6,7,0,1,2], 0))`
+            },
+            linear: {
+                name: 'Linear Search (Comparison)',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(1)',
+                description: 'Simple but does not meet O(log n) requirement.',
+                code: `def solution(nums, target):
+    # O(n) - doesn't meet requirement, for comparison
+    for i, num in enumerate(nums):
+        if num == target:
+            return i
+    return -1
+
+print(solution([4,5,6,7,0,1,2], 0))`
+            }
+        },
+        hints: ['One half is always sorted.', 'Check which half is sorted, then decide which half to search.']
+    },
+
+    'find-minimum-in-rotated-sorted-array': {
+        id: 'find-minimum-in-rotated-sorted-array',
+        title: 'Find Minimum in Rotated Sorted Array',
+        difficulty: 'Medium',
+        category: 'Binary Search',
+        description: `Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2] if it was rotated 4 times.
+
+Given the sorted rotated array nums, return the minimum element of this array.`,
+        examples: [
+            { input: 'nums = [3,4,5,1,2]', output: '1', explanation: 'The original array was [1,2,3,4,5] rotated 3 times.' },
+            { input: 'nums = [4,5,6,7,0,1,2]', output: '0', explanation: 'The original array was [0,1,2,4,5,6,7] rotated 4 times.' }
+        ],
+        constraints: ['n == nums.length', '1 <= n <= 5000', 'nums contains unique elements.', 'nums is sorted and rotated between 1 and n times.'],
+        testCases: [
+            { input: '[3,4,5,1,2]', expected: '1' },
+            { input: '[4,5,6,7,0,1,2]', expected: '0' }
+        ],
+        starterCode: {
+            python: `def solution(nums):
+    # Modified binary search to find inflection point
+    pass
+
+print(solution([3,4,5,1,2]))`
+        },
+        solutions: {
+            optimal: {
+                name: 'Binary Search',
+                timeComplexity: 'O(log n)',
+                spaceComplexity: 'O(1)',
+                description: 'Use binary search. The minimum element is the only one that is smaller than its previous element (if it\'s not the first element). Compare mid with right. If nums[mid] > nums[right], minimum is in right half. Else, minimum is in left half (including mid).',
+                code: `def solution(nums):
+    left, right = 0, len(nums) - 1
+    
+    while left < right:
+        mid = (left + right) // 2
+        
+        # If mid element is greater than right element,
+        # it means the minimum is in the right half (mid+1 to right)
+        if nums[mid] > nums[right]:
+            left = mid + 1
+        # Otherwise, the minimum is in the left half (left to mid)
+        else:
+            right = mid
+            
+    # When left == right, we have found the minimum element
+    return nums[left]
+
+print(solution([3,4,5,1,2]))`
+            },
+            linear: {
+                name: 'Linear Scan',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(1)',
+                description: 'Iterate through the array and find the minimum element. Simple but not optimal.',
+                code: `def solution(nums):
+    min_val = float('inf')
+    for num in nums:
+        min_val = min(min_val, num)
+    return min_val
+
+print(solution([3,4,5,1,2]))`
+            }
+        },
+        hints: ['Use binary search.', 'The minimum element will be the only one that is smaller than its previous element (unless it\'s the first element).', 'Compare the middle element with the rightmost element to determine which half contains the minimum.']
+    },
     'reverse-linked-list': {
         id: 'reverse-linked-list',
         title: 'Reverse Linked List',
@@ -1445,7 +2159,301 @@ print(solution(head))`
         hints: ['Use slow (1 step) and fast (2 steps) pointers.', 'If they meet, there\'s a cycle.', 'If fast reaches null, no cycle.']
     },
 
-    // Trees
+    'linked-list-cycle': {
+        id: 'linked-list-cycle',
+        title: 'Linked List Cycle',
+        difficulty: 'Easy',
+        category: 'Linked List',
+        description: `Detect if a linked list has a cycle (a node's next points back to a previous node).`,
+        examples: [
+            { input: 'head = [3,2,0,-4], pos = 1', output: 'true', explanation: 'Tail connects to node index 1.' }
+        ],
+        constraints: ['0 <= Number of nodes <= 10^4'],
+        testCases: [
+            { input: '[3,2,0,-4], 1', expected: 'True' },
+            { input: '[1], -1', expected: 'False' }
+        ],
+        starterCode: {
+            python: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def solution(head):
+    # Floyd's cycle detection (slow & fast pointers)
+    pass
+
+# Helper to create list with cycle
+def create_list_with_cycle(arr, pos):
+    if not arr: return None
+    nodes = [ListNode(v) for v v in arr]
+    for i in range(len(nodes) - 1):
+        nodes[i].next = nodes[i + 1]
+    if pos >= 0:
+        nodes[-1].next = nodes[pos]
+    return nodes[0]
+
+head = create_list_with_cycle([3,2,0,-4], 1)
+print(solution(head))`
+        },
+        solutions: {
+            optimal: {
+                name: "Floyd's Cycle Detection",
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(1)',
+                description: 'Use slow (1 step) and fast (2 steps) pointers. If they meet, cycle exists.',
+                code: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def solution(head):
+    if not head or not head.next:
+        return False
+
+    slow = head
+    fast = head
+
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+        if slow == fast:
+            return True
+
+    return False
+
+# Helper to create list with cycle
+def create_list_with_cycle(arr, pos):
+    if not arr: return None
+    nodes = [ListNode(v) for v in arr]
+    for i in range(len(nodes) - 1):
+        nodes[i].next = nodes[i + 1]
+    if pos >= 0:
+        nodes[-1].next = nodes[pos]
+    return nodes[0]
+
+head = create_list_with_cycle([3,2,0,-4], 1)
+print(solution(head))`
+            },
+            hashSet: {
+                name: 'Hash Set',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(n)',
+                description: 'Store visited nodes in a set. If we see a node twice, cycle exists.',
+                code: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def solution(head):
+    visited = set()
+    curr = head
+
+    while curr:
+        if curr in visited:
+            return True
+        visited.add(curr)
+        curr = curr.next
+
+    return False
+
+# Helper to create list with cycle
+def create_list_with_cycle(arr, pos):
+    if not arr: return None
+    nodes = [ListNode(v) for v in arr]
+    for i in range(len(nodes) - 1):
+        nodes[i].next = nodes[i + 1]
+    if pos >= 0:
+        nodes[-1].next = nodes[pos]
+    return nodes[0]
+
+head = create_list_with_cycle([3,2,0,-4], 1)
+print(solution(head))`
+            }
+        },
+        hints: ['Use slow (1 step) and fast (2 steps) pointers.', 'If they meet, there\'s a cycle.', 'If fast reaches null, no cycle.']
+    },
+    
+    'reorder-list': {
+        id: 'reorder-list',
+        title: 'Reorder List',
+        difficulty: 'Medium',
+        category: 'Linked List',
+        description: `Given a singly linked list L: L0 → L1 → … → Ln-1 → Ln, reorder it to: L0 → Ln → L1 → Ln-1 → L2 → Ln-2 → …
+
+You may not modify the values in the list's nodes, only nodes themselves may be changed.`,
+        examples: [
+            { input: 'head = [1,2,3,4]', output: '[1,4,2,3]', explanation: 'Reordered.' },
+            { input: 'head = [1,2,3,4,5]', output: '[1,5,2,4,3]', explanation: 'Reordered.' }
+        ],
+        constraints: ['The number of nodes in the list is in the range [1, 5 * 10^4].', '1 <= Node.val <= 1000'],
+        testCases: [
+            { input: '[1,2,3,4]', expected: '[1, 4, 2, 3]' },
+            { input: '[1,2,3,4,5]', expected: '[1, 5, 2, 4, 3]' }
+        ],
+        starterCode: {
+            python: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def solution(head):
+    # Find middle, reverse second half, merge
+    pass
+
+# Helper functions
+def create_list(arr):
+    if not arr: return None
+    head = ListNode(arr[0])
+    curr = head
+    for v in arr[1:]:
+        curr.next = ListNode(v)
+        curr = curr.next
+    return head
+
+def to_array(head):
+    result = []
+    while head:
+        result.append(head.val)
+        head = head.next
+    return result
+
+head = create_list([1,2,3,4])
+solution(head)
+print(to_array(head))`
+        },
+        solutions: {
+            optimal: {
+                name: 'Find Middle, Reverse Second Half, Merge',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(1)',
+                description: '1. Find the middle of the list. 2. Reverse the second half. 3. Merge the two halves.',
+                code: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def solution(head):
+    if not head or not head.next:
+        return
+
+    # Step 1: Find the middle of the linked list
+    slow = head
+    fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+
+    # Step 2: Split the list into two halves and reverse the second half
+    second_half = slow.next
+    slow.next = None  # Break the link
+    
+    prev = None
+    curr = second_half
+    while curr:
+        next_temp = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next_temp
+    
+    # second_half_reversed is now 'prev'
+    second_half_reversed = prev
+
+    # Step 3: Merge the two halves
+    first_half = head
+    while second_half_reversed:
+        temp1 = first_half.next
+        temp2 = second_half_reversed.next
+
+        first_half.next = second_half_reversed
+        second_half_reversed.next = temp1
+
+        first_half = temp1
+        second_half_reversed = temp2
+
+# Helper functions
+def create_list(arr):
+    if not arr: return None
+    head = ListNode(arr[0])
+    curr = head
+    for v in arr[1:]:
+        curr.next = ListNode(v)
+        curr = curr.next
+    return head
+
+def to_array(head):
+    result = []
+    while head:
+        result.append(head.val)
+        head = head.next
+    return result
+
+head = create_list([1,2,3,4])
+solution(head)
+print(to_array(head))`
+            },
+            stackBased: {
+                name: 'Stack-Based',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(n)',
+                description: 'Push all nodes to a stack. Then iterate through the first half of the list, interleaving with nodes popped from the stack.',
+                code: `class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def solution(head):
+    if not head or not head.next:
+        return
+
+    # Push all nodes to stack
+    stack = []
+    curr = head
+    while curr:
+        stack.append(curr)
+        curr = curr.next
+
+    first_half_ptr = head
+    
+    # Iterate half way through the list
+    for i in range(len(stack) // 2):
+        last_node = stack.pop() # Get last node
+        
+        temp_next = first_half_ptr.next # Save next node of first half
+        first_half_ptr.next = last_node  # Link first half node to last node
+        last_node.next = temp_next       # Link last node to next node of first half
+        
+        first_half_ptr = temp_next      # Move first half pointer forward
+        
+    # Set the next of the middle node (or the last node of the first half) to None
+    first_half_ptr.next = None
+
+
+# Helper functions
+def create_list(arr):
+    if not arr: return None
+    head = ListNode(arr[0])
+    curr = head
+    for v in arr[1:]:
+        curr.next = ListNode(v)
+        curr = curr.next
+    return head
+
+def to_array(head):
+    result = []
+    while head:
+        result.append(head.val)
+        head = head.next
+    return result
+
+head = create_list([1,2,3,4])
+solution(head)
+print(to_array(head))`
+            }
+        },
+        hints: ['Find the middle of the list.', 'Reverse the second half of the list.', 'Merge the first half with the reversed second half.']
+    },
     'invert-tree': {
         id: 'invert-tree',
         title: 'Invert Binary Tree',
@@ -2040,7 +3048,331 @@ print(solution(p, q))`
         hints: ['Both null = same.', 'One null = different.', 'Compare values, then recurse on children.']
     },
 
-    // Graphs
+    'same-tree': {
+        id: 'same-tree',
+        title: 'Same Tree',
+        difficulty: 'Easy',
+        category: 'Trees',
+        description: `Check if two binary trees are identical (same structure and values).`,
+        examples: [
+            { input: 'p = [1,2,3], q = [1,2,3]', output: 'true', explanation: 'Identical.' }
+        ],
+        constraints: ['0 <= Number of nodes <= 100'],
+        testCases: [
+            { input: '[1,2,3], [1,2,3]', expected: 'True' },
+            { input: '[1,2], [1,null,2]', expected: 'False' }
+        ],
+        starterCode: {
+            python: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(p, q):
+    # Compare nodes recursively
+    pass
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+p = create_tree([1,2,3])
+q = create_tree([1,2,3])
+print(solution(p, q))`
+        },
+        solutions: {
+            recursive: {
+                name: 'Recursive DFS',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(h)',
+                description: 'Recursively compare each node.',
+                code: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(p, q):
+    # Both null
+    if not p and not q:
+        return True
+
+    # One null, one not
+    if not p or not q:
+        return False
+
+    # Compare values and recurse
+    if p.val != q.val:
+        return False
+
+    return solution(p.left, q.left) and solution(p.right, q.right)
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+p = create_tree([1,2,3])
+q = create_tree([1,2,3])
+print(solution(p, q))`
+            },
+            iterativeBFS: {
+                name: 'Iterative BFS',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(n)',
+                description: 'Use queues to compare level by level.',
+                code: `from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(p, q):
+    queue = deque([(p, q)])
+
+    while queue:
+        node1, node2 = queue.popleft()
+
+        if not node1 and not node2:
+            continue
+        if not node1 or not node2:
+            return False
+        if node1.val != node2.val:
+            return False
+
+        queue.append((node1.left, node2.left))
+        queue.append((node1.right, node2.right))
+
+    return True
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+p = create_tree([1,2,3])
+q = create_tree([1,2,3])
+print(solution(p, q))`
+            },
+            iterativeDFS: {
+                name: 'Iterative DFS (Stack)',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(h)',
+                description: 'Use stack to compare nodes iteratively.',
+                code: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(p, q):
+    stack = [(p, q)]
+
+    while stack:
+        node1, node2 = stack.pop()
+
+        if not node1 and not node2:
+            continue
+        if not node1 or not node2:
+            return False
+        if node1.val != node2.val:
+            return False
+
+        stack.append((node1.right, node2.right))
+        stack.append((node1.left, node2.left))
+
+    return True
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+p = create_tree([1,2,3])
+q = create_tree([1,2,3])
+print(solution(p, q))`
+            }
+        },
+        hints: ['Recursively check if both nodes are null.', 'If one is null and other is not, return false.', 'If values differ, return false.']
+    },
+
+    'kth-smallest-element-in-a-bst': {
+        id: 'kth-smallest-element-in-a-bst',
+        title: 'Kth Smallest Element in a BST',
+        difficulty: 'Medium',
+        category: 'Trees',
+        description: `Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.`,
+        examples: [
+            { input: 'root = [3,1,4,null,2], k = 1', output: '1', explanation: 'The 1st smallest element is 1.' },
+            { input: 'root = [5,3,6,2,4,null,null,1], k = 3', output: '3', explanation: 'The 3rd smallest element is 3.' }
+        ],
+        constraints: ['The number of nodes in the tree is n.', '1 <= k <= n <= 10^4', '0 <= Node.val <= 10^4'],
+        testCases: [
+            { input: '[3,1,4,null,2], 1', expected: '1' },
+            { input: '[5,3,6,2,4,null,null,1], 3', expected: '3' }
+        ],
+        starterCode: {
+            python: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(root, k):
+    # Inorder traversal of BST is sorted
+    pass
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+root = create_tree([3,1,4,None,2])
+print(solution(root, 1))`
+        },
+        solutions: {
+            inorderTraversalRecursive: {
+                name: 'Inorder Traversal (Recursive)',
+                timeComplexity: 'O(N)',
+                spaceComplexity: 'O(N)',
+                description: 'Perform an inorder traversal (Left, Root, Right). In a BST, inorder traversal yields elements in sorted order. Keep a count and return the k-th element.',
+                code: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(root, k):
+    stack = []
+    
+    while root or stack:
+        while root:
+            stack.append(root)
+            root = root.left
+        
+        root = stack.pop()
+        k -= 1
+        if k == 0:
+            return root.val
+        
+        root = root.right
+    
+    return -1 # Should not reach here if k is valid
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+root = create_tree([3,1,4,None,2])
+print(solution(root, 1))`
+            },
+            inorderTraversalIterative: {
+                name: 'Inorder Traversal (Iterative)',
+                timeComplexity: 'O(H + K)',
+                spaceComplexity: 'O(H)',
+                description: 'Perform an iterative inorder traversal using a stack. Stop once the k-th element is found.',
+                code: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(root, k):
+    stack = []
+    
+    while root or stack:
+        while root:
+            stack.append(root)
+            root = root.left
+        
+        root = stack.pop()
+        k -= 1
+        if k == 0:
+            return root.val
+        
+        root = root.right
+    
+    return -1 # Should not reach here if k is valid
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+root = create_tree([3,1,4,None,2])
+print(solution(root, 1))`
+            }
+        },
+        hints: ['An inorder traversal of a BST visits nodes in ascending order.', 'You can use either a recursive or iterative inorder traversal.']
+    },
     'bfs-traversal': {
         id: 'bfs-traversal',
         title: 'BFS Graph Traversal',
@@ -2408,7 +3740,321 @@ print(solution(grid))`
         hints: ['Iterate through grid.', 'When you find "1", increment count and flood-fill (DFS/BFS) to mark all connected land.']
     },
 
-    // Dynamic Programming
+    'same-tree': {
+        id: 'same-tree',
+        title: 'Same Tree',
+        difficulty: 'Easy',
+        category: 'Trees',
+        description: `Check if two binary trees are identical (same structure and values).`,
+        examples: [
+            { input: 'p = [1,2,3], q = [1,2,3]', output: 'true', explanation: 'Identical.' }
+        ],
+        constraints: ['0 <= Number of nodes <= 100'],
+        testCases: [
+            { input: '[1,2,3], [1,2,3]', expected: 'True' },
+            { input: '[1,2], [1,null,2]', expected: 'False' }
+        ],
+        starterCode: {
+            python: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(p, q):
+    # Compare nodes recursively
+    pass
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+p = create_tree([1,2,3])
+q = create_tree([1,2,3])
+print(solution(p, q))`
+        },
+        solutions: {
+            recursive: {
+                name: 'Recursive DFS',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(h)',
+                description: 'Recursively compare each node.',
+                code: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(p, q):
+    # Both null
+    if not p and not q:
+        return True
+
+    # One null, one not
+    if not p or not q:
+        return False
+
+    # Compare values and recurse
+    if p.val != q.val:
+        return False
+
+    return solution(p.left, q.left) and solution(p.right, q.right)
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+p = create_tree([1,2,3])
+q = create_tree([1,2,3])
+print(solution(p, q))`
+            },
+            iterativeBFS: {
+                name: 'Iterative BFS',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(n)',
+                description: 'Use queues to compare level by level.',
+                code: `from collections import deque
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(p, q):
+    queue = deque([(p, q)])
+
+    while queue:
+        node1, node2 = queue.popleft()
+
+        if not node1 and not node2:
+            continue
+        if not node1 or not node2:
+            return False
+        if node1.val != node2.val:
+            return False
+
+        queue.append((node1.left, node2.left))
+        queue.append((node1.right, node2.right))
+
+    return True
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+p = create_tree([1,2,3])
+q = create_tree([1,2,3])
+print(solution(p, q))`
+            },
+            iterativeDFS: {
+                name: 'Iterative DFS (Stack)',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(h)',
+                description: 'Use stack to compare nodes iteratively.',
+                code: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def solution(p, q):
+    stack = [(p, q)]
+
+    while stack:
+        node1, node2 = stack.pop()
+
+        if not node1 and not node2:
+            continue
+        if not node1 or not node2:
+            return False
+        if node1.val != node2.val:
+            return False
+
+        stack.append((node1.right, node2.right))
+        stack.append((node1.left, node2.left))
+
+    return True
+
+# Helper
+def create_tree(arr):
+    if not arr: return None
+    nodes = [TreeNode(v) if v is not None else None for v in arr]
+    for i, node in enumerate(nodes):
+        if node:
+            left_idx = 2 * i + 1
+            right_idx = 2 * i + 2
+            if left_idx < len(nodes):
+                node.left = nodes[left_idx]
+            if right_idx < len(nodes):
+                node.right = nodes[right_idx]
+    return nodes[0] if nodes else None
+
+p = create_tree([1,2,3])
+q = create_tree([1,2,3])
+print(solution(p, q))`
+            }
+        },
+        hints: ['Recursively check if both nodes are null.', 'If one is null and other is not, return false.', 'If values differ, return false.']
+    },
+
+    'number-of-islands': {
+        id: 'number-of-islands',
+        title: 'Number of Islands',
+        difficulty: 'Medium',
+        category: 'Graphs',
+        description: `Given an m x n 2D binary grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.`,
+        examples: [
+            { input: `grid = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]`, output: '1', explanation: 'Only one island.' },
+            { input: `grid = [
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]`, output: '3', explanation: 'Three separate islands.' }
+        ],
+        constraints: ['m == grid.length', 'n == grid[i].length', '1 <= m, n <= 300', 'grid[i][j] is \'0\' or \'1\'.'],
+        testCases: [
+            { input: '[["1","1","1","1","0"],["1","1","0","1","0"],["1","1","0","0","0"],["0","0","0","0","0"]]', expected: '1' },
+            { input: '[["1","1","0","0","0"],["1","1","0","0","0"],["0","0","1","0","0"],["0","0","0","1","1"]]', expected: '3' }
+        ],
+        starterCode: {
+            python: `def solution(grid):
+    # Use DFS or BFS to traverse and mark visited land cells
+    pass
+
+grid1 = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+print(solution(grid1))`
+        },
+        solutions: {
+            dfs: {
+                name: 'Depth First Search (DFS)',
+                timeComplexity: 'O(M * N)',
+                spaceComplexity: 'O(M * N)',
+                description: 'Iterate through each cell. If land (\'1\') is found, increment island count and perform DFS to mark all connected land cells as visited (\'0\').',
+                code: `def solution(grid):
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+    num_islands = 0
+
+    def dfs(r, c):
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] == '0':
+            return
+        
+        grid[r][c] = '0' # Mark as visited
+        dfs(r + 1, c)
+        dfs(r - 1, c)
+        dfs(r, c + 1)
+        dfs(r, c - 1)
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1':
+                num_islands += 1
+                dfs(r, c)
+                
+    return num_islands
+
+grid1 = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+print(solution(grid1))`
+            },
+            bfs: {
+                name: 'Breadth First Search (BFS)',
+                timeComplexity: 'O(M * N)',
+                spaceComplexity: 'O(M * N)',
+                description: 'Iterate through each cell. If land (\'1\') is found, increment island count and perform BFS to mark all connected land cells as visited (\'0\').',
+                code: `from collections import deque
+
+def solution(grid):
+    if not grid or not grid[0]:
+        return 0
+
+    rows, cols = len(grid), len(grid[0])
+    num_islands = 0
+
+    def bfs(r, c):
+        q = deque()
+        q.append((r, c))
+        grid[r][c] = '0' # Mark as visited
+
+        while q:
+            row, col = q.popleft()
+            directions = [(1, 0), (-1, 0), (0, 1), (0, -1)] # Down, Up, Right, Left
+
+            for dr, dc in directions:
+                new_r, new_c = row + dr, col + dc
+                if 0 <= new_r < rows and 0 <= new_c < cols and grid[new_r][new_c] == '1':
+                    grid[new_r][new_c] = '0' # Mark as visited
+                    q.append((new_r, new_c))
+
+    for r in range(rows):
+        for c in range(cols):
+            if grid[r][c] == '1':
+                num_islands += 1
+                bfs(r, c)
+                
+    return num_islands
+
+grid1 = [
+  ["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]
+]
+print(solution(grid1))`
+            }
+        },
+        hints: ['Traverse the grid.', 'When you find a \'1\', increment island count and then explore all connected \'1\'s (horizontally and vertically) to mark them as visited (e.g., change to \'0\') so they are not counted again.']
+    },
     'climbing-stairs': {
         id: 'climbing-stairs',
         title: 'Climbing Stairs',
@@ -2619,7 +4265,184 @@ print(solution([1,2,3,1]))`
         hints: ['At each house: rob it or skip it.', 'Rob: nums[i] + dp[i-2]', 'Skip: dp[i-1]', 'Take the max.']
     },
 
-    // Sorting
+    'house-robber': {
+        id: 'house-robber',
+        title: 'House Robber',
+        difficulty: 'Medium',
+        category: 'Dynamic Programming',
+        description: `You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night.
+
+Given an integer array \`nums\` representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.`,
+        examples: [
+            { input: 'nums = [1,2,3,1]', output: '4', explanation: 'Rob house 1 (money = 1) and then rob house 3 (money = 3). Total amount = 1 + 3 = 4.' },
+            { input: 'nums = [2,7,9,3,1]', output: '12', explanation: 'Rob house 1 (money = 2), rob house 3 (money = 9). Total amount = 2 + 9 = 11. Rob house 2 (money = 7), rob house 4 (money = 3). Total amount = 7 + 3 = 10. Max is 12: house 1 (2), house 3 (9), house 5 (1).' }
+        ],
+        constraints: ['1 <= nums.length <= 100', '0 <= nums[i] <= 400'],
+        testCases: [
+            { input: '[1,2,3,1]', expected: '4' },
+            { input: '[2,7,9,3,1]', expected: '12' }
+        ],
+        starterCode: {
+            python: `def solution(nums):
+    # DP approach
+    pass
+
+print(solution([1,2,3,1]))`
+        },
+        solutions: {
+            dp: {
+                name: 'Dynamic Programming',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(1)',
+                description: 'For each house, decide whether to rob it or not. If robbed, cannot rob adjacent. Optimized to O(1) space.',
+                code: `def solution(nums):
+    if not nums:
+        return 0
+    if len(nums) == 1:
+        return nums[0]
+
+    # dp[i] represents the maximum amount that can be robbed up to house i
+    # Let's optimize space:
+    # rob_prev = max money if previous house was robbed
+    # skip_prev = max money if previous house was skipped
+
+    rob_prev = 0 # Max money ending at previous house, including previous
+    skip_prev = 0 # Max money ending at previous house, excluding previous
+
+    for num in nums:
+        rob_current = skip_prev + num # If we rob current, we must have skipped previous
+        skip_current = max(rob_prev, skip_prev) # If we skip current, we take max of robbing/skipping previous
+        
+        rob_prev = rob_current
+        skip_prev = skip_current
+        
+    return max(rob_prev, skip_prev)
+
+print(solution([1,2,3,1]))`
+            },
+            memoization: {
+                name: 'Memoization (Top-Down DP)',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(n)',
+                description: 'Recursive solution with memoization to store results of subproblems.',
+                code: `def solution(nums):
+    memo = {}
+
+    def rob_from(i):
+        if i >= len(nums):
+            return 0
+        if i in memo:
+            return memo[i]
+
+        # Option 1: Rob current house i, then skip i+1 and rob from i+2
+        rob_current = nums[i] + rob_from(i + 2)
+        # Option 2: Skip current house i, then rob from i+1
+        skip_current = rob_from(i + 1)
+
+        memo[i] = max(rob_current, skip_current)
+        return memo[i]
+
+    return rob_from(0)
+
+print(solution([1,2,3,1]))`
+            },
+            tabulation: {
+                name: 'Tabulation (Bottom-Up DP)',
+                timeComplexity: 'O(n)',
+                spaceComplexity: 'O(n)',
+                description: 'Iterative solution building up the solution from smaller subproblems.',
+                code: `def solution(nums):
+    if not nums:
+        return 0
+    if len(nums) == 1:
+        return nums[0]
+
+    dp = [0] * len(nums)
+    dp[0] = nums[0]
+    dp[1] = max(nums[0], nums[1])
+
+    for i in range(2, len(nums)):
+        dp[i] = max(nums[i] + dp[i - 2], dp[i - 1])
+
+    return dp[-1]
+
+print(solution([1,2,3,1]))`
+            }
+        },
+        hints: ['Consider two choices at each house: rob it or skip it.', 'If you rob house i, you cannot rob house i-1.', 'Dynamic programming can help optimize repeated calculations.']
+    },
+    
+    'longest-increasing-subsequence': {
+        id: 'longest-increasing-subsequence',
+        title: 'Longest Increasing Subsequence',
+        difficulty: 'Medium',
+        category: 'Dynamic Programming',
+        description: `Given an integer array \`nums\`, return the length of the longest strictly increasing subsequence.`,
+        examples: [
+            { input: 'nums = [10,9,2,5,3,7,101,18]', output: '4', explanation: 'The longest increasing subsequence is [2,3,7,101], hence the length is 4.' },
+            { input: 'nums = [0,1,0,3,2,3]', output: '4', explanation: 'The longest increasing subsequence is [0,1,2,3] or [0,1,0,3,2,3] with length 4.' }
+        ],
+        constraints: ['1 <= nums.length <= 2500', '-10^4 <= nums[i] <= 10^4'],
+        testCases: [
+            { input: '[10,9,2,5,3,7,101,18]', expected: '4' },
+            { input: '[0,1,0,3,2,3]', expected: '4' }
+        ],
+        starterCode: {
+            python: `def solution(nums):
+    # Dynamic Programming
+    pass
+
+print(solution([10,9,2,5,3,7,101,18]))`
+        },
+        solutions: {
+            dp: {
+                name: 'Dynamic Programming',
+                timeComplexity: 'O(n²)',
+                spaceComplexity: 'O(n)',
+                description: 'Create a DP array where `dp[i]` is the length of the longest increasing subsequence ending at index `i`.',
+                code: `def solution(nums):
+    if not nums:
+        return 0
+
+    dp = [1] * len(nums) # Each element itself is an increasing subsequence of length 1
+
+    for i in range(len(nums)):
+        for j in range(i):
+            if nums[i] > nums[j]:
+                dp[i] = max(dp[i], 1 + dp[j])
+
+    return max(dp)
+
+print(solution([10,9,2,5,3,7,101,18]))`
+            },
+            dpWithBinarySearch: {
+                name: 'DP with Binary Search (N log N)',
+                timeComplexity: 'O(n log n)',
+                spaceComplexity: 'O(n)',
+                description: 'Maintain a `tails` array where `tails[i]` is the smallest tail of all increasing subsequences of length `i+1`. Use binary search to find the correct position for each number.',
+                code: `import bisect
+
+def solution(nums):
+    tails = []
+    for num in nums:
+        # Find the first element in tails that is >= num
+        idx = bisect.bisect_left(tails, num)
+        
+        if idx == len(tails):
+            # If num is greater than all elements in tails, extend the LIS
+            tails.append(num)
+        else:
+            # Otherwise, replace the element at idx with num
+            # This forms a new LIS of the same length but with a smaller end
+            tails[idx] = num
+            
+    return len(tails)
+
+print(solution([10,9,2,5,3,7,101,18]))`
+            }
+        },
+        hints: ['Consider dynamic programming. For each number, calculate the longest increasing subsequence ending with that number.', 'Can you optimize the DP solution with binary search?']
+    },
     'merge-sort': {
         id: 'merge-sort',
         title: 'Merge Sort',
