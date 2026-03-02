@@ -51,31 +51,86 @@ function AIAssistant({ context = 'Data Structures' }) {
     }
   };
 
+  // Simple Markdown-like formatter
+  const formatResponse = (text) => {
+    if (!text) return null;
+
+    // Split by code blocks (```code```)
+    const parts = text.split(/(```[\s\S]*?```)/g);
+
+    return parts.map((part, index) => {
+      // Handle Code Blocks
+      if (part.startsWith('```')) {
+        const codeContent = part.replace(/```(\w+)?\n?/, '').replace(/```$/, '');
+        const language = part.match(/```(\w+)/)?.[1] || '';
+        
+        return (
+          <div key={index} className="ai-code-block">
+            {language && <div className="ai-code-lang">{language}</div>}
+            <pre><code>{codeContent.trim()}</code></pre>
+          </div>
+        );
+      }
+
+      // Handle Bold (**text**) and inline code (`code`)
+      // This is a simple replacement that handles common markdown patterns
+      let formattedPart = part;
+      
+      // Inline code
+      const inlineCodeParts = formattedPart.split(/(`[^`]+`)/g);
+      return (
+        <span key={index}>
+          {inlineCodeParts.map((inlinePart, i) => {
+            if (inlinePart.startsWith('`') && inlinePart.endsWith('`')) {
+              return <code key={i} className="ai-inline-code">{inlinePart.slice(1, -1)}</code>;
+            }
+            
+            // Bold text
+            const boldParts = inlinePart.split(/(\*\*[^*]+\*\*)/g);
+            return boldParts.map((boldPart, j) => {
+              if (boldPart.startsWith('**') && boldPart.endsWith('**')) {
+                return <strong key={j}>{boldPart.slice(2, -2)}</strong>;
+              }
+              return boldPart;
+            });
+          })}
+        </span>
+      );
+    });
+  };
+
   return (
     <div className="ai-assistant">
-      <h3>
-        <Bot />
-        AI Assistant
-      </h3>
-      <p>Ask me anything about {context.toLowerCase()}!</p>
+      <div className="ai-header">
+        <Bot size={18} />
+        <h3>AI Assistant</h3>
+      </div>
+      <p className="ai-subtitle">Ask me anything about {context.toLowerCase().includes('problem') ? 'this problem' : context.toLowerCase()}!</p>
       <div className="ai-input-group">
         <input
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
           placeholder={getPlaceholder()}
           disabled={loading}
         />
-        <button onClick={askQuestion} disabled={loading}>
+        <button onClick={askQuestion} disabled={loading || !question.trim()}>
           {loading ? 'Asking...' : 'Ask'}
         </button>
       </div>
-      <div id="ai-response">
-        {loading && <div className="ai-loading">Thinking...</div>}
+      <div id="ai-response" className={response ? 'has-content' : ''}>
+        {loading && (
+          <div className="ai-loading-container">
+            <div className="ai-loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div className="ai-loading-text">Analyzing...</div>
+          </div>
+        )}
         {response && (
-          <div className={response.startsWith('Error') ? 'ai-error' : 'ai-answer'}>
-            {response}
+          <div className={response.startsWith('Currently not working') ? 'ai-error' : 'ai-answer'}>
+            {formatResponse(response)}
           </div>
         )}
       </div>

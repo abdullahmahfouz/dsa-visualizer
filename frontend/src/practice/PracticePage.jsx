@@ -25,7 +25,10 @@ import {
   Clock,
   Database,
   Copy,
-  Check
+  Check,
+  Bot,
+  ShieldCheck,
+  Zap
 } from 'lucide-react';
 
 // Icon mapping for roadmap sections
@@ -40,7 +43,9 @@ const sectionIcons = {
   puzzle: Puzzle,
   sort: ArrowUpDown
 };
+
 import CodeEditor from './CodeEditor';
+import AIAssistant from '../components/AIAssistant';
 import { problems, problemList, roadmap } from './problems';
 import './practice.css';
 
@@ -67,6 +72,10 @@ function PracticePage() {
   const [viewMode, setViewMode] = useState('map'); // 'map' or 'list'
   const [selectedSolution, setSelectedSolution] = useState(null);
   const [copiedSolution, setCopiedSolution] = useState(null);
+  const [isReviewing, setIsReviewing] = useState(false);
+  const [reviewResults, setReviewResults] = useState(null);
+  const [reviewError, setReviewError] = useState(null);
+  const [editorDecorations, setEditorDecorations] = useState([]);
 
   const contentRef = useRef(null);
 
@@ -76,6 +85,51 @@ function PracticePage() {
       contentRef.current.scrollTop = 0;
     }
   }, [activeTab, currentProblem]);
+
+  // AI Code Review
+  const reviewCode = async () => {
+    if (!code.trim()) return;
+
+    setIsReviewing(true);
+    setReviewResults(null);
+    setReviewError(null);
+    setEditorDecorations([]);
+
+    try {
+      const response = await fetch('/api/code-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, language })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setReviewResults(result);
+
+        if (result.optimizations && Array.isArray(result.optimizations)) {
+          const newDecorations = result.optimizations.map(opt => ({
+            startLine: opt.startLine,
+            endLine: opt.endLine,
+            className: 'ai-code-issue-highlight',
+            glyphClassName: 'ai-code-issue-glyph',
+            hoverMessage: `**Issue:** ${opt.issue}\n\n**Suggestion:** ${opt.suggestion}`
+          }));
+          setEditorDecorations(newDecorations);
+        }
+
+        setActiveTab('ai');
+      } else {
+        setReviewError(result.error || `Review failed (${response.status})`);
+        setActiveTab('ai');
+      }
+    } catch (error) {
+      setReviewError('Could not reach the review service. Is the server running?');
+      setActiveTab('ai');
+    } finally {
+      setIsReviewing(false);
+    }
+  };
 
   // Save completed problems to localStorage
   useEffect(() => {
@@ -218,22 +272,7 @@ function PracticePage() {
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <div className="view-toggle">
-                <button
-                  className={`view-toggle-btn ${viewMode === 'map' ? 'active' : ''}`}
-                  onClick={() => setViewMode('map')}
-                >
-                  <LayoutGrid size={16} />
-                  Map
-                </button>
-                <button
-                  className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
-                  onClick={() => setViewMode('list')}
-                >
-                  <List size={16} />
-                  List
-                </button>
-              </div>
+              {/* View toggle hidden as per user request to make it look like a map */}
               <div className="progress-stats">
                 <div className="progress-circle">
                   <svg viewBox="0 0 36 36">
@@ -496,6 +535,13 @@ function PracticePage() {
               <BookOpen size={14} />
               Solutions
             </button>
+            <button
+              className={activeTab === 'ai' ? 'active' : ''}
+              onClick={() => setActiveTab('ai')}
+            >
+              <Bot size={14} />
+              AI Assistant
+            </button>
           </div>
 
           <div className="problem-content" ref={contentRef}>
@@ -648,6 +694,73 @@ function PracticePage() {
                 </div>
               </div>
             )}
+
+            {activeTab === 'ai' && (
+              <div className="ai-assistant-tab">
+                {reviewError && (
+                  <div className="review-error-banner">
+                    <XCircle size={16} />
+                    <span>{reviewError}</span>
+                  </div>
+                )}
+                {reviewResults && (
+                  <div className="ai-review-results">
+                    <div className="review-header">
+                      <div className="logic-score">
+                        <span className="score-label">Logic Score</span>
+                        <div className="score-circle">
+                          <span className="score-value">{reviewResults.logicScore}</span>
+                          <span className="score-total">/10</span>
+                        </div>
+                      </div>
+                      <div className="complexity-info">
+                        <div className="complexity-item">
+                          <Clock size={14} />
+                          <span>Time: <strong>{reviewResults.timeComplexity}</strong></span>
+                        </div>
+                        <div className="complexity-item">
+                          <Layers size={14} />
+                          <span>Space: <strong>{reviewResults.spaceComplexity}</strong></span>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="review-feedback">
+                      <h4>Senior Reviewer Feedback</h4>
+                      <p>{reviewResults.generalFeedback}</p>
+                    </div>
+
+                    {reviewResults.optimizations && reviewResults.optimizations.length > 0 && (
+                      <div className="review-optimizations">
+                        <h4>Line-by-Line Optimizations</h4>
+                        <div className="optimizations-list">
+                          {reviewResults.optimizations.map((opt, i) => (
+                            <div key={i} className="opt-card">
+                              <div className="opt-card-header">
+                                <span className="line-badge">Lines {opt.startLine}-{opt.endLine}</span>
+                                <Zap size={14} className="zap-icon" />
+                              </div>
+                              <div className="opt-issue"><strong>Issue:</strong> {opt.issue}</div>
+                              <div className="opt-suggestion"><strong>Suggestion:</strong> {opt.suggestion}</div>
+                              {opt.improvedCode && (
+                                <div className="opt-code">
+                                  <pre><code>{opt.improvedCode}</code></pre>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="review-divider">
+                      <span>Chat with Assistant below</span>
+                    </div>
+                  </div>
+                )}
+                <AIAssistant context={`Problem: ${currentProblem.title}\n\nDescription: ${currentProblem.description}\n\nUser's current code (${language}):\n${code}`} />
+              </div>
+            )}
           </div>
         </div>
 
@@ -674,13 +787,14 @@ function PracticePage() {
             language={language}
             code={code}
             onChange={setCode}
+            decorations={editorDecorations}
           />
 
           <div className="run-actions">
             <button
               className="btn btn-run"
               onClick={runCode}
-              disabled={isRunning}
+              disabled={isRunning || isReviewing}
             >
               <Play size={14} />
               {isRunning ? 'Running...' : 'Run Code'}
@@ -688,10 +802,19 @@ function PracticePage() {
             <button
               className="btn btn-submit"
               onClick={runTests}
-              disabled={isRunning}
+              disabled={isRunning || isReviewing}
             >
               <CheckCircle size={14} />
               {isRunning ? 'Testing...' : 'Submit'}
+            </button>
+            <button
+              className={`btn btn-review ${isReviewing ? 'loading' : ''}`}
+              onClick={reviewCode}
+              disabled={isRunning || isReviewing}
+              title="Get a Senior Code Review from Gemini"
+            >
+              <ShieldCheck size={14} />
+              {isReviewing ? 'Reviewing...' : 'AI Review'}
             </button>
           </div>
 

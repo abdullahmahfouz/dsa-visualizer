@@ -491,6 +491,277 @@
   border-color: #ef4444;
 }
 
+/* ============================================
+   Time-Travel Debugger Styles
+   ============================================ */
+
+.debugger-suite {
+  margin-top: 2rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.debugger-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  color: var(--accent-primary);
+}
+
+.debugger-header h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.scrubber-algo-badge {
+  margin-left: auto;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--bg-primary);
+  background: var(--accent-primary);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.08em;
+}
+
+.scrubber-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.step-btn, .play-pause-btn {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.step-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+}
+
+.play-pause-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 191, 255, 0.3);
+}
+
+.step-btn:hover:not(:disabled) {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  background: rgba(0, 191, 255, 0.05);
+}
+
+.play-pause-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 191, 255, 0.4);
+}
+
+.step-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Slider ─────────────────────────────────────────────────── */
+
+.slider-container {
+  margin-bottom: 1.25rem;
+}
+
+/*
+  Wrapper that stacks the progress fill div BEHIND the transparent-tracked
+  range input. This gives us a colored fill without hacks.
+*/
+.slider-track-wrapper {
+  position: relative;
+  height: 6px;
+  margin-bottom: 0.75rem;
+}
+
+.slider-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--accent-primary);
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  /* GPU-composited — no layout recalc on scrub */
+  will-change: width;
+  transition: width 0.05s linear;
+}
+
+.history-slider {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  /* Transparent background so the fill div shows through */
+  background: var(--bg-secondary);
+  border-radius: var(--radius-full);
+  outline: none;
+  cursor: pointer;
+}
+
+/* Thumb — Chrome/Safari */
+.history-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.history-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 18px var(--accent-primary);
+}
+
+/* Thumb — Firefox */
+.history-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+}
+
+/* Track — Firefox (make it transparent so fill div shows) */
+.history-slider::-moz-range-track {
+  background: transparent;
+  height: 6px;
+  border-radius: var(--radius-full);
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Step Details Panel ────────────────────────────────────── */
+
+.step-details {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--accent-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Action badge — color driven by [data-action] so no JS class switching needed */
+.step-action-badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid currentColor;
+  width: fit-content;
+}
+
+.step-action-badge[data-action="visit"],
+.step-action-badge[data-action="enqueue"] {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.step-action-badge[data-action="push"] {
+  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.step-action-badge[data-action="backtrack"],
+.step-action-badge[data-action="pop"] {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.step-action-badge[data-action="done"] {
+  color: var(--accent-primary);
+  background: rgba(0, 191, 255, 0.1);
+}
+
+.step-description {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Live state pills */
+.step-state-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.state-pill {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  border: 1px solid;
+}
+
+.state-pill--visited {
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.state-pill--frontier {
+  color: #8b5cf6;
+  border-color: rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.08);
+}
+
 .preset-group {
   flex-wrap: wrap;
 }

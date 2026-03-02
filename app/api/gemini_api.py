@@ -63,3 +63,71 @@ def ask_ai():
         # Return the exception message so the frontend can show a helpful error (e.g., quota/billing info)
         return jsonify({'error': str(e)}), status_code_int
 
+
+@api_bp.route('/api/code-review', methods=['POST'])
+def code_review():
+    """
+    Acts as a Senior Code Reviewer to analyze user code.
+    Returns structured JSON with complexity, logic score, and line-by-line optimizations.
+    """
+    if not api_key:
+        return jsonify({'error': 'AI assistant is not configured. Please set GEMINI_API_KEY.'}), 503
+    
+    data = request.json
+    user_code = data.get('code', '')
+    language = data.get('language', 'python')
+
+    if not user_code:
+        return jsonify({'error': 'No code provided for review'}), 400
+
+    prompt = f"""
+    Act as a Senior Software Engineer and Data Structures Expert. 
+    Review the following {language} code.
+    
+    CODE TO REVIEW:
+    ```
+    {user_code}
+    ```
+
+    You must return a valid JSON object with the following structure:
+    {{
+      "timeComplexity": "string (e.g., O(n log n))",
+      "spaceComplexity": "string (e.g., O(n))",
+      "logicScore": number (1-10),
+      "generalFeedback": "string",
+      "optimizations": [
+        {{
+          "startLine": number (1-indexed),
+          "endLine": number (1-indexed),
+          "issue": "string",
+          "suggestion": "string",
+          "improvedCode": "string"
+        }}
+      ]
+    }}
+
+    Ensure startLine and endLine accurately point to the relevant lines in the provided code.
+    Be rigorous with the logic score and complexity analysis.
+    """
+
+    try:
+        client = genai.Client(api_key=api_key)
+        # Use generate_content with JSON constraint
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+            config=genai.types.GenerateContentConfig(
+                response_mime_type="application/json"
+            )
+        )
+        
+        # Parse the JSON response text
+        import json
+        review_data = json.loads(response.text)
+        return jsonify(review_data)
+
+    except Exception as e:
+        print(f"Code Review Error: {e}")
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+

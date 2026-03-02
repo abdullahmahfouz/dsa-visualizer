@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Menu, X, Home, Code2, Layers, ArrowRightLeft, Link as LinkIcon,
   Hash, GitBranch, Mail, HeartHandshake, BrainCircuit, Github, Linkedin,
-  Trophy
+  Trophy, History, FastForward
 } from 'lucide-react';
 
 function Sidebar() {
@@ -67,7 +67,6 @@ function Sidebar() {
       <aside className={`sidebar ${isOpen ? 'active' : ''}`} id="sidebar">
         <div className="sidebar-header">
           <Link to="/" className="logo-wrapper" onClick={closeMenu}>
-            <img src="/logo.svg" alt="DSA Visualizer Logo" className="logo-icon" />
             <span className="logo-text">DSA Visualizer</span>
           </Link>
         </div>
