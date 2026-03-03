@@ -204,23 +204,25 @@ function Algorithms() {
 
       <div className="categories-container">
         {categories.map((category) => (
-          <div key={category.id} className="category-wrapper">
+          <div
+            key={category.id}
+            className={`category-wrapper${expandedCategory === category.id ? ' expanded-wrapper' : ''}`}
+            style={{ '--item-color': category.color }}
+          >
             {/* Category Header */}
-            <button 
+            <button
               className={`category-header ${expandedCategory === category.id ? 'expanded' : ''}`}
               onClick={() => toggleCategory(category.id)}
-              style={{ '--category-color': category.color }}
             >
               <div className="category-icon" style={{ background: category.color }}>
                 <category.icon />
               </div>
               <div className="category-info">
                 <h2>{category.name}</h2>
-                <p>{category.description}</p>
               </div>
               <div className="category-meta">
-                <span className="item-count">{category.items.filter(i => i.available).length} available</span>
-                {expandedCategory === category.id ? <ChevronUp /> : <ChevronDown />}
+                <span className="item-count">{category.items.filter(i => i.available).length} visualizers</span>
+                {expandedCategory === category.id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
               </div>
             </button>
 
