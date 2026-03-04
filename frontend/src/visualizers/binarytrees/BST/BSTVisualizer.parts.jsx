@@ -1,5 +1,6 @@
 import React from 'react';
-import { AlertTriangle, HelpCircle, Info, Lightbulb, Search, ArrowRight } from 'lucide-react';
+import { AlertTriangle, HelpCircle, Info, Lightbulb, Search, ArrowRight, Zap } from 'lucide-react';
+import '../../../components/challenge.css';
 
 export const MAX_TREE_SIZE = 7;
 
@@ -120,17 +121,40 @@ export function ConceptBoxes() {
 export function ControlPanel({
   insertValue, deleteValue, searchValue, size, height, message, tree, isAnimating,
   visitedNodes, searchPath, searchResult,
+  isChallengeMode, challengeStatus,
   onInsertValueChange, onDeleteValueChange, onSearchValueChange,
-  onInsert, onDelete, onSearch, onTraversal, onClear, onResetTraversal
+  onInsert, onDelete, onSearch, onTraversal, onClear, onResetTraversal,
+  onStartChallenge,
 }) {
   const handleInput = (e, setter) => {
     const v = e.target.value;
     if (v === '' || v === '-' || /^-?\d*\.?\d*$/.test(v)) setter(v);
   };
 
+  const isLocked = isAnimating || isChallengeMode;
+
   return (
     <div className="control-panel">
       <h2>Binary Search Tree</h2>
+
+      {/* Challenge mode toggle */}
+      {isChallengeMode ? (
+        <div className="challenge-mode-indicator">
+          <div className="challenge-mode-dot" />
+          Challenge Mode Active — click nodes in the tree
+        </div>
+      ) : (
+        <div className="operation-group">
+          <button
+            className="btn btn-challenge"
+            onClick={onStartChallenge}
+            disabled={isAnimating || !tree || size < 2}
+            title={size < 2 ? 'Insert at least 2 nodes first' : 'Start an AI-generated challenge'}
+          >
+            <Zap size={15} /> Start Challenge
+          </button>
+        </div>
+      )}
 
       <div className="operation-group">
         <label htmlFor="insertValue">Insert Value</label>
@@ -142,9 +166,9 @@ export function ControlPanel({
             onChange={(e) => handleInput(e, onInsertValueChange)}
             onKeyDown={(e) => e.key === 'Enter' && onInsert()}
             placeholder="Enter a number"
-            disabled={isAnimating}
+            disabled={isLocked}
           />
-          <button onClick={onInsert} className="btn btn-insert" disabled={isAnimating}>Insert</button>
+          <button onClick={onInsert} className="btn btn-insert" disabled={isLocked}>Insert</button>
         </div>
       </div>
 
@@ -158,9 +182,9 @@ export function ControlPanel({
             onChange={(e) => handleInput(e, onSearchValueChange)}
             onKeyDown={(e) => e.key === 'Enter' && onSearch()}
             placeholder="Enter a number"
-            disabled={isAnimating}
+            disabled={isLocked}
           />
-          <button onClick={onSearch} className="btn btn-search" disabled={isAnimating || !tree}>
+          <button onClick={onSearch} className="btn btn-search" disabled={isLocked || !tree}>
             <Search size={16} /> Search
           </button>
         </div>
@@ -191,9 +215,9 @@ export function ControlPanel({
             onChange={(e) => handleInput(e, onDeleteValueChange)}
             onKeyDown={(e) => e.key === 'Enter' && onDelete()}
             placeholder="Enter a number"
-            disabled={isAnimating}
+            disabled={isLocked}
           />
-          <button onClick={onDelete} className="btn btn-delete" disabled={isAnimating}>Delete</button>
+          <button onClick={onDelete} className="btn btn-delete" disabled={isLocked}>Delete</button>
         </div>
       </div>
 
@@ -205,7 +229,7 @@ export function ControlPanel({
               key={type}
               onClick={() => onTraversal(type)}
               className={`btn btn-traversal ${type === 'inorder' ? 'btn-traversal-primary' : ''}`}
-              disabled={isAnimating || !tree}
+              disabled={isLocked || !tree}
               title={type === 'inorder' ? 'Returns sorted order!' : ''}
             >
               {type === 'levelorder' ? 'Level Order' : type.charAt(0).toUpperCase() + type.slice(1)}
@@ -213,7 +237,7 @@ export function ControlPanel({
             </button>
           ))}
         </div>
-        {visitedNodes.length > 0 && !isAnimating && (
+        {visitedNodes.length > 0 && !isLocked && (
           <button onClick={onResetTraversal} className="btn btn-secondary" style={{ marginTop: '0.5rem', width: '100%' }}>
             Reset Colors
           </button>
@@ -241,7 +265,7 @@ export function ControlPanel({
       )}
 
       <div className="operation-group">
-        <button onClick={onClear} className="btn btn-clear" disabled={isAnimating}>Clear Tree</button>
+        <button onClick={onClear} className="btn btn-clear" disabled={isLocked}>Clear Tree</button>
       </div>
 
       {message && (
@@ -258,49 +282,80 @@ export function ControlPanel({
 }
 
 // Tree Renderer Component
-export function TreeRenderer({ tree, currentNode, visitedNodes, searchPath, searchResult }) {
+export function TreeRenderer({
+  tree, currentNode, visitedNodes, searchPath, searchResult,
+  // Challenge props
+  isChallengeMode = false,
+  challengeClickedNodes = [],
+  challengeWrongClick = null,
+  onNodeClick = null,
+}) {
   const getNodeStyle = (value) => {
-    const isCurrent = currentNode === value;
-    const isVisited = visitedNodes.includes(value);
+    // ── Challenge mode overrides all traversal/search coloring ──────────────
+    if (isChallengeMode) {
+      if (value === challengeWrongClick) {
+        return {
+          color: '#ef4444',
+          glow: 'drop-shadow(0 0 14px rgba(239,68,68,0.9))',
+          radius: 28, stroke: 3, fontSize: 14, fontWeight: 'bold',
+        };
+      }
+      if (challengeClickedNodes.includes(value)) {
+        return {
+          color: '#10b981',
+          glow: 'drop-shadow(0 0 10px rgba(16,185,129,0.8))',
+          radius: 28, stroke: 3, fontSize: 14, fontWeight: 'bold',
+        };
+      }
+      return {
+        color: '#6366f1', glow: 'none',
+        radius: 25, stroke: 2, fontSize: 14, fontWeight: 'normal',
+      };
+    }
+
+    // ── Normal mode ──────────────────────────────────────────────────────────
+    const isCurrent      = currentNode === value;
+    const isVisited      = visitedNodes.includes(value);
     const isInSearchPath = searchPath.includes(value);
     const isSearchTarget = searchPath.length > 0 && searchPath[searchPath.length - 1] === value;
 
-    let color = '#6366f1'; // default purple
-    let glow = 'none';
+    let color = '#6366f1';
+    let glow  = 'none';
 
     if (isCurrent) {
-      color = '#f59e0b'; // amber for current traversal
-      glow = 'drop-shadow(0 0 12px #f59e0b) drop-shadow(0 0 20px #f59e0b)';
+      color = '#f59e0b';
+      glow  = 'drop-shadow(0 0 12px #f59e0b) drop-shadow(0 0 20px #f59e0b)';
     } else if (isSearchTarget) {
-      color = searchResult ? '#10b981' : '#ef4444'; // green if found, red if not
-      glow = searchResult ? 'drop-shadow(0 0 12px #10b981)' : 'drop-shadow(0 0 12px #ef4444)';
+      color = searchResult ? '#10b981' : '#ef4444';
+      glow  = searchResult ? 'drop-shadow(0 0 12px #10b981)' : 'drop-shadow(0 0 12px #ef4444)';
     } else if (isInSearchPath) {
-      color = '#3b82f6'; // blue for search path
-      glow = 'drop-shadow(0 0 8px #3b82f6)';
+      color = '#3b82f6';
+      glow  = 'drop-shadow(0 0 8px #3b82f6)';
     } else if (isVisited) {
-      color = '#10b981'; // green for visited
-      glow = 'drop-shadow(0 0 6px #10b981)';
+      color = '#10b981';
+      glow  = 'drop-shadow(0 0 6px #10b981)';
     }
 
     return {
       color,
       glow,
-      radius: isCurrent || isSearchTarget ? 30 : 25,
-      stroke: isCurrent || isSearchTarget ? 3 : 2,
-      fontSize: isCurrent || isSearchTarget ? 16 : 14,
-      fontWeight: isCurrent || isSearchTarget ? 'bold' : 'normal'
+      radius:     isCurrent || isSearchTarget ? 30 : 25,
+      stroke:     isCurrent || isSearchTarget ? 3  : 2,
+      fontSize:   isCurrent || isSearchTarget ? 16 : 14,
+      fontWeight: isCurrent || isSearchTarget ? 'bold' : 'normal',
     };
   };
 
   const renderTree = (node, x, y, level, maxLevel) => {
     if (!node) return [];
     const spacing = Math.pow(2, maxLevel - level) * 50;
-    const style = getNodeStyle(node.value);
+    const style   = getNodeStyle(node.value);
     const elements = [];
 
     // Draw lines to children
     if (node.left) {
-      const isPathLine = searchPath.includes(node.value) && searchPath.includes(node.left.value);
+      const isPathLine = !isChallengeMode &&
+        searchPath.includes(node.value) && searchPath.includes(node.left.value);
       elements.push(
         <line
           key={`l-${node.value}-l`}
@@ -312,7 +367,8 @@ export function TreeRenderer({ tree, currentNode, visitedNodes, searchPath, sear
       elements.push(...renderTree(node.left, x - spacing, y + 100, level + 1, maxLevel));
     }
     if (node.right) {
-      const isPathLine = searchPath.includes(node.value) && searchPath.includes(node.right.value);
+      const isPathLine = !isChallengeMode &&
+        searchPath.includes(node.value) && searchPath.includes(node.right.value);
       elements.push(
         <line
           key={`l-${node.value}-r`}
@@ -324,11 +380,27 @@ export function TreeRenderer({ tree, currentNode, visitedNodes, searchPath, sear
       elements.push(...renderTree(node.right, x + spacing, y + 100, level + 1, maxLevel));
     }
 
-    // Draw node
+    // Draw node — clickable in challenge mode
     elements.push(
-      <g key={`n-${node.value}-${x}`} style={{ filter: style.glow, transition: 'all 0.3s ease' }}>
-        <circle cx={x} cy={y} r={style.radius} fill={style.color} stroke="white" strokeWidth={style.stroke} style={{ transition: 'all 0.3s ease' }} />
-        <text x={x} y={y} textAnchor="middle" dominantBaseline="middle" fill="white" fontSize={style.fontSize} fontWeight={style.fontWeight}>
+      <g
+        key={`n-${node.value}-${x}`}
+        style={{
+          filter:     style.glow,
+          transition: 'all 0.3s ease',
+          cursor:     isChallengeMode ? 'pointer' : 'default',
+        }}
+        onClick={isChallengeMode && onNodeClick ? () => onNodeClick(node.value) : undefined}
+      >
+        <circle
+          cx={x} cy={y} r={style.radius}
+          fill={style.color} stroke="white" strokeWidth={style.stroke}
+          style={{ transition: 'all 0.3s ease' }}
+        />
+        <text
+          x={x} y={y}
+          textAnchor="middle" dominantBaseline="middle"
+          fill="white" fontSize={style.fontSize} fontWeight={style.fontWeight}
+        >
           {node.value}
         </text>
       </g>
@@ -347,7 +419,7 @@ export function TreeRenderer({ tree, currentNode, visitedNodes, searchPath, sear
 
   const maxLevel = calculateMaxLevel(tree);
   const svgHeight = (maxLevel + 1) * 100 + 50;
-  const svgWidth = Math.max(800, Math.pow(2, Math.max(maxLevel, 1)) * 80);
+  const svgWidth  = Math.max(800, Math.pow(2, Math.max(maxLevel, 1)) * 80);
 
   return (
     <svg width={svgWidth} height={svgHeight} className="tree-svg">

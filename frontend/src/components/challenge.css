@@ -1,0 +1,357 @@
+/* ============================================
+   Interactive Challenge Mode Styles
+   ============================================ */
+
+/* ── Loading state ────────────────────────────────────────────────────────── */
+
+.challenge-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.875rem 1.1rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1rem;
+}
+
+/* ── Active challenge banner ──────────────────────────────────────────────── */
+
+.challenge-banner {
+    background: linear-gradient(135deg,
+        rgba(16, 185, 129, 0.06) 0%,
+        rgba(99, 102, 241, 0.05) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.28);
+    border-radius: var(--radius-lg);
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.challenge-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+}
+
+.challenge-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+
+.challenge-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* ── Type badges ──────────────────────────────────────────────────────────── */
+
+.challenge-type-badge {
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    padding: 0.18rem 0.55rem;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.challenge-type-badge.search {
+    background: rgba(99, 102, 241, 0.15);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.challenge-type-badge.leaves {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fcd34d;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.challenge-type-badge.inorder {
+    background: rgba(16, 185, 129, 0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* ── Exit button ──────────────────────────────────────────────────────────── */
+
+.challenge-exit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    border-radius: var(--radius-md);
+    padding: 0.28rem 0.65rem;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.challenge-exit-btn:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.06);
+}
+
+/* ── Description ──────────────────────────────────────────────────────────── */
+
+.challenge-description {
+    font-size: 0.845rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0 0 0.85rem 0;
+}
+
+/* ── Ordered progress (search / inorder_start) ────────────────────────────── */
+
+.challenge-progress-row {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.45rem;
+}
+
+.challenge-step-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+}
+
+.challenge-step-dot.done {
+    background: #10b981;
+    border-color: #10b981;
+    color: white;
+}
+
+.challenge-step-dot.next {
+    border-color: #6366f1;
+    color: #a5b4fc;
+    animation: challenge-pulse 1.6s ease-in-out infinite;
+}
+
+.challenge-step-dot.pending {
+    color: var(--text-muted);
+}
+
+@keyframes challenge-pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22); }
+    50%       { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.07); }
+}
+
+.challenge-progress-arrow {
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.challenge-step-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-left: 0.2rem;
+}
+
+/* ── Unordered progress (identify_leaves) ─────────────────────────────────── */
+
+.challenge-identify-progress {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.45rem;
+}
+
+.challenge-identify-count {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #10b981;
+}
+
+.challenge-identify-sep,
+.challenge-identify-total {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.challenge-identify-label {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+/* ── Hint ─────────────────────────────────────────────────────────────────── */
+
+.challenge-hint-row {
+    margin-top: 0.55rem;
+}
+
+.challenge-hint-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: transparent;
+    border: none;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.challenge-hint-toggle:hover {
+    color: var(--accent-primary);
+}
+
+.challenge-hint-text {
+    margin-top: 0.4rem;
+    font-size: 0.79rem;
+    color: var(--text-secondary);
+    background: rgba(99, 102, 241, 0.06);
+    padding: 0.45rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border-left: 2px solid #6366f1;
+    line-height: 1.5;
+}
+
+/* ── Result states (success / failed) ────────────────────────────────────── */
+
+.challenge-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 1.4rem 1.25rem;
+    text-align: center;
+    border-radius: var(--radius-lg);
+    margin-bottom: 1rem;
+}
+
+.challenge-result.success {
+    background: rgba(16, 185, 129, 0.07);
+    border: 1px solid rgba(16, 185, 129, 0.28);
+}
+
+.challenge-result.failed {
+    background: rgba(239, 68, 68, 0.05);
+    border: 1px solid rgba(239, 68, 68, 0.22);
+}
+
+.challenge-result-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+}
+
+.challenge-result-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.challenge-result-subtitle {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.45;
+}
+
+.challenge-result-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* ── Control panel additions ──────────────────────────────────────────────── */
+
+/* "Start Challenge" button */
+.btn-challenge {
+    width: 100%;
+    background: linear-gradient(135deg,
+        rgba(16, 185, 129, 0.12),
+        rgba(99, 102, 241, 0.1));
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #6ee7b7;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-challenge:hover:not(:disabled) {
+    background: linear-gradient(135deg,
+        rgba(16, 185, 129, 0.22),
+        rgba(99, 102, 241, 0.16));
+    border-color: rgba(16, 185, 129, 0.6);
+    color: #34d399;
+    transform: translateY(-1px);
+}
+
+/* "Challenge Mode Active" indicator in control panel */
+.challenge-mode-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 0.9rem;
+    background: rgba(16, 185, 129, 0.06);
+    border: 1px solid rgba(16, 185, 129, 0.22);
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    color: #6ee7b7;
+    margin-bottom: 0.75rem;
+}
+
+/* Pulsing dot for challenge mode indicator and loading */
+.challenge-mode-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    flex-shrink: 0;
+    animation: challenge-dot-blink 1.3s ease-in-out infinite;
+}
+
+@keyframes challenge-dot-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.25; }
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .challenge-banner,
+    .challenge-result {
+        padding: 0.875rem 1rem;
+    }
+
+    .challenge-result-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .challenge-result-actions .btn {
+        width: 100%;
+    }
+}

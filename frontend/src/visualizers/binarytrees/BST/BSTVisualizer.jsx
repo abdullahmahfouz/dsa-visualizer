@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { Zap } from 'lucide-react';
 import AIAssistant from '../../../components/AIAssistant';
 import CodeTabs from '../../../components/CodeTabs';
 import ConceptsPanel from '../../../components/ConceptsPanel';
+import ChallengeOverlay from '../../../components/ChallengeOverlay';
 
 import {
   ControlPanel,
@@ -11,36 +13,58 @@ import {
   getSearchPath
 } from './BSTVisualizer.parts';
 
+// ─── Helper ───────────────────────────────────────────────────────────────────
+
+/** Collect all node values from the BST in inorder (sorted) using the tree dict. */
+function getInorderValues(node) {
+  if (!node) return [];
+  return [
+    ...getInorderValues(node.left),
+    node.value,
+    ...getInorderValues(node.right),
+  ];
+}
+
+// ─── Component ────────────────────────────────────────────────────────────────
+
 function BSTVisualizer() {
-  // Tree state
-  const [tree, setTree] = useState(null);
-  const [size, setSize] = useState(0);
+  // ── Tree state ──────────────────────────────────────────────────────────────
+  const [tree, setTree]     = useState(null);
+  const [size, setSize]     = useState(0);
   const [height, setHeight] = useState(-1);
 
-  // Form state
+  // ── Form state ──────────────────────────────────────────────────────────────
   const [insertValue, setInsertValue] = useState('');
   const [deleteValue, setDeleteValue] = useState('');
   const [searchValue, setSearchValue] = useState('');
-  const [message, setMessage] = useState('');
+  const [message, setMessage]         = useState('');
 
-  // Search state
-  const [searchPath, setSearchPath] = useState([]);
+  // ── Search state ────────────────────────────────────────────────────────────
+  const [searchPath,   setSearchPath]   = useState([]);
   const [searchResult, setSearchResult] = useState(null);
 
-  // Traversal animation state
-  const [traversalResult, setTraversalResult] = useState([]);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [currentNode, setCurrentNode] = useState(null);
-  const [visitedNodes, setVisitedNodes] = useState([]);
-  const [traversalType, setTraversalType] = useState(null);
+  // ── Traversal animation state ───────────────────────────────────────────────
+  const [traversalResult,   setTraversalResult]   = useState([]);
+  const [isAnimating,       setIsAnimating]       = useState(false);
+  const [currentNode,       setCurrentNode]       = useState(null);
+  const [visitedNodes,      setVisitedNodes]      = useState([]);
+  const [traversalType,     setTraversalType]     = useState(null);
   const [traversalComplete, setTraversalComplete] = useState(false);
 
-  // Load tree on mount
-  useEffect(() => {
-    loadTree();
-  }, []);
+  // ── Challenge state ─────────────────────────────────────────────────────────
+  const [isChallengeMode,   setIsChallengeMode]   = useState(false);
+  const [challenge,         setChallenge]         = useState(null);
+  const [userClicks,        setUserClicks]        = useState([]);
+  // 'idle' | 'loading' | 'active' | 'success' | 'failed'
+  const [challengeStatus,   setChallengeStatus]   = useState('idle');
+  // value that triggered a wrong click (shows red briefly before failing)
+  const [challengeWrongClick, setChallengeWrongClick] = useState(null);
 
-  // Fetch tree state from Flask API
+  // ── Lifecycle ───────────────────────────────────────────────────────────────
+  useEffect(() => { loadTree(); }, []);
+
+  // ── Tree API calls ──────────────────────────────────────────────────────────
+
   const loadTree = async () => {
     try {
       const response = await fetch('/api/bst');
@@ -63,141 +87,76 @@ function BSTVisualizer() {
     setSearchResult(null);
   };
 
-  // ============ Flask API Operations ============
-
-  // Insert node via Flask API
   const insertNode = async () => {
-    if (!insertValue.trim()) {
-      showMessage('Please enter a number!');
-      return;
-    }
-
+    if (!insertValue.trim()) { showMessage('Please enter a number!'); return; }
     const numValue = Number(insertValue);
-    if (isNaN(numValue)) {
-      showMessage('Please enter a valid number!');
-      return;
-    }
-
-    if (size >= MAX_TREE_SIZE) {
-      showMessage(`Tree is full! Maximum size is ${MAX_TREE_SIZE} nodes.`);
-      return;
-    }
+    if (isNaN(numValue)) { showMessage('Please enter a valid number!'); return; }
+    if (size >= MAX_TREE_SIZE) { showMessage(`Tree is full! Maximum size is ${MAX_TREE_SIZE} nodes.`); return; }
 
     clearSearchHighlight();
     resetTraversal();
-
     try {
       const response = await fetch('/api/bst/insert', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: numValue })
       });
-
       const result = await response.json();
-      if (result.error) {
-        showMessage(result.error);
-        return;
-      }
-
+      if (result.error) { showMessage(result.error); return; }
       setTree(result.tree);
       setSize(result.size || 0);
       setHeight(result.height !== undefined ? result.height : -1);
       showMessage(`Inserted ${numValue}`);
       setInsertValue('');
-    } catch (error) {
-      showMessage('Error inserting node');
-    }
+    } catch { showMessage('Error inserting node'); }
   };
 
-  // Delete node via Flask API
   const deleteNode = async () => {
-    if (!deleteValue.trim()) {
-      showMessage('Please enter a number!');
-      return;
-    }
-
+    if (!deleteValue.trim()) { showMessage('Please enter a number!'); return; }
     const numValue = Number(deleteValue);
-    if (isNaN(numValue)) {
-      showMessage('Please enter a valid number!');
-      return;
-    }
+    if (isNaN(numValue)) { showMessage('Please enter a valid number!'); return; }
 
     clearSearchHighlight();
     resetTraversal();
-
     try {
       const response = await fetch('/api/bst/delete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: numValue })
       });
-
       const result = await response.json();
-      if (result.error) {
-        showMessage(result.error);
-        return;
-      }
-
+      if (result.error) { showMessage(result.error); return; }
       setTree(result.tree);
       setSize(result.size || 0);
       setHeight(result.height !== undefined ? result.height : -1);
       showMessage(`Deleted ${numValue}`);
       setDeleteValue('');
-    } catch (error) {
-      showMessage('Error deleting node');
-    }
+    } catch { showMessage('Error deleting node'); }
   };
 
-  // Search node via Flask API with animated path
   const searchNode = async () => {
-    if (!searchValue.trim()) {
-      showMessage('Please enter a number!');
-      return;
-    }
-
+    if (!searchValue.trim()) { showMessage('Please enter a number!'); return; }
     const numValue = Number(searchValue);
-    if (isNaN(numValue)) {
-      showMessage('Please enter a valid number!');
-      return;
-    }
-
-    if (!tree) {
-      showMessage('Tree is empty!');
-      return;
-    }
+    if (isNaN(numValue)) { showMessage('Please enter a valid number!'); return; }
+    if (!tree) { showMessage('Tree is empty!'); return; }
 
     resetTraversal();
     setIsAnimating(true);
-
-    // Get search path for animation
     const path = getSearchPath(tree, numValue);
-
-    // Animate through path
     for (let i = 0; i < path.length; i++) {
       setSearchPath(path.slice(0, i + 1));
       await new Promise(resolve => setTimeout(resolve, 500));
     }
-
-    // Verify result with Flask API
     try {
       const response = await fetch(`/api/bst/search?value=${numValue}`);
       const result = await response.json();
       setSearchResult(result.found);
-
-      if (result.found) {
-        showMessage(`Found ${numValue}!`);
-      } else {
-        showMessage(`${numValue} not found in BST`);
-      }
-    } catch (error) {
-      showMessage('Error searching');
-    }
-
+      showMessage(result.found ? `Found ${numValue}!` : `${numValue} not found in BST`);
+    } catch { showMessage('Error searching'); }
     setIsAnimating(false);
     setSearchValue('');
   };
 
-  // Clear tree via Flask API
   const clearTree = async () => {
     try {
       await fetch('/api/bst/clear', { method: 'POST' });
@@ -207,19 +166,13 @@ function BSTVisualizer() {
       resetTraversal();
       clearSearchHighlight();
       showMessage('BST cleared!');
-    } catch (error) {
-      showMessage('Error clearing tree');
-    }
+    } catch { showMessage('Error clearing tree'); }
   };
 
-  // ============ Traversal via Flask API ============
+  // ── Traversal ───────────────────────────────────────────────────────────────
 
   const performTraversal = async (type) => {
-    if (!tree) {
-      showMessage('Tree is empty! Insert some nodes first.');
-      return;
-    }
-
+    if (!tree) { showMessage('Tree is empty! Insert some nodes first.'); return; }
     clearSearchHighlight();
     setIsAnimating(true);
     setTraversalResult([]);
@@ -227,33 +180,21 @@ function BSTVisualizer() {
     setVisitedNodes([]);
     setTraversalType(type);
     setTraversalComplete(false);
-
-    // Fetch traversal sequence from Flask API
     try {
       const response = await fetch(`/api/bst/${type}`);
       const data = await response.json();
       const sequence = data.traversal || [];
-
-      if (sequence.length === 0) {
-        showMessage('Tree is empty!');
-        setIsAnimating(false);
-        return;
-      }
-
-      // Animate traversal
+      if (sequence.length === 0) { showMessage('Tree is empty!'); setIsAnimating(false); return; }
       for (let i = 0; i < sequence.length; i++) {
         setCurrentNode(sequence[i]);
         await new Promise(resolve => setTimeout(resolve, 600));
-
         setVisitedNodes(prev => [...prev, sequence[i]]);
         setTraversalResult(prev => [...prev, sequence[i]]);
         await new Promise(resolve => setTimeout(resolve, 200));
       }
-
       setCurrentNode(null);
       setTraversalComplete(true);
       setIsAnimating(false);
-
       const typeName = type.charAt(0).toUpperCase() + type.slice(1);
       showMessage(`${typeName} traversal complete!${type === 'inorder' ? ' (Sorted!)' : ''}`);
     } catch (error) {
@@ -271,7 +212,113 @@ function BSTVisualizer() {
     setTraversalComplete(false);
   };
 
-  // ============ Render ============
+  // ── Challenge handlers ──────────────────────────────────────────────────────
+
+  const startChallenge = async () => {
+    if (!tree || size < 2) {
+      showMessage('Insert at least 2 nodes before starting a challenge!');
+      return;
+    }
+
+    // Reset everything to a clean state
+    setIsChallengeMode(true);
+    setChallengeStatus('loading');
+    setChallenge(null);
+    setUserClicks([]);
+    setChallengeWrongClick(null);
+    resetTraversal();
+    clearSearchHighlight();
+
+    try {
+      const res = await fetch('/api/generate-challenge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tree_values: getInorderValues(tree),
+          root_value:  tree.value,
+          tree_dict:   tree,
+        }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showMessage(data.error || 'Failed to generate challenge');
+        setIsChallengeMode(false);
+        setChallengeStatus('idle');
+        return;
+      }
+
+      setChallenge(data);
+      setChallengeStatus('active');
+    } catch {
+      showMessage('Failed to generate challenge — check your connection');
+      setIsChallengeMode(false);
+      setChallengeStatus('idle');
+    }
+  };
+
+  /**
+   * Validates a node click against the current challenge.
+   * - search / inorder_start : ordered — each click must match expected_steps[userClicks.length]
+   * - identify_leaves        : unordered — click any expected node in any order
+   */
+  const handleChallengeNodeClick = (value) => {
+    if (challengeStatus !== 'active' || !challenge) return;
+
+    const { type, expected_steps } = challenge;
+
+    if (type === 'search' || type === 'inorder_start') {
+      const nextExpected = expected_steps[userClicks.length];
+      if (value === nextExpected) {
+        const newClicks = [...userClicks, value];
+        setUserClicks(newClicks);
+        if (newClicks.length === expected_steps.length) {
+          setChallengeStatus('success');
+        }
+      } else {
+        // Show red flash for 600 ms, then transition to failed state
+        setChallengeWrongClick(value);
+        setTimeout(() => {
+          setChallengeWrongClick(null);
+          setChallengeStatus('failed');
+        }, 600);
+      }
+    } else if (type === 'identify_leaves') {
+      if (userClicks.includes(value)) return; // ignore duplicate clicks
+      if (expected_steps.includes(value)) {
+        const newClicks = [...userClicks, value];
+        setUserClicks(newClicks);
+        if (newClicks.length === expected_steps.length) {
+          setChallengeStatus('success');
+        }
+      } else {
+        setChallengeWrongClick(value);
+        setTimeout(() => {
+          setChallengeWrongClick(null);
+          setChallengeStatus('failed');
+        }, 600);
+      }
+    }
+  };
+
+  const exitChallenge = () => {
+    setIsChallengeMode(false);
+    setChallenge(null);
+    setUserClicks([]);
+    setChallengeStatus('idle');
+    setChallengeWrongClick(null);
+  };
+
+  const retryChallenge = () => {
+    setUserClicks([]);
+    setChallengeWrongClick(null);
+    setChallengeStatus('active');
+  };
+
+  // Fetch a fresh challenge with the same tree
+  const newChallenge = () => startChallenge();
+
+  // ── Render ──────────────────────────────────────────────────────────────────
 
   return (
     <div className="container">
@@ -297,6 +344,8 @@ function BSTVisualizer() {
           visitedNodes={visitedNodes}
           searchPath={searchPath}
           searchResult={searchResult}
+          isChallengeMode={isChallengeMode}
+          challengeStatus={challengeStatus}
           onInsertValueChange={setInsertValue}
           onDeleteValueChange={setDeleteValue}
           onSearchValueChange={setSearchValue}
@@ -306,6 +355,7 @@ function BSTVisualizer() {
           onTraversal={performTraversal}
           onClear={clearTree}
           onResetTraversal={() => { resetTraversal(); clearSearchHighlight(); }}
+          onStartChallenge={startChallenge}
         />
 
         <div className="visual-panel">
@@ -313,6 +363,19 @@ function BSTVisualizer() {
           <p className="bst-property-reminder">
             Remember: <code>Left {'<'} Parent {'<'} Right</code>
           </p>
+
+          {/* Challenge overlay (loading / active / success / failed) */}
+          {isChallengeMode && (
+            <ChallengeOverlay
+              challenge={challenge}
+              userClicks={userClicks}
+              status={challengeStatus}
+              onExit={exitChallenge}
+              onRetry={retryChallenge}
+              onNewChallenge={newChallenge}
+            />
+          )}
+
           <div className="tree-container">
             <TreeRenderer
               tree={tree}
@@ -320,6 +383,10 @@ function BSTVisualizer() {
               visitedNodes={visitedNodes}
               searchPath={searchPath}
               searchResult={searchResult}
+              isChallengeMode={isChallengeMode}
+              challengeClickedNodes={userClicks}
+              challengeWrongClick={challengeWrongClick}
+              onNodeClick={handleChallengeNodeClick}
             />
           </div>
 

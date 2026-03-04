@@ -1,107 +1,194 @@
-#  DSA Visualizer
-
-A free, interactive web-based learning tool designed to help students master Data Structures & Algorithms (DSA) concepts through hands-on visualizations. Built with React and Flask, this project provides step-by-step visualizations with in-depth explanations to make DSA learning accessible and engaging.
-
-## Project Overview
-
-Let's be honest - learning data structures can be tough. You read about stacks and queues in textbooks, but actually seeing how they work? That's a different story. This tool was built to bridge that gap. It's a student-focused educational tool that helps you understand complex DSA concepts by visualizing how data structures actually work in real-time. Whether you're struggling with stacks, queues, or hash tables, this tool breaks down each operation with clear, interactive demonstrations that make the concepts click.
-
-## Live Demo
-
-Check out the live demo to see the visualizers in action:
-
-**[View Live Demo](https://dsa-visualizer-ksnl.onrender.com/)**
-
-The demo includes all currently available visualizers - Stack, Queue, Linked List, and Hash Table - each with interactive controls and step-by-step explanations. Or if you prefer to run it locally, follow the installation steps below.
-
-##  Features
-
-Here's what makes this tool helpful for students:
-
-- **Interactive Visualizations**: See data structures in action with real-time animations. Watch nodes change colors during traversals, see collision detection in hash tables, and observe data flow in real-time.
-- **In-Depth Explanations**: Each data structure includes comprehensive explanations with key terminology, real-world analogies, complexity analysis, and use cases.
-- **Animated Tree Traversals**: Binary tree traversals (Inorder, Preorder, Postorder, Level-order) with animated node highlighting and detailed step-by-step output.
-- **Collision Detection**: Hash table visualization shows collision detection, linear probing, and load factor warnings in real-time.
-- **AI Study Assistant**: Stuck on a concept? Ask our context-aware AI assistant powered by Google Gemini API. It provides relevant examples based on which page you're on.
-- **Multiple Language Examples**: See implementations in Python, JavaScript, Java, C#, C++, and C. Because let's face it, different courses use different languages.
-- **Fully Responsive**: Mobile-optimized design that works perfectly on phones, tablets, and desktops. Study wherever you're comfortable.
-- **Modern React UI**: Fast, smooth interactions with a clean, dark-themed interface that's easy on the eyes during those late-night study sessions.
 # DSA Visualizer
 
-A lightweight, open-source learning tool that visualizes common data structures and algorithms. Frontend is built with React + Vite, and the backend is a Flask API that serves the production build and provides data-structure endpoints used by the visualizers.
+An interactive, open-source learning tool that brings Data Structures & Algorithms to life through real-time visualizations, side-by-side comparisons, AI-powered assistance, and a built-in coding practice environment. Built with React + Vite on the frontend and Flask on the backend.
 
-## Quick start
+**[Live Demo →](https://dsa-visualizer-ksnl.onrender.com/)**
 
-Prerequisites:
-- Python 3.8+ (recommended)
-- Node.js 16+ and npm
+---
 
-Development (recommended):
+## Features
 
-1) Backend (Flask)
+- **30+ interactive visualizers** — step through insertions, deletions, traversals, and searches with live animations
+- **Algorithm Comparison Engine** — run Bubble / Insertion / Merge / Quick Sort simultaneously on the same array; compare Linear vs Binary Search; benchmark Linear Probing vs Quadratic Probing vs Separate Chaining side-by-side with live metrics
+- **Time-travel scrubber** — BFS and DFS visualizers include a playback scrubber so you can step forward and backward through the algorithm at your own pace
+- **BST Interactive Challenges** — AI-generated click-to-solve challenges (search paths, leaf identification, inorder sequences) scored against a generated answer key
+- **AI Study Assistant** — context-aware chat powered by Google Gemini; asks and answers questions about whichever data structure you're currently viewing
+- **Coding Practice** — Monaco-based code editor with 20+ curated DSA problems, AI code review (time complexity, logic score, line-by-line suggestions), and multi-language support (Python, JavaScript, Java, C++, C#, C)
+- **Code tabs** — every visualizer includes copy-ready implementations in six languages
+- **Fully responsive** — works on phones, tablets, and desktops
+
+---
+
+## Visualizers
+
+### Linear Structures
+| Visualizer | Route |
+|---|---|
+| Stack | `/stack` |
+| Queue | `/queue` |
+| Linked List | `/linkedlist` |
+| Skip List | `/skiplist` |
+
+### Hash Tables
+| Visualizer | Route |
+|---|---|
+| Linear Probing | `/hashtable_linear` |
+| Quadratic Probing | `/hashtable_quadratic` |
+| Separate Chaining | `/hashtable_chaining` |
+
+### Trees
+| Visualizer | Route |
+|---|---|
+| Binary Tree Traversals | `/binarytree` |
+| Binary Search Tree (BST) | `/bst` |
+| AVL Tree | `/avl` |
+| Splay Tree | `/splay` |
+| Treap | `/treap` |
+
+### Heaps
+| Visualizer | Route |
+|---|---|
+| Min Heap | `/minheap` |
+| Max Heap | `/maxheap` |
+
+### Graphs
+| Visualizer | Route |
+|---|---|
+| Adjacency List | `/adjacency-list` |
+| Adjacency Matrix | `/adjacency-matrix` |
+| BFS (with time-travel) | `/bfs` |
+| DFS (with time-travel) | `/dfs` |
+| Dijkstra's Algorithm | `/dijkstra` |
+| Bellman-Ford | `/bellman-ford` |
+| Prim's MST | `/prim-mst` |
+| Kruskal's MST | `/kruskal-mst` |
+| Topological Sort | `/topological-sort` |
+
+### Tools
+| Page | Route |
+|---|---|
+| Algorithm Comparison (Sorting, Searching, Hashing) | `/compare` |
+| Coding Practice + AI Code Review | `/practice` |
+
+---
+
+## Quick Start
+
+**Prerequisites:** Python 3.8+, Node.js 16+
+
+### Development (recommended)
+
 ```bash
-# from project root
+# 1. Backend
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 python app.py
-# Default backend: http://127.0.0.1:5001 (can override with HOST/PORT env vars)
+# Flask runs at http://127.0.0.1:5001
 ```
 
-2) Frontend (React + Vite)
 ```bash
+# 2. Frontend (separate terminal)
 cd frontend
 npm install
 npm run dev
-# Frontend dev server: http://localhost:3000 (proxies /api -> http://127.0.0.1:5001)
+# Vite dev server at http://localhost:3000
+# API calls are proxied to Flask automatically
 ```
 
-Production build (serve from Flask):
+### Production build
+
 ```bash
-cd frontend
-npm run build
-# Vite outputs to app/static/react-build by default
-cd ..
-source .venv/bin/activate
-python app.py
-# Visit http://127.0.0.1:5001 to see the built app
+cd frontend && npm run build
+# Vite outputs to app/static/react-build/
+cd .. && source .venv/bin/activate && python app.py
+# Visit http://127.0.0.1:5001
 ```
 
-Tips:
-- If you update the frontend and don't see changes, run `npm run build` again and hard-refresh the browser (Cmd+Shift+R).
-- Vite dev server handles hot reload during development — useful for UI changes.
+> If you update the frontend and don't see changes, run `npm run build` and hard-refresh (`Cmd+Shift+R` / `Ctrl+Shift+R`).
 
-## Where files live
-- Frontend: `frontend/` (React + Vite)
-- Backend: `app/` (Flask app + API routes)
-- Production frontend output: `app/static/react-build`
+---
 
-## Environment / AI assistant
-- To enable AI assistant features, add `GEMINI_API_KEY` to a `.env` file in the project root (Flask reads via `python-dotenv`):
+## AI Features Setup
+
+AI features (Study Assistant, BST Challenges, Code Review) require a Google Gemini API key. Create a `.env` file in the project root:
 
 ```
 GEMINI_API_KEY=your_api_key_here
 ```
 
-## Useful commands
-- Frontend build: `cd frontend && npm run build`
-- Frontend dev: `cd frontend && npm run dev`
-- Run Flask: `source .venv/bin/activate && python app.py`
+Flask reads this via `python-dotenv`. Without the key the rest of the app works normally — AI endpoints return a 503 with a helpful message.
 
-## API overview
-The backend exposes simple REST endpoints used by the UI, for example:
-- `GET /api/stack`, `POST /api/stack/push`
-- `GET /api/queue`, `POST /api/queue/enqueue`
-- `GET /api/hashtable_chaining`, `POST /api/hashtable_chaining/insert`
-
-See the `app/routes/` folder for all endpoint implementations.
-
-## Contributing
-- Fork, branch, implement, test, and open a PR. Small, focused PRs are easiest to review.
-
-## License
-Open-source / educational use.
+Model used: `gemini-2.5-flash`
 
 ---
 
-Created by Abdullah Mahfouz
+## Project Structure
+
+```
+dsa-visualizer/
+├── app/                        # Flask backend
+│   ├── routes/                 # Data structure API endpoints
+│   ├── api/
+│   │   └── gemini_api.py       # AI routes (ask-ai, code-review, generate-challenge)
+│   └── static/react-build/     # Vite production output (git-ignored)
+├── frontend/                   # React + Vite
+│   └── src/
+│       ├── pages/              # Top-level pages (Home, Algorithms, AlgoCompare, …)
+│       ├── visualizers/        # One folder per data structure category
+│       ├── practice/           # Coding practice page + problems
+│       ├── components/         # Shared components (AIAssistant, ChallengeOverlay, …)
+│       ├── hooks/              # useAlgorithmHistory, useTimedMessage
+│       ├── utils/              # snapshotBuilder (immutable step snapshots)
+│       └── styles/             # CSS design tokens, base styles, page/visualizer styles
+├── requirements.txt
+└── app.py                      # Flask entry point
+```
+
+---
+
+## API Overview
+
+The Flask backend exposes REST endpoints consumed by the visualizers:
+
+```
+GET  /api/bst                       Fetch current BST state
+POST /api/bst/insert                Insert a value
+POST /api/bst/delete                Delete a value
+GET  /api/bst/search?value=X        Search for a value
+GET  /api/bst/inorder               Inorder traversal sequence
+
+POST /api/generate-challenge        AI-generated BST challenge
+POST /api/ask-ai                    AI study assistant
+POST /api/code-review               AI code review
+```
+
+Endpoints follow the same pattern for every data structure (`/api/stack`, `/api/queue`, `/api/hashtable`, etc.). See `app/routes/` for all implementations.
+
+---
+
+## Useful Commands
+
+```bash
+# Frontend
+cd frontend && npm run dev        # Start dev server with HMR
+cd frontend && npm run build      # Build for production
+
+# Backend
+source .venv/bin/activate
+python app.py                     # Start Flask (default: port 5001)
+```
+
+---
+
+## Contributing
+
+Fork the repo, create a feature branch, implement your change, and open a PR. Small, focused PRs are easiest to review. If you're adding a new visualizer, follow the pattern in an existing one (e.g. `BSTVisualizer.jsx`) and add a matching Flask route in `app/routes/`.
+
+## License
+
+Open-source — free for educational use.
+
+---
+
+Created by [Abdullah Mahfouz](https://github.com/abdullahmahfouz)

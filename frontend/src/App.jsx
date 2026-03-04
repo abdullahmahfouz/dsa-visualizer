@@ -44,6 +44,10 @@ import KruskalVisualizer from './visualizers/graphs/KruskalVisualizer';
 // Practice
 import PracticePage from './practice/PracticePage';
 
+// Comparison
+import HashComparison from './pages/HashComparison';
+import AlgoCompare from './pages/AlgoCompare';
+
 function App() {
   return (
     <div className="homepage-body">
@@ -79,6 +83,8 @@ function App() {
           <Route path="/topological-sort" element={<TopologicalSortVisualizer />} />
           <Route path="/practice" element={<PracticePage />} />
           <Route path="/practice/:problemId" element={<PracticePage />} />
+          <Route path="/compare-hash" element={<HashComparison />} />
+          <Route path="/compare" element={<AlgoCompare />} />
         </Routes>
         <Footer />
       </main>
