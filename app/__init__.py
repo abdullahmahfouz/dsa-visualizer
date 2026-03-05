@@ -40,6 +40,7 @@ from .routes.heap_routes.minheap_routes import minheap_bp
 from .routes.heap_routes.maxheap_routes import maxheap_bp
 from .routes.graph_routes.graph_routes import graph_bp
 from .routes.practice_routes.practice_routes import practice_bp
+from .routes.sandbox_routes import sandbox_bp
 from .api.gemini_api import api_bp
 
 
@@ -69,6 +70,7 @@ app.register_blueprint(minheap_bp)     # API routes: /api/minheap/*
 app.register_blueprint(maxheap_bp)     # API routes: /api/maxheap/*
 app.register_blueprint(graph_bp)       # API routes: /api/graph/*
 app.register_blueprint(practice_bp)    # API routes: /api/practice/*
+app.register_blueprint(sandbox_bp)     # API routes: /api/sandbox/*
 app.register_blueprint(api_bp)         # AI API routes: /api/ask-ai
 app.register_blueprint(pages_bp)       # Page routes (catch-all) - MUST BE LAST
 

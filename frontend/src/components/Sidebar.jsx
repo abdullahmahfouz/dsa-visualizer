@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Menu, X, Home, Code2, Layers, ArrowRightLeft, Link as LinkIcon,
   Hash, GitBranch, Mail, HeartHandshake, BrainCircuit, Github, Linkedin,
-  Trophy, History, FastForward, GitMerge
+  Trophy, History, FastForward, GitMerge, Terminal
 } from 'lucide-react';
 
 function Sidebar() {
@@ -78,6 +78,7 @@ function Sidebar() {
             <NavItem to="/algorithms" icon={Code2} pageName="algorithms">Algorithms</NavItem>
             <NavItem to="/practice" icon={Trophy} pageName="practice">Practice</NavItem>
             <NavItem to="/compare" icon={GitMerge} pageName="compare">Compare</NavItem>
+            <NavItem to="/sandbox" icon={Terminal} pageName="sandbox">Sandbox</NavItem>
           </div>
           
          
