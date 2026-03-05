@@ -167,6 +167,132 @@ Constraints:
         return jsonify({'error': str(e)}), status_code
 
 
+@api_bp.route('/api/resume-upload', methods=['POST'])
+def resume_upload():
+    """
+    POST /api/resume-upload  (multipart/form-data, field: "file")
+    Accepts .pdf, .docx, .txt — returns { "text": "..." }
+    """
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+
+    f = request.files['file']
+    filename = f.filename or ''
+    ext = filename.rsplit('.', 1)[-1].lower() if '.' in filename else ''
+
+    if ext not in ('pdf', 'docx', 'txt'):
+        return jsonify({'error': 'Unsupported file type. Please upload a PDF, DOCX, or TXT file.'}), 400
+
+    try:
+        if ext == 'txt':
+            text = f.read().decode('utf-8', errors='replace')
+
+        elif ext == 'pdf':
+            import io
+            from PyPDF2 import PdfReader
+            reader = PdfReader(io.BytesIO(f.read()))
+            pages = [page.extract_text() or '' for page in reader.pages]
+            text = '\n'.join(pages)
+
+        elif ext == 'docx':
+            import io
+            from docx import Document
+            doc = Document(io.BytesIO(f.read()))
+            text = '\n'.join(p.text for p in doc.paragraphs)
+
+        text = text.strip()
+        if not text:
+            return jsonify({'error': 'Could not extract text from the file. Try copying and pasting the text manually.'}), 422
+
+        if len(text) > 20000:
+            text = text[:20000]
+
+        return jsonify({'text': text})
+
+    except Exception as e:
+        print(f"Resume Upload Error: {e}")
+        traceback.print_exc()
+        return jsonify({'error': f'Failed to parse file: {str(e)}'}), 500
+
+
+@api_bp.route('/api/resume-review', methods=['POST'])
+def resume_review():
+    """
+    POST /api/resume-review
+    Body: { "resume": "...", "targetRole": "Software Engineer" }
+    Returns: { overall_score, summary, strengths, improvements, missing_sections, actionable_feedback }
+    """
+    if not api_key:
+        return jsonify({'error': 'AI assistant is not configured. Please set GEMINI_API_KEY.'}), 503
+
+    import json as _json
+
+    data = request.json or {}
+    resume_text = data.get('resume', '').strip()
+    target_role = data.get('targetRole', '').strip() or 'software engineering roles'
+
+    if not resume_text:
+        return jsonify({'error': 'No resume text provided'}), 400
+
+    if len(resume_text) > 20000:
+        return jsonify({'error': 'Resume text is too long (max 20,000 characters)'}), 400
+
+    prompt = f"""You are an experienced technical recruiter and senior software engineer with 15+ years of hiring experience. You give brutally honest, specific, and actionable resume feedback. Do not sugarcoat — be direct about weaknesses.
+
+The candidate is targeting: {target_role}
+
+RESUME:
+{resume_text}
+
+Return ONLY valid JSON with this exact structure:
+{{
+  "overall_score": <integer 1-10>,
+  "summary": "<one sentence honest overall assessment>",
+  "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
+  "improvements": ["<specific improvement 1>", "<specific improvement 2>", "<specific improvement 3>"],
+  "missing_sections": ["<missing element 1>", "<missing element 2>"],
+  "actionable_feedback": "<2-4 paragraphs of detailed, specific, actionable advice. Be direct. Reference specific parts of the resume. Explain what to change and why it matters to recruiters.>"
+}}
+
+Scoring guide:
+1-3: Major issues, would likely be rejected immediately
+4-5: Below average, needs significant work
+6-7: Average, competitive but has clear gaps
+8-9: Strong, stands out from most candidates
+10: Exceptional, near-perfect
+
+Be specific — avoid generic advice like "add more details". Tell them exactly what to fix."""
+
+    try:
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+            config=genai.types.GenerateContentConfig(
+                response_mime_type="application/json"
+            )
+        )
+        review_data = _json.loads(response.text)
+
+        # Validate required keys
+        required = ('overall_score', 'summary', 'strengths', 'improvements', 'missing_sections', 'actionable_feedback')
+        for key in required:
+            if key not in review_data:
+                return jsonify({'error': f'AI response missing field: {key}'}), 500
+
+        return jsonify(review_data)
+
+    except Exception as e:
+        print(f"Resume Review Error: {e}")
+        traceback.print_exc()
+        status_code = getattr(e, 'status_code', None) or getattr(e, 'status', None) or 500
+        try:
+            status_code = int(status_code)
+        except Exception:
+            status_code = 500
+        return jsonify({'error': str(e)}), status_code
+
+
 @api_bp.route('/api/code-review', methods=['POST'])
 def code_review():
     """

@@ -51,6 +51,9 @@ import CodeVisualizerSandbox from './pages/CodeVisualizerSandbox';
 import HashComparison from './pages/HashComparison';
 import AlgoCompare from './pages/AlgoCompare';
 
+// Resume Reviewer
+import ResumeReviewer from './pages/ResumeReviewer';
+
 function App() {
   return (
     <div className="homepage-body">
@@ -89,6 +92,7 @@ function App() {
           <Route path="/sandbox" element={<CodeVisualizerSandbox />} />
           <Route path="/compare-hash" element={<HashComparison />} />
           <Route path="/compare" element={<AlgoCompare />} />
+          <Route path="/resume-reviewer" element={<ResumeReviewer />} />
         </Routes>
         <Footer />
       </main>
