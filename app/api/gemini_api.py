@@ -293,6 +293,186 @@ Be specific — avoid generic advice like "add more details". Tell them exactly 
         return jsonify({'error': str(e)}), status_code
 
 
+@api_bp.route('/api/resume-improve', methods=['POST'])
+def resume_improve():
+    """
+    POST /api/resume-improve
+    Body: { "resume": "...", "targetRole": "..." }
+    Returns: { "improved_resume": "...", "changes_made": [...] }
+    """
+    if not api_key:
+        return jsonify({'error': 'AI assistant is not configured. Please set GEMINI_API_KEY.'}), 503
+
+    import json as _json
+
+    data = request.json or {}
+    resume_text = data.get('resume', '').strip()
+    target_role = data.get('targetRole', '').strip() or 'software engineering roles'
+
+    if not resume_text:
+        return jsonify({'error': 'No resume text provided'}), 400
+    if len(resume_text) > 20000:
+        return jsonify({'error': 'Resume text is too long (max 20,000 characters)'}), 400
+
+    prompt = f"""You are an elite resume writer who has helped thousands of candidates land offers at top companies. Your task is to rewrite the provided resume to be significantly stronger while preserving every real fact about the candidate (their actual companies, roles, dates, schools, and degrees must remain unchanged).
+
+The candidate is targeting: {target_role}
+
+ORIGINAL RESUME:
+{resume_text}
+
+Rewrite the resume with these improvements applied:
+1. Replace weak/passive verbs with powerful action verbs (Led, Architected, Engineered, Drove, Spearheaded, Reduced, Increased, etc.)
+2. Add quantified impact to every bullet where plausible (use realistic estimates if exact numbers aren't given — e.g. "improved load time by ~40%", "served 10K+ daily users")
+3. Rewrite the professional summary/objective to be punchy, specific, and targeted to {target_role}
+4. Remove filler phrases ("responsible for", "helped with", "worked on", "assisted in") — replace with direct ownership language
+5. Reorganize skills section: group by category (Languages, Frameworks, Tools, Cloud, etc.) and put most relevant to {target_role} first
+6. Tighten all bullets to under 2 lines — cut fluff, keep impact
+7. Ensure consistent formatting throughout
+
+Return ONLY valid JSON:
+{{
+  "improved_resume": "<the complete, fully rewritten resume as a plain text string — preserve all section headings, use the same overall structure, newlines for formatting>",
+  "changes_made": [
+    "<specific change 1 — reference actual content, e.g. 'Rewrote summary from generic to targeting {target_role} with 3 differentiators'>",
+    "<specific change 2>",
+    ...
+  ]
+}}
+
+Rules:
+- NEVER invent companies, schools, or job titles the candidate didn't have
+- DO add realistic quantified metrics if the candidate's bullets lack them
+- changes_made should be 5-10 specific, concrete items describing what you changed and why
+- The improved_resume must be complete — do not truncate or summarize sections
+- Keep all contact info, dates, and proper nouns exactly as given"""
+
+    try:
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+            config=genai.types.GenerateContentConfig(
+                response_mime_type="application/json"
+            )
+        )
+        improve_data = _json.loads(response.text)
+
+        for key in ('improved_resume', 'changes_made'):
+            if key not in improve_data:
+                return jsonify({'error': f'AI response missing field: {key}'}), 500
+
+        if not improve_data['improved_resume'].strip():
+            return jsonify({'error': 'AI returned an empty resume'}), 500
+
+        return jsonify(improve_data)
+
+    except Exception as e:
+        print(f"Resume Improve Error: {e}")
+        traceback.print_exc()
+        status_code = getattr(e, 'status_code', None) or getattr(e, 'status', None) or 500
+        try:
+            status_code = int(status_code)
+        except Exception:
+            status_code = 500
+        return jsonify({'error': str(e)}), status_code
+
+
+@api_bp.route('/api/resume-tailor', methods=['POST'])
+def resume_tailor():
+    """
+    POST /api/resume-tailor
+    Body: { "resume": "...", "jobDescription": "...", "targetRole": "..." }
+    Returns ATS score, keyword gaps, bullet rewrites, summary rewrite, tailoring tips.
+    """
+    if not api_key:
+        return jsonify({'error': 'AI assistant is not configured. Please set GEMINI_API_KEY.'}), 503
+
+    import json as _json
+
+    data = request.json or {}
+    resume_text = data.get('resume', '').strip()
+    job_description = data.get('jobDescription', '').strip()
+    target_role = data.get('targetRole', '').strip() or 'the target role'
+
+    if not resume_text:
+        return jsonify({'error': 'No resume text provided'}), 400
+    if not job_description:
+        return jsonify({'error': 'No job description provided'}), 400
+    if len(resume_text) > 20000:
+        return jsonify({'error': 'Resume text is too long (max 20,000 characters)'}), 400
+    if len(job_description) > 10000:
+        return jsonify({'error': 'Job description is too long (max 10,000 characters)'}), 400
+
+    prompt = f"""You are an expert resume tailoring specialist and ATS optimization consultant with 15+ years helping candidates land interviews at FAANG and top-tier companies. You have deep knowledge of Applicant Tracking Systems, recruiter psychology, and how to align resume language with job descriptions.
+
+TARGET ROLE: {target_role}
+
+RESUME:
+{resume_text}
+
+JOB DESCRIPTION:
+{job_description}
+
+Analyze the resume against the job description and return ONLY valid JSON with this exact structure:
+{{
+  "ats_score": <integer 0-100, reflecting how well the resume matches the JD for ATS purposes>,
+  "ats_summary": "<one honest sentence on the overall match quality and what's holding the score back>",
+  "keywords_present": ["<important JD keyword already in resume>", ...],
+  "keyword_gaps": ["<important JD keyword MISSING from resume>", ...],
+  "bullet_rewrites": [
+    {{
+      "section": "<section name, e.g., Experience, Projects>",
+      "original": "<exact or close paraphrase of bullet from resume>",
+      "rewritten": "<improved, JD-aligned version — use strong action verbs, quantify impact, mirror JD language>",
+      "reason": "<specific reason why this rewrite improves ATS match and recruiter appeal>"
+    }}
+  ],
+  "skills_to_highlight": ["<skill1>", ...],
+  "summary_rewrite": "<a powerful, tailored 2-3 sentence professional summary written specifically for this JD — open with strongest differentiator, include key JD keywords naturally>",
+  "tailoring_tips": ["<specific, actionable tip targeting this exact JD>", ...]
+}}
+
+Rules:
+- keywords_present: 5-8 of the most important JD keywords you found in the resume
+- keyword_gaps: 6-12 important keywords/phrases from the JD not in the resume (prioritize technical skills, methodologies, tools)
+- bullet_rewrites: exactly 4-5 rewrites targeting the WEAKEST or most improvable bullets — make them dramatically better
+- skills_to_highlight: 6-10 skills from the JD that the candidate should prominently feature or add
+- summary_rewrite: write as if you are the candidate — use first-person-adjacent professional tone, no "I"
+- tailoring_tips: exactly 5-6 tips that are SPECIFIC to this JD, not generic advice — reference actual requirements from the JD
+- Be brutally specific — reference actual lines from the JD and actual bullets from the resume
+"""
+
+    try:
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model='gemini-2.5-flash',
+            contents=prompt,
+            config=genai.types.GenerateContentConfig(
+                response_mime_type="application/json"
+            )
+        )
+        tailor_data = _json.loads(response.text)
+
+        required = ('ats_score', 'ats_summary', 'keywords_present', 'keyword_gaps',
+                    'bullet_rewrites', 'skills_to_highlight', 'summary_rewrite', 'tailoring_tips')
+        for key in required:
+            if key not in tailor_data:
+                return jsonify({'error': f'AI response missing field: {key}'}), 500
+
+        return jsonify(tailor_data)
+
+    except Exception as e:
+        print(f"Resume Tailor Error: {e}")
+        traceback.print_exc()
+        status_code = getattr(e, 'status_code', None) or getattr(e, 'status', None) or 500
+        try:
+            status_code = int(status_code)
+        except Exception:
+            status_code = 500
+        return jsonify({'error': str(e)}), status_code
+
+
 @api_bp.route('/api/code-review', methods=['POST'])
 def code_review():
     """
