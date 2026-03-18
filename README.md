@@ -1,6 +1,6 @@
 # DSA Visualizer
 
-An interactive, open-source learning tool that brings Data Structures & Algorithms to life through real-time visualizations, side-by-side comparisons, AI-powered assistance, and a built-in coding practice environment. Built with React + Vite on the frontend and Flask on the backend.
+An interactive, open-source learning tool that brings Data Structures & Algorithms to life through real-time visualizations, side-by-side comparisons, AI-powered assistance, a built-in coding sandbox, and a full-featured AI resume reviewer. Built with React + Vite on the frontend and Flask on the backend.
 
 **[Live Demo →](https://dsa-visualizer-ksnl.onrender.com/)**
 
@@ -14,6 +14,10 @@ An interactive, open-source learning tool that brings Data Structures & Algorith
 - **BST Interactive Challenges** — AI-generated click-to-solve challenges (search paths, leaf identification, inorder sequences) scored against a generated answer key
 - **AI Study Assistant** — context-aware chat powered by Google Gemini; asks and answers questions about whichever data structure you're currently viewing
 - **Coding Practice** — Monaco-based code editor with 20+ curated DSA problems, AI code review (time complexity, logic score, line-by-line suggestions), and multi-language support (Python, JavaScript, Java, C++, C#, C)
+- **Code Visualizer Sandbox** — write Python data structure code (Stack, Queue, LinkedList) and watch it animate step-by-step in real time
+- **AI Resume Reviewer** — upload or paste your resume and get brutally honest AI feedback, an overall score, strengths, improvements, and detailed actionable notes
+- **Resume Tailoring** — paste a job description to get an ATS match score, keyword gap analysis, bullet rewrites, and a role-specific professional summary
+- **AI Resume Rewriter** — the AI rewrites your entire resume with stronger verbs, quantified impact, and tighter bullets; edit the result and export as a formatted PDF
 - **Code tabs** — every visualizer includes copy-ready implementations in six languages
 - **Fully responsive** — works on phones, tablets, and desktops
 
@@ -64,11 +68,14 @@ An interactive, open-source learning tool that brings Data Structures & Algorith
 | Kruskal's MST | `/kruskal-mst` |
 | Topological Sort | `/topological-sort` |
 
-### Tools
+### Tools & AI
 | Page | Route |
 |---|---|
 | Algorithm Comparison (Sorting, Searching, Hashing) | `/compare` |
+| Hash Table Comparison | `/compare-hash` |
 | Coding Practice + AI Code Review | `/practice` |
+| Code Visualizer Sandbox (Python) | `/sandbox` |
+| AI Resume Reviewer | `/resume-reviewer` |
 
 ---
 
@@ -111,7 +118,7 @@ cd .. && source .venv/bin/activate && python app.py
 
 ## AI Features Setup
 
-AI features (Study Assistant, BST Challenges, Code Review) require a Google Gemini API key. Create a `.env` file in the project root:
+AI features (Study Assistant, BST Challenges, Code Review, Resume Reviewer) require a Google Gemini API key. Create a `.env` file in the project root:
 
 ```
 GEMINI_API_KEY=your_api_key_here
@@ -129,17 +136,18 @@ Model used: `gemini-2.5-flash`
 dsa-visualizer/
 ├── app/                        # Flask backend
 │   ├── routes/                 # Data structure API endpoints
+│   │   └── sandbox_routes.py   # Python sandbox execution engine
 │   ├── api/
-│   │   └── gemini_api.py       # AI routes (ask-ai, code-review, generate-challenge)
+│   │   └── gemini_api.py       # AI routes (ask-ai, code-review, resume-*, generate-challenge)
 │   └── static/react-build/     # Vite production output (git-ignored)
 ├── frontend/                   # React + Vite
 │   └── src/
-│       ├── pages/              # Top-level pages (Home, Algorithms, AlgoCompare, …)
+│       ├── pages/              # Top-level pages (Home, ResumeReviewer, CodeVisualizerSandbox, …)
 │       ├── visualizers/        # One folder per data structure category
 │       ├── practice/           # Coding practice page + problems
-│       ├── components/         # Shared components (AIAssistant, ChallengeOverlay, …)
-│       ├── hooks/              # useAlgorithmHistory, useTimedMessage
-│       ├── utils/              # snapshotBuilder (immutable step snapshots)
+│       ├── components/         # Shared components (AIAssistant, Sidebar, TimeTravelScrubber, …)
+│       ├── hooks/              # useAlgorithmHistory (time-travel playback state machine)
+│       ├── utils/              # snapshotBuilder (immutable step snapshots), codeRunner
 │       └── styles/             # CSS design tokens, base styles, page/visualizer styles
 ├── requirements.txt
 └── app.py                      # Flask entry point
@@ -149,21 +157,31 @@ dsa-visualizer/
 
 ## API Overview
 
-The Flask backend exposes REST endpoints consumed by the visualizers:
+The Flask backend exposes REST endpoints consumed by the visualizers and AI tools:
 
 ```
+# Data structures (same pattern for stack, queue, hashtable, etc.)
 GET  /api/bst                       Fetch current BST state
 POST /api/bst/insert                Insert a value
 POST /api/bst/delete                Delete a value
 GET  /api/bst/search?value=X        Search for a value
-GET  /api/bst/inorder               Inorder traversal sequence
 
+# AI — General
+POST /api/ask-ai                    AI study assistant (context-aware chat)
+POST /api/code-review               AI code review with scoring
 POST /api/generate-challenge        AI-generated BST challenge
-POST /api/ask-ai                    AI study assistant
-POST /api/code-review               AI code review
-```
 
-Endpoints follow the same pattern for every data structure (`/api/stack`, `/api/queue`, `/api/hashtable`, etc.). See `app/routes/` for all implementations.
+# AI — Resume
+POST /api/resume-upload             Parse uploaded PDF / DOCX / TXT → extract text
+POST /api/resume-review             Score resume, return strengths / improvements / feedback
+POST /api/resume-tailor             ATS match score, keyword gaps, bullet rewrites
+POST /api/resume-improve            Full AI resume rewrite with change log
+
+# Sandbox
+POST /api/sandbox/run               Execute Python snippet, return step-by-step trace
+POST /api/sandbox/scripts           Save a sandbox script
+GET  /api/sandbox/scripts/<id>      Load a saved script
+```
 
 ---
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   FileText, CheckCircle, AlertTriangle, XCircle, Lightbulb, AlertCircle,
   Upload, X, Wand2, Target, Copy, Check, ChevronDown, ChevronUp,
@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import '../styles/page-styles/resume-reviewer.css';
 
-// ─── Markdown helpers (same pattern as AIAssistant) ───────────────────────────
+// ─── Markdown helpers ─────────────────────────────────────────────────────────
 function renderInline(text, baseKey) {
   const parts = text.split(/(`[^`\n]+`|\*\*[^*\n]+\*\*|\*[^*\n]+\*)/g);
   return parts.map((part, i) => {
@@ -100,7 +100,7 @@ function renderTextSegment(text, segKey) {
   });
 }
 
-// ─── Score circle (review, /10) ───────────────────────────────────────────────
+// ─── Score circle (/10) ───────────────────────────────────────────────────────
 function getScoreColor(score) {
   if (score >= 8) return 'var(--success)';
   if (score >= 6) return 'var(--warning)';
@@ -108,17 +108,17 @@ function getScoreColor(score) {
 }
 
 function ScoreCircle({ score }) {
-  const radius = 28;
+  const radius = 34;
   const circumference = 2 * Math.PI * radius;
   const filled = (score / 10) * circumference;
   const color = getScoreColor(score);
   return (
     <div className="rr-score-circle">
-      <svg width="72" height="72" viewBox="0 0 72 72">
-        <circle className="rr-score-circle-bg" cx="36" cy="36" r={radius} />
+      <svg width="88" height="88" viewBox="0 0 88 88">
+        <circle className="rr-score-circle-bg" cx="44" cy="44" r={radius} />
         <circle
           className="rr-score-circle-fill"
-          cx="36" cy="36" r={radius}
+          cx="44" cy="44" r={radius}
           stroke={color}
           strokeDasharray={circumference}
           strokeDashoffset={circumference - filled}
@@ -137,17 +137,17 @@ function getAtsColor(score) {
 }
 
 function AtsScoreCircle({ score }) {
-  const radius = 34;
+  const radius = 40;
   const circumference = 2 * Math.PI * radius;
   const filled = (score / 100) * circumference;
   const color = getAtsColor(score);
   return (
     <div className="rr-ats-circle">
-      <svg width="88" height="88" viewBox="0 0 88 88">
-        <circle className="rr-score-circle-bg" cx="44" cy="44" r={radius} />
+      <svg width="100" height="100" viewBox="0 0 100 100">
+        <circle className="rr-score-circle-bg" cx="50" cy="50" r={radius} />
         <circle
           className="rr-score-circle-fill"
-          cx="44" cy="44" r={radius}
+          cx="50" cy="50" r={radius}
           stroke={color}
           strokeDasharray={circumference}
           strokeDashoffset={circumference - filled}
@@ -218,42 +218,340 @@ function BulletRewriteCard({ rewrite, index }) {
   );
 }
 
+// ─── Resume PDF parser ────────────────────────────────────────────────────────
+const BULLET_RE   = /^[•\-\*►▸▪◦‣]\s+/;
+const SECTION_RE  = /^[A-Z][A-Z\s&\/\-–]{2,}:?\s*$/;
+const DASHES_RE   = /^[-─═=_]{3,}\s*$/;
+const DATE_RANGE  = /(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+\d{4}\s*[-–—]\s*(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+\d{4}|\b\d{4}\s*[-–—]\s*(?:\d{4}|Present|Current|Now|Today)\b|(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?\s+\d{4}/gi;
+
+function extractDate(t) {
+  const matches = [...t.matchAll(DATE_RANGE)];
+  if (!matches.length) return { main: t, date: '' };
+  const date = matches.length >= 2
+    ? `${matches[0][0]} – ${matches[matches.length - 1][0]}`
+    : matches[0][0];
+  const main = t
+    .replace(DATE_RANGE, '')
+    .replace(/\s*[|•–—]\s*$/, '')
+    .replace(/^\s*[|•–—]\s*/, '')
+    .trim();
+  return { main: main || t, date };
+}
+
+function processSection(title, rawLines) {
+  const isSkills = /SKILL|TECH|TOOL|LANGUAGE|FRAMEWORK|STACK|COMPETENC|PROFICIEN/i.test(title);
+  const blocks = [];
+  let i = 0;
+
+  while (i < rawLines.length) {
+    const t = rawLines[i].trim();
+    if (!t) { i++; continue; }
+
+    // Bullet
+    if (BULLET_RE.test(t)) {
+      blocks.push({ type: 'bullet', text: t.replace(BULLET_RE, '') });
+      i++; continue;
+    }
+
+    // Skills row
+    if (isSkills && t.includes(',')) {
+      const colonIdx = t.indexOf(':');
+      if (colonIdx > 0 && colonIdx < 28) {
+        const category = t.slice(0, colonIdx).trim();
+        const skills   = t.slice(colonIdx + 1).split(',').map(s => s.trim()).filter(Boolean);
+        blocks.push({ type: 'skill-row', category, skills });
+      } else {
+        blocks.push({ type: 'skill-row', category: '', skills: t.split(',').map(s => s.trim()).filter(Boolean) });
+      }
+      i++; continue;
+    }
+
+    // Line with date → entry header (company / school / project)
+    const hasDate = DATE_RANGE.test(t);
+    DATE_RANGE.lastIndex = 0; // reset global regex
+    if (hasDate) {
+      const { main, date } = extractDate(t);
+      blocks.push({ type: 'entry-header', main, date });
+      i++;
+      // Peek: next non-empty, non-bullet line may be a subtitle (job title / degree)
+      while (i < rawLines.length && !rawLines[i].trim()) i++;
+      if (i < rawLines.length) {
+        const next = rawLines[i].trim();
+        if (next && !BULLET_RE.test(next) && !SECTION_RE.test(next) && !DATE_RANGE.test(next) && next.length < 90) {
+          DATE_RANGE.lastIndex = 0;
+          blocks.push({ type: 'subtitle', text: next });
+          i++;
+        }
+        DATE_RANGE.lastIndex = 0;
+      }
+      continue;
+    }
+
+    // Short standalone line → entry header without date
+    if (t.length < 72 && !t.includes(',') && !/[.!?]$/.test(t)) {
+      blocks.push({ type: 'entry-header', main: t, date: '' });
+      i++; continue;
+    }
+
+    blocks.push({ type: 'text', text: t });
+    i++;
+  }
+  return blocks;
+}
+
+function parseResumeForPDF(text) {
+  const lines = text.split('\n').map(l => l.trimEnd());
+  let cursor = 0;
+  while (cursor < lines.length && !lines[cursor].trim()) cursor++;
+  const name = lines[cursor]?.trim() || '';
+  cursor++;
+
+  const contactItems = [];
+  for (let j = 0; j < 6 && cursor < lines.length; j++, cursor++) {
+    const t = lines[cursor].trim();
+    if (!t) continue;
+    if (SECTION_RE.test(t) || DASHES_RE.test(t)) break;
+    // Split by pipe or bullet separators
+    t.split(/\s*[|•]\s*/).map(p => p.trim()).filter(Boolean).forEach(p => contactItems.push(p));
+  }
+
+  const sections = [];
+  let secTitle = null, rawLines = [];
+
+  for (; cursor < lines.length; cursor++) {
+    const raw = lines[cursor], t = raw.trim();
+    if (DASHES_RE.test(t)) continue;
+    if (!t) { if (rawLines.length) rawLines.push(''); continue; }
+    if (SECTION_RE.test(t) || /^#{1,3}\s+/.test(t)) {
+      if (secTitle !== null) sections.push({ title: secTitle, blocks: processSection(secTitle, rawLines) });
+      secTitle = t.replace(/^#+\s+/, '').replace(/:$/, '').trim();
+      rawLines = [];
+      continue;
+    }
+    if (secTitle !== null) rawLines.push(raw);
+  }
+  if (secTitle !== null && rawLines.length) sections.push({ title: secTitle, blocks: processSection(secTitle, rawLines) });
+
+  return { name, contactItems, sections };
+}
+
+// ─── Print CSS ────────────────────────────────────────────────────────────────
+const PRINT_RESUME_CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fff;color:#1a1a1a;font-family:Georgia,"Times New Roman",serif;font-size:10.5pt;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.paper{padding:.65in .75in}
+.rh{padding-bottom:.3rem;border-bottom:2.5px solid #0f2044;margin-bottom:.15rem}
+.rname{font-family:Montserrat,sans-serif;font-size:24pt;font-weight:800;color:#0f2044;letter-spacing:-.02em;line-height:1.1}
+.rrole{font-family:Montserrat,sans-serif;font-size:11pt;font-weight:500;color:#1d4ed8;margin-top:.15rem}
+.rcontact{display:flex;flex-wrap:wrap;align-items:center;font-family:Montserrat,sans-serif;font-size:8.5pt;color:#555;padding:.25rem 0 .3rem;border-bottom:1px solid #dde}
+.csep{margin:0 .4rem;color:#bbb}
+.rsec{margin-top:.45rem}
+.rsec-title{font-family:Montserrat,sans-serif;font-size:8pt;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#0f2044;border-bottom:1.5px solid #0f2044;padding-bottom:.1rem;margin-bottom:.25rem}
+.reh{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;margin-top:.35rem;margin-bottom:.03rem}
+.reh-co{font-family:Montserrat,sans-serif;font-size:10.5pt;font-weight:700;color:#0f2044}
+.reh-date{font-family:Montserrat,sans-serif;font-size:8.5pt;color:#666;white-space:nowrap;flex-shrink:0}
+.rsub{font-size:10pt;color:#1d4ed8;font-style:italic;margin-bottom:.1rem}
+.rb{display:flex;align-items:flex-start;gap:.35rem;margin:.09rem 0;padding-left:.05rem;font-size:10pt;color:#333;line-height:1.45}
+.rdot{color:#1d4ed8;font-size:9pt;margin-top:.08rem;flex-shrink:0}
+.rsr{display:flex;align-items:flex-start;gap:.4rem;margin:.18rem 0}
+.rsr-cat{font-family:Montserrat,sans-serif;font-size:8.5pt;font-weight:700;color:#0f2044;white-space:nowrap;min-width:85px;padding-top:2px}
+.rskills{display:flex;flex-wrap:wrap;gap:.2rem}
+.rchip{font-family:Montserrat,sans-serif;font-size:8pt;padding:1px 6px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:3px;color:#1e40af}
+.rtext{font-size:10pt;color:#333;margin:.05rem 0;line-height:1.5}
+@page{size:letter;margin:0}
+`;
+
+// ─── PDF Preview modal ────────────────────────────────────────────────────────
+function ResumeSection({ section }) {
+  return (
+    <div className="rv-section">
+      <h2 className="rv-sec-title">{section.title}</h2>
+      <div className="rv-sec-body">
+        {section.blocks.map((block, i) => {
+          switch (block.type) {
+            case 'entry-header':
+              return (
+                <div key={i} className="rv-entry-header">
+                  <span className="rv-entry-company">{block.main}</span>
+                  {block.date && <span className="rv-entry-date">{block.date}</span>}
+                </div>
+              );
+            case 'subtitle':
+              return <div key={i} className="rv-entry-subtitle">{block.text}</div>;
+            case 'bullet':
+              return (
+                <div key={i} className="rv-bullet">
+                  <span className="rv-bullet-dot">▸</span>
+                  <span>{block.text}</span>
+                </div>
+              );
+            case 'skill-row':
+              return (
+                <div key={i} className="rv-skill-row">
+                  {block.category && <span className="rv-skill-cat">{block.category}</span>}
+                  <div className="rv-skills">
+                    {block.skills.map((s, j) => (
+                      <span key={j} className="rv-chip">{s}</span>
+                    ))}
+                  </div>
+                </div>
+              );
+            case 'text':
+              return <p key={i} className="rv-text">{block.text}</p>;
+            default:
+              return null;
+          }
+        })}
+      </div>
+    </div>
+  );
+}
+
+function ResumePDFPreview({ text, targetRole, onClose }) {
+  const { name, contactItems, sections } = parseResumeForPDF(text);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, []);
+
+  const handlePrint = () => {
+    const printWin = window.open('', '_blank', 'width=900,height=700');
+    if (!printWin) return;
+
+    const contactHTML = contactItems
+      .map((item, i) => i === 0 ? `<span>${item}</span>` : `<span class="csep">•</span><span>${item}</span>`)
+      .join('');
+
+    const blockHTML = (block) => {
+      switch (block.type) {
+        case 'entry-header':
+          return `<div class="reh"><span class="reh-co">${block.main}</span>${block.date ? `<span class="reh-date">${block.date}</span>` : ''}</div>`;
+        case 'subtitle':
+          return `<div class="rsub">${block.text}</div>`;
+        case 'bullet':
+          return `<div class="rb"><span class="rdot">▸</span><span>${block.text}</span></div>`;
+        case 'skill-row':
+          return `<div class="rsr">${block.category ? `<span class="rsr-cat">${block.category}</span>` : ''}<div class="rskills">${block.skills.map(s => `<span class="rchip">${s}</span>`).join('')}</div></div>`;
+        case 'text':
+          return `<p class="rtext">${block.text}</p>`;
+        default: return '';
+      }
+    };
+
+    const sectionsHTML = sections.map(sec => `
+      <div class="rsec">
+        <div class="rsec-title">${sec.title}</div>
+        ${sec.blocks.map(blockHTML).join('')}
+      </div>`).join('');
+
+    printWin.document.write(`<!DOCTYPE html>
+<html><head><meta charset="utf-8"/><title>${name} — Resume</title><style>${PRINT_RESUME_CSS}</style></head>
+<body><div class="paper">
+  <div class="rh">
+    <div class="rname">${name}</div>
+    ${targetRole ? `<div class="rrole">${targetRole}</div>` : ''}
+  </div>
+  ${contactItems.length ? `<div class="rcontact">${contactHTML}</div>` : ''}
+  ${sectionsHTML}
+</div></body></html>`);
+    printWin.document.close();
+    printWin.focus();
+    setTimeout(() => { printWin.print(); printWin.close(); }, 700);
+  };
+
+  return (
+    <div className="rr-pdf-modal-overlay" onClick={onClose}>
+      <div className="rr-pdf-modal-shell" onClick={e => e.stopPropagation()}>
+        {/* Toolbar */}
+        <div className="rr-pdf-toolbar">
+          <div className="rr-pdf-toolbar-left">
+            <FileText size={15} />
+            <span>Resume Preview</span>
+            {targetRole && <span className="rr-pdf-role-badge">{targetRole}</span>}
+          </div>
+          <div className="rr-pdf-toolbar-right">
+            <button className="rr-pdf-print-btn" onClick={handlePrint}>
+              <Download size={14} /> Save as PDF
+            </button>
+            <button className="rr-pdf-close-btn" onClick={onClose} title="Close">
+              <X size={15} />
+            </button>
+          </div>
+        </div>
+
+        {/* Paper preview */}
+        <div className="rr-pdf-scroll">
+          <div className="rr-pdf-paper">
+            {/* Header */}
+            <div className="rv-header">
+              <h1 className="rv-name">{name}</h1>
+              {targetRole && <div className="rv-role">{targetRole}</div>}
+            </div>
+
+            {/* Contact strip */}
+            {contactItems.length > 0 && (
+              <div className="rv-contact">
+                {contactItems.map((item, i) => (
+                  <span key={i} className="rv-contact-item">
+                    {i > 0 && <span className="rv-contact-sep">|</span>}
+                    {item}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Sections */}
+            {sections.map((sec, si) => (
+              <ResumeSection key={si} section={sec} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 const MAX_CHARS = 20000;
-const ACCEPTED = '.pdf,.docx,.txt';
+const ACCEPTED  = '.pdf,.docx,.txt';
 
 export default function ResumeReviewer() {
   // Review state
-  const [resumeText, setResumeText] = useState('');
-  const [targetRole, setTargetRole] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState(null);
-  const [error, setError] = useState('');
+  const [resumeText, setResumeText]   = useState('');
+  const [targetRole, setTargetRole]   = useState('');
+  const [loading, setLoading]         = useState(false);
+  const [results, setResults]         = useState(null);
+  const [error, setError]             = useState('');
 
   // File upload state
   const [uploadedFile, setUploadedFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [dragging, setDragging] = useState(false);
+  const [uploading, setUploading]       = useState(false);
+  const [dragging, setDragging]         = useState(false);
   const fileInputRef = useRef(null);
 
   // Tab + tailoring state
-  const [activeTab, setActiveTab] = useState('review');
-  const [jobDesc, setJobDesc] = useState('');
+  const [activeTab, setActiveTab]         = useState('review');
+  const [jobDesc, setJobDesc]             = useState('');
   const [tailorLoading, setTailorLoading] = useState(false);
   const [tailorResults, setTailorResults] = useState(null);
-  const [tailorError, setTailorError] = useState('');
-  const [checkedTips, setCheckedTips] = useState(new Set());
+  const [tailorError, setTailorError]     = useState('');
+  const [checkedTips, setCheckedTips]     = useState(new Set());
 
   // Improve state
-  const [improveLoading, setImproveLoading] = useState(false);
-  const [improvedResume, setImprovedResume] = useState('');
-  const [editedResume, setEditedResume] = useState('');
-  const [changesMade, setChangesMade] = useState([]);
-  const [improveError, setImproveError] = useState('');
-  const [viewMode, setViewMode] = useState('improved'); // 'improved' | 'original'
+  const [improveLoading, setImproveLoading]   = useState(false);
+  const [improvedResume, setImprovedResume]   = useState('');
+  const [editedResume, setEditedResume]       = useState('');
+  const [changesMade, setChangesMade]         = useState([]);
+  const [improveError, setImproveError]       = useState('');
+  const [viewMode, setViewMode]               = useState('improved');
   const [changesExpanded, setChangesExpanded] = useState(true);
 
-  // ── File handling ──────────────────────────────────────────────────────────
+  // PDF preview state
+  const [pdfPreviewOpen, setPdfPreviewOpen] = useState(false);
+
+  // ── File handling ───────────────────────────────────────────────────────────
   const handleResumeChange = (e) => {
     setResumeText(e.target.value);
     if (uploadedFile) setUploadedFile(null);
@@ -276,7 +574,7 @@ export default function ResumeReviewer() {
     try {
       const form = new FormData();
       form.append('file', file);
-      const res = await fetch('/api/resume-upload', { method: 'POST', body: form });
+      const res  = await fetch('/api/resume-upload', { method: 'POST', body: form });
       const data = await res.json();
       if (!res.ok) { setError(data.error || 'Failed to parse file.'); return; }
       setResumeText(data.text);
@@ -289,7 +587,11 @@ export default function ResumeReviewer() {
   };
 
   const handleFileInput = (e) => processFile(e.target.files[0]);
-  const handleDrop = (e) => { e.preventDefault(); setDragging(false); processFile(e.dataTransfer.files[0]); };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragging(false);
+    processFile(e.dataTransfer.files[0]);
+  };
   const clearFile = () => {
     setUploadedFile(null);
     setResumeText('');
@@ -299,7 +601,7 @@ export default function ResumeReviewer() {
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  // ── Improve submit ─────────────────────────────────────────────────────────
+  // ── Improve submit ──────────────────────────────────────────────────────────
   const handleImprove = async () => {
     if (!resumeText.trim()) return;
     setImproveLoading(true);
@@ -309,7 +611,7 @@ export default function ResumeReviewer() {
     setImproveError('');
     setViewMode('improved');
     try {
-      const res = await fetch('/api/resume-improve', {
+      const res  = await fetch('/api/resume-improve', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resume: resumeText, targetRole }),
@@ -326,29 +628,22 @@ export default function ResumeReviewer() {
     }
   };
 
-  const handleDownload = () => {
-    const blob = new Blob([editedResume], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `resume-improved${targetRole ? '-' + targetRole.replace(/\s+/g, '-').toLowerCase() : ''}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
+  // Open PDF preview (replaces plain-text download)
+  const handleDownload = () => setPdfPreviewOpen(true);
 
   const resetToAI = () => {
     setEditedResume(improvedResume);
     setViewMode('improved');
   };
 
-  // ── Review submit ──────────────────────────────────────────────────────────
+  // ── Review submit ───────────────────────────────────────────────────────────
   const handleSubmit = async () => {
     if (!resumeText.trim()) return;
     setLoading(true);
     setResults(null);
     setError('');
     try {
-      const res = await fetch('/api/resume-review', {
+      const res  = await fetch('/api/resume-review', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resume: resumeText, targetRole }),
@@ -364,7 +659,7 @@ export default function ResumeReviewer() {
     }
   };
 
-  // ── Tailor submit ──────────────────────────────────────────────────────────
+  // ── Tailor submit ───────────────────────────────────────────────────────────
   const handleTailor = async () => {
     if (!resumeText.trim() || !jobDesc.trim()) return;
     setTailorLoading(true);
@@ -372,7 +667,7 @@ export default function ResumeReviewer() {
     setTailorError('');
     setCheckedTips(new Set());
     try {
-      const res = await fetch('/api/resume-tailor', {
+      const res  = await fetch('/api/resume-tailor', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ resume: resumeText, jobDescription: jobDesc, targetRole }),
@@ -395,16 +690,25 @@ export default function ResumeReviewer() {
     });
   };
 
-  const charCount = resumeText.length;
-  const nearLimit = charCount > MAX_CHARS * 0.85;
-  const canTailor = resumeText.trim() && jobDesc.trim();
+  const charCount  = resumeText.length;
+  const nearLimit  = charCount > MAX_CHARS * 0.85;
+  const canTailor  = resumeText.trim() && jobDesc.trim();
 
   return (
     <div className="rr-page">
+      {/* PDF preview modal */}
+      {pdfPreviewOpen && (
+        <ResumePDFPreview
+          text={editedResume}
+          targetRole={targetRole}
+          onClose={() => setPdfPreviewOpen(false)}
+        />
+      )}
+
       {/* Header */}
       <div className="rr-header">
         <div className="rr-header-icon">
-          <FileText size={22} />
+          <FileText size={24} />
         </div>
         <div>
           <h1 className="rr-title">Resume Reviewer</h1>
@@ -514,7 +818,7 @@ export default function ResumeReviewer() {
               className={`rr-tab${activeTab === 'review' ? ' rr-tab-active' : ''}`}
               onClick={() => setActiveTab('review')}
             >
-              <BookOpen size={13} />
+              <BookOpen size={14} />
               Review
               {results && <span className="rr-tab-badge">{results.overall_score}/10</span>}
             </button>
@@ -522,7 +826,7 @@ export default function ResumeReviewer() {
               className={`rr-tab rr-tab-tailor${activeTab === 'tailor' ? ' rr-tab-active' : ''}`}
               onClick={() => setActiveTab('tailor')}
             >
-              <Wand2 size={13} />
+              <Wand2 size={14} />
               Tailor
               {tailorResults && (
                 <span className={`rr-tab-badge rr-tab-badge-ats ${tailorResults.ats_score >= 75 ? 'rr-badge-green' : tailorResults.ats_score >= 50 ? 'rr-badge-amber' : 'rr-badge-red'}`}>
@@ -534,7 +838,7 @@ export default function ResumeReviewer() {
               className={`rr-tab rr-tab-improve${activeTab === 'improve' ? ' rr-tab-active' : ''}`}
               onClick={() => setActiveTab('improve')}
             >
-              <Sparkles size={13} />
+              <Sparkles size={14} />
               Improve
               {improvedResume && <span className="rr-tab-badge rr-badge-sparkle">ready</span>}
             </button>
@@ -551,7 +855,7 @@ export default function ResumeReviewer() {
 
               {!results && !error && (
                 <div className="rr-empty">
-                  <div className="rr-empty-icon"><FileText size={48} /></div>
+                  <div className="rr-empty-icon"><FileText size={52} /></div>
                   <p>
                     Paste your resume on the left and click <strong>Review My Resume</strong>.
                     <br />
@@ -562,7 +866,6 @@ export default function ResumeReviewer() {
 
               {results && (
                 <>
-                  {/* Score card */}
                   <div className="rr-score-card">
                     <ScoreCircle score={results.overall_score} />
                     <div className="rr-score-info">
@@ -571,7 +874,6 @@ export default function ResumeReviewer() {
                     </div>
                   </div>
 
-                  {/* Strengths + Improvements + Missing */}
                   <div className="rr-cards-row">
                     <div className="rr-card rr-card-green">
                       <div className="rr-card-header">
@@ -606,7 +908,6 @@ export default function ResumeReviewer() {
                     )}
                   </div>
 
-                  {/* Actionable feedback */}
                   <div className="rr-feedback-box">
                     <div className="rr-feedback-header">
                       <Lightbulb size={16} />
@@ -617,7 +918,6 @@ export default function ResumeReviewer() {
                     </div>
                   </div>
 
-                  {/* Prompt to tailor */}
                   <button className="rr-tailor-prompt-btn" onClick={() => setActiveTab('tailor')}>
                     <Wand2 size={15} />
                     Tailor this resume for a specific job
@@ -639,7 +939,7 @@ export default function ResumeReviewer() {
                     <p className="rr-improve-intro-desc">
                       The AI will rewrite your entire resume — stronger verbs, quantified impact,
                       tighter bullets, and a punchy summary — while keeping all your real experience
-                      intact. You can edit the result before downloading.
+                      intact. Download the result as a polished, print-ready PDF.
                     </p>
                   </div>
                 </div>
@@ -697,21 +997,19 @@ export default function ResumeReviewer() {
                       )}
                       <CopyButton text={editedResume} />
                       <button className="rr-download-btn" onClick={handleDownload}>
-                        <Download size={13} /> Download .txt
+                        <Download size={13} /> Download PDF
                       </button>
                     </div>
                   </div>
 
-                  {/* View label */}
                   <div className="rr-view-label">
                     {viewMode === 'original' ? (
                       <><Eye size={11} /> Original resume (read-only)</>
                     ) : (
-                      <><Edit3 size={11} /> AI-improved version — edit freely below</>
+                      <><Edit3 size={11} /> AI-improved version — edit freely, then download as PDF</>
                     )}
                   </div>
 
-                  {/* Textarea */}
                   {viewMode === 'original' ? (
                     <textarea
                       className="rr-improve-textarea rr-improve-textarea-readonly"
@@ -754,7 +1052,6 @@ export default function ResumeReviewer() {
                     </div>
                   )}
 
-                  {/* Re-run */}
                   <button
                     className="rr-reimprove-btn"
                     onClick={() => { setImprovedResume(''); setEditedResume(''); setChangesMade([]); }}
@@ -769,7 +1066,6 @@ export default function ResumeReviewer() {
           {/* ── TAILOR TAB ── */}
           {activeTab === 'tailor' && (
             <div className="rr-tailor-tab">
-              {/* JD Input */}
               {!tailorResults && (
                 <div className="rr-tailor-intro">
                   <div className="rr-tailor-intro-icon"><Target size={24} /></div>
@@ -819,7 +1115,6 @@ export default function ResumeReviewer() {
                 </div>
               )}
 
-              {/* Tailoring Results */}
               {tailorResults && (
                 <div className="rr-tailor-results">
                   {/* ATS Score Hero */}
@@ -947,7 +1242,6 @@ export default function ResumeReviewer() {
                     </div>
                   )}
 
-                  {/* Re-tailor button */}
                   <button className="rr-retailor-btn" onClick={() => setTailorResults(null)}>
                     <Wand2 size={14} /> Tailor for a Different Role
                   </button>
