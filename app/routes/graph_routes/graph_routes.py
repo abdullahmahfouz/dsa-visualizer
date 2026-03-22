@@ -286,7 +286,10 @@ def load_preset(name):
     Load a preset graph for demonstration.
     Available presets: simple, tree, cyclic, disconnected
     """
+    global graph
     graph.clear()
+    # 'dag' preset requires directed edges for topological sort to work correctly
+    graph._directed = (name == 'dag')
 
     presets = {
         "simple": {

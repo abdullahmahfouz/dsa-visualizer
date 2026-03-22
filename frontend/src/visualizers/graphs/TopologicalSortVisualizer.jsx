@@ -101,13 +101,13 @@ function TopologicalSortVisualizer() {
       setSortedResult(result.sorted || []);
       setSteps(result.steps);
       showMessage('Starting Topological Sort (Kahn\'s Algorithm)...', 'info');
-      animateAlgorithm(result.steps);
+      animateAlgorithm(result.steps, result.sorted || []);
     } catch (error) {
       showMessage('Error running topological sort', 'error');
     }
   };
 
-  const animateAlgorithm = (algorithmSteps) => {
+  const animateAlgorithm = (algorithmSteps, sortedOrder = []) => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
@@ -126,7 +126,7 @@ function TopologicalSortVisualizer() {
         clearInterval(intervalRef.current);
         setIsAnimating(false);
         setCurrentNode(null);
-        showMessage(`Topological Sort Complete: ${sortedResult.join(' → ')}`, 'success');
+        showMessage(`Topological Sort Complete: ${sortedOrder.join(' → ')}`, 'success');
         return;
       }
 
