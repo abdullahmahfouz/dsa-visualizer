@@ -1,99 +1,110 @@
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
 
 // Pages
-import Home from './pages/Home';
-import Algorithms from './pages/Algorithms';
-import Contact from './pages/Contact';
-import Contributions from './pages/Contributions';
+const Home = lazy(() => import('./pages/Home'));
+const Algorithms = lazy(() => import('./pages/Algorithms'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Contributions = lazy(() => import('./pages/Contributions'));
 
 // Visualizers - Linear
-import StackVisualizer from './visualizers/linear/StackVisualizer';
-import QueueVisualizer from './visualizers/linear/QueueVisualizer';
-import LinkedListVisualizer from './visualizers/linear/LinkedListVisualizer';
-import SkipListVisualizer from './visualizers/linear/SkipList/SkipListVisualizer';
+const StackVisualizer = lazy(() => import('./visualizers/linear/StackVisualizer'));
+const QueueVisualizer = lazy(() => import('./visualizers/linear/QueueVisualizer'));
+const LinkedListVisualizer = lazy(() => import('./visualizers/linear/LinkedListVisualizer'));
+const SkipListVisualizer = lazy(() => import('./visualizers/linear/SkipList/SkipListVisualizer'));
 
 // Visualizers - Hash
-import HashTableVisualizer from './visualizers/hash/HashTableVisualizer';
-import HashTableChaining from './visualizers/hash/HashTableChaining';
-import HashTableQuadratic from './visualizers/hash/HashTableQuadratic';
+const HashTableVisualizer = lazy(() => import('./visualizers/hash/HashTableVisualizer'));
+const HashTableChaining = lazy(() => import('./visualizers/hash/HashTableChaining'));
+const HashTableQuadratic = lazy(() => import('./visualizers/hash/HashTableQuadratic'));
 
 // Visualizers - Trees
-import BinaryTreeVisualizer from './visualizers/binarytrees/BinaryTreeTraversals/BinaryTreeTraversals';
-import BSTVisualizer from './visualizers/binarytrees/BST/BSTVisualizer';
-import AVLVisualizer from './visualizers/binarytrees/AVL/AVLVisualizer';
-import SplayVisualizer from './visualizers/binarytrees/Splay/SplayVisualizer';
-import TreapVisualizer from './visualizers/binarytrees/Treap/TreapVisualizer';
+const BinaryTreeVisualizer = lazy(() => import('./visualizers/binarytrees/BinaryTreeTraversals/BinaryTreeTraversals'));
+const BSTVisualizer = lazy(() => import('./visualizers/binarytrees/BST/BSTVisualizer'));
+const AVLVisualizer = lazy(() => import('./visualizers/binarytrees/AVL/AVLVisualizer'));
+const SplayVisualizer = lazy(() => import('./visualizers/binarytrees/Splay/SplayVisualizer'));
+const TreapVisualizer = lazy(() => import('./visualizers/binarytrees/Treap/TreapVisualizer'));
 
 // Visualizers - Heaps
-import MinHeapVisualizer from './visualizers/heaps/MinHeapVisualizer';
-import MaxHeapVisualizer from './visualizers/heaps/MaxHeapVisualizer';
+const MinHeapVisualizer = lazy(() => import('./visualizers/heaps/MinHeapVisualizer'));
+const MaxHeapVisualizer = lazy(() => import('./visualizers/heaps/MaxHeapVisualizer'));
 
 // Visualizers - Graphs
-import GraphVisualizer from './visualizers/graphs/GraphVisualizer';
-import AdjacencyMatrixVisualizer from './visualizers/graphs/AdjacencyMatrixVisualizer';
-import BFSVisualizer from './visualizers/graphs/BFSVisualizer';
-import DFSVisualizer from './visualizers/graphs/DFSVisualizer';
-import DijkstraVisualizer from './visualizers/graphs/DijkstraVisualizer';
-import MSTVisualizer from './visualizers/graphs/MSTVisualizer';
-import TopologicalSortVisualizer from './visualizers/graphs/TopologicalSortVisualizer';
-import BellmanFordVisualizer from './visualizers/graphs/BellmanFordVisualizer';
-import KruskalVisualizer from './visualizers/graphs/KruskalVisualizer';
+const GraphVisualizer = lazy(() => import('./visualizers/graphs/GraphVisualizer'));
+const AdjacencyMatrixVisualizer = lazy(() => import('./visualizers/graphs/AdjacencyMatrixVisualizer'));
+const BFSVisualizer = lazy(() => import('./visualizers/graphs/BFSVisualizer'));
+const DFSVisualizer = lazy(() => import('./visualizers/graphs/DFSVisualizer'));
+const DijkstraVisualizer = lazy(() => import('./visualizers/graphs/DijkstraVisualizer'));
+const MSTVisualizer = lazy(() => import('./visualizers/graphs/MSTVisualizer'));
+const TopologicalSortVisualizer = lazy(() => import('./visualizers/graphs/TopologicalSortVisualizer'));
+const BellmanFordVisualizer = lazy(() => import('./visualizers/graphs/BellmanFordVisualizer'));
+const KruskalVisualizer = lazy(() => import('./visualizers/graphs/KruskalVisualizer'));
 
 // Practice
-import PracticePage from './practice/PracticePage';
+const PracticePage = lazy(() => import('./practice/PracticePage'));
 
 // Sandbox
-import CodeVisualizerSandbox from './pages/CodeVisualizerSandbox';
+const CodeVisualizerSandbox = lazy(() => import('./pages/CodeVisualizerSandbox'));
 
 // Comparison
-import HashComparison from './pages/HashComparison';
-import AlgoCompare from './pages/AlgoCompare';
+const HashComparison = lazy(() => import('./pages/HashComparison'));
+const AlgoCompare = lazy(() => import('./pages/AlgoCompare'));
 
 // Resume Reviewer
-import ResumeReviewer from './pages/ResumeReviewer';
+const ResumeReviewer = lazy(() => import('./pages/ResumeReviewer'));
+
+// Loading component
+const PageLoader = () => (
+  <div className="page-loader">
+    <div className="loader-spinner"></div>
+    <p>Loading Visualizer...</p>
+  </div>
+);
 
 function App() {
   return (
     <div className="homepage-body">
       <Sidebar />
       <main className="main-content">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/algorithms" element={<Algorithms />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/contributions" element={<Contributions />} />
-          <Route path="/stack" element={<StackVisualizer />} />
-          <Route path="/queue" element={<QueueVisualizer />} />
-          <Route path="/linkedlist" element={<LinkedListVisualizer />} />
-          <Route path="/skiplist" element={<SkipListVisualizer />} />
-          <Route path="/hashtable_linear" element={<HashTableVisualizer />} />
-          <Route path="/hashtable_quadratic" element={<HashTableQuadratic />} />
-          <Route path="/hashtable_chaining" element={<HashTableChaining />} />
-          <Route path="/binarytree" element={<BinaryTreeVisualizer />} />
-          <Route path="/bst" element={<BSTVisualizer />} />
-          <Route path="/avl" element={<AVLVisualizer />} />
-          <Route path="/splay" element={<SplayVisualizer />} />
-          <Route path="/treap" element={<TreapVisualizer />} />
-          <Route path="/minheap" element={<MinHeapVisualizer />} />
-          <Route path="/maxheap" element={<MaxHeapVisualizer />} />
-          <Route path="/adjacency-list" element={<GraphVisualizer />} />
-          <Route path="/adjacency-matrix" element={<AdjacencyMatrixVisualizer />} />
-          <Route path="/bfs" element={<BFSVisualizer />} />
-          <Route path="/dfs" element={<DFSVisualizer />} />
-          <Route path="/dijkstra" element={<DijkstraVisualizer />} />
-          <Route path="/bellman-ford" element={<BellmanFordVisualizer />} />
-          <Route path="/prim-mst" element={<MSTVisualizer />} />
-          <Route path="/kruskal-mst" element={<KruskalVisualizer />} />
-          <Route path="/topological-sort" element={<TopologicalSortVisualizer />} />
-          <Route path="/practice" element={<PracticePage />} />
-          <Route path="/practice/:problemId" element={<PracticePage />} />
-          <Route path="/sandbox" element={<CodeVisualizerSandbox />} />
-          <Route path="/compare-hash" element={<HashComparison />} />
-          <Route path="/compare" element={<AlgoCompare />} />
-          <Route path="/resume-reviewer" element={<ResumeReviewer />} />
-        </Routes>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/algorithms" element={<Algorithms />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/contributions" element={<Contributions />} />
+            <Route path="/stack" element={<StackVisualizer />} />
+            <Route path="/queue" element={<QueueVisualizer />} />
+            <Route path="/linkedlist" element={<LinkedListVisualizer />} />
+            <Route path="/skiplist" element={<SkipListVisualizer />} />
+            <Route path="/hashtable_linear" element={<HashTableVisualizer />} />
+            <Route path="/hashtable_quadratic" element={<HashTableQuadratic />} />
+            <Route path="/hashtable_chaining" element={<HashTableChaining />} />
+            <Route path="/binarytree" element={<BinaryTreeVisualizer />} />
+            <Route path="/bst" element={<BSTVisualizer />} />
+            <Route path="/avl" element={<AVLVisualizer />} />
+            <Route path="/splay" element={<SplayVisualizer />} />
+            <Route path="/treap" element={<TreapVisualizer />} />
+            <Route path="/minheap" element={<MinHeapVisualizer />} />
+            <Route path="/maxheap" element={<MaxHeapVisualizer />} />
+            <Route path="/adjacency-list" element={<GraphVisualizer />} />
+            <Route path="/adjacency-matrix" element={<AdjacencyMatrixVisualizer />} />
+            <Route path="/bfs" element={<BFSVisualizer />} />
+            <Route path="/dfs" element={<DFSVisualizer />} />
+            <Route path="/dijkstra" element={<DijkstraVisualizer />} />
+            <Route path="/bellman-ford" element={<BellmanFordVisualizer />} />
+            <Route path="/prim-mst" element={<MSTVisualizer />} />
+            <Route path="/kruskal-mst" element={<KruskalVisualizer />} />
+            <Route path="/topological-sort" element={<TopologicalSortVisualizer />} />
+            <Route path="/practice" element={<PracticePage />} />
+            <Route path="/practice/:problemId" element={<PracticePage />} />
+            <Route path="/sandbox" element={<CodeVisualizerSandbox />} />
+            <Route path="/compare-hash" element={<HashComparison />} />
+            <Route path="/compare" element={<AlgoCompare />} />
+            <Route path="/resume-reviewer" element={<ResumeReviewer />} />
+          </Routes>
+        </Suspense>
         <Footer />
       </main>
     </div>
@@ -101,4 +112,3 @@ function App() {
 }
 
 export default App;
-

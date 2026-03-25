@@ -98,6 +98,7 @@ function Sidebar() {
               target="_blank" 
               rel="noopener noreferrer" 
               title="GitHub"
+              aria-label="Visit our GitHub"
             >
               <Github />
             </a>
@@ -106,6 +107,7 @@ function Sidebar() {
               target="_blank" 
               rel="noopener noreferrer" 
               title="LinkedIn"
+              aria-label="Visit our LinkedIn"
             >
               <Linkedin />
             </a>

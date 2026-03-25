@@ -978,7 +978,7 @@ export default function ResumeReviewer() {
                     <div className="rr-view-toggle">
                       <button
                         className={`rr-view-btn${viewMode === 'original' ? ' rr-view-active' : ''}`}
-                        onClick={() => setViewMode('original')}
+                        onClick={() => setViewMode('original')}ud
                       >
                         <Eye size={12} /> Original
                       </button>
