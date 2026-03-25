@@ -5,7 +5,7 @@ import CodeTabs from '../../components/CodeTabs';
 import MessageBanner from '../../components/MessageBanner';
 import { getJson, postJson } from '../../api/api';
 import { useTimedMessage } from '../../hooks/useTimedMessage';
-import hashTableChainingData from '../../data/concepts/hashTableChaining.json';
+import hashTableChainingData from '../../data/concepts/hashtable_chaining.json';
 
 function HashTableChaining() {
   const [table, setTable] = useState([]);

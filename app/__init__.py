@@ -29,7 +29,7 @@ from .routes.linear_routes.queue_routes import queue_bp
 from .routes.linear_routes.singly_linkedlist_routes import linkedlist_bp
 from .routes.linear_routes.skiplist_routes import skiplist_bp
 from .routes.hashing_routes.hashtable_routes import hashtable_bp
-from .routes.hashing_routes.chaning_routes import hs_bp
+from .routes.hashing_routes.chaining_routes import hs_bp
 from .routes.hashing_routes.hashtable_quadratic_routes import quadratic_bp
 from .routes.binarytree_routes.binary_tree_routes import binarytree_bp
 from .routes.binarytree_routes.bst_routes import bst_bp
@@ -50,7 +50,7 @@ CORS(app)  # Enable CORS for React frontend
 # Serve static files from React build
 @app.route('/favicon.svg')
 def favicon():
-    return send_from_directory(app.static_folder, 'favicon.svg')
+    return send_from_directory(os.path.join(app.static_folder, 'react-build'), 'favicon.svg')
 
 # Register blueprints - this connects all the routes to the app
 # NOTE: API blueprints must be registered BEFORE pages_bp (which has a catch-all route)

@@ -53,6 +53,16 @@ def insert_node():
     if value is None:
         return jsonify({"error": "No value provided"}), 400
 
+    # Ensure value is numeric for comparison
+    try:
+        if isinstance(value, str):
+            if value.isdigit() or (value.startswith('-') and value[1:].isdigit()):
+                value = int(value)
+            elif '.' in value and value.replace('.', '').replace('-', '').isdigit():
+                value = float(value)
+    except:
+        pass
+
     if bst_tree.size() >= MAX_TREE_SIZE:
         return jsonify({"error": f"Tree is full! Maximum size is {MAX_TREE_SIZE}"}), 400
 
@@ -82,6 +92,16 @@ def delete_node():
 
     if value is None:
         return jsonify({"error": "No value provided"}), 400
+
+    # Ensure value is numeric for comparison
+    try:
+        if isinstance(value, str):
+            if value.isdigit() or (value.startswith('-') and value[1:].isdigit()):
+                value = int(value)
+            elif '.' in value and value.replace('.', '').replace('-', '').isdigit():
+                value = float(value)
+    except:
+        pass
 
     if bst_tree.is_empty():
         return jsonify({"error": "Tree is empty!"}), 400
