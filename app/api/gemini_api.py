@@ -39,7 +39,7 @@ def ask_ai():
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model='gemini-2.5-flash',
             contents=prompt
         )
         # Extract text from response - response.text should work, but handle if it's different
@@ -132,7 +132,7 @@ Constraints:
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model='Gemini-2.5-flash',
             contents=prompt,
             config=genai.types.GenerateContentConfig(
                 response_mime_type="application/json"
