@@ -9,6 +9,7 @@ api_bp = Blueprint('api', __name__)
 
 # Get Gemini API key
 api_key = os.getenv("GEMINI_API_KEY")
+MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 if not api_key:
     print("Warning: GEMINI_API_KEY not set. AI assistant will not work.")
 
@@ -39,7 +40,7 @@ def ask_ai():
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model='gemini-2.5-flash',
+            model=MODEL_NAME,
             contents=prompt
         )
         # Extract text from response - response.text should work, but handle if it's different
@@ -132,7 +133,7 @@ Constraints:
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model='Gemini-2.5-flash',
+            model=MODEL_NAME,
             contents=prompt,
             config=genai.types.GenerateContentConfig(
                 response_mime_type="application/json"
@@ -266,7 +267,7 @@ Be specific — avoid generic advice like "add more details". Tell them exactly 
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model=MODEL_NAME,
             contents=prompt,
             config=genai.types.GenerateContentConfig(
                 response_mime_type="application/json"
@@ -350,7 +351,7 @@ Rules:
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model=MODEL_NAME,
             contents=prompt,
             config=genai.types.GenerateContentConfig(
                 response_mime_type="application/json"
@@ -446,7 +447,7 @@ Rules:
     try:
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model=MODEL_NAME,
             contents=prompt,
             config=genai.types.GenerateContentConfig(
                 response_mime_type="application/json"
@@ -523,7 +524,7 @@ def code_review():
         client = genai.Client(api_key=api_key)
         # Use generate_content with JSON constraint
         response = client.models.generate_content(
-            model='gemini-1.5-flash',
+            model=MODEL_NAME,
             contents=prompt,
             config=genai.types.GenerateContentConfig(
                 response_mime_type="application/json"
