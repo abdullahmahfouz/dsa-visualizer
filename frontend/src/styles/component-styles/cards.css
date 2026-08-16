@@ -18,7 +18,7 @@
     transform: translate(-50%, -50%);
     width: 800px;
     height: 600px;
-    background: radial-gradient(circle at center, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.1) 40%, transparent 70%);
+    background: radial-gradient(circle at center, rgba(var(--state-frontier-rgb), 0.2) 0%, rgba(var(--accent-rgb), 0.1) 40%, transparent 70%);
     pointer-events: none;
     z-index: -1;
     animation: pulse 4s ease-in-out infinite;
@@ -51,7 +51,7 @@
     margin-bottom: 2rem;
     background: var(--accent-gradient);
     border-radius: 50%;
-    box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 10px 40px rgba(var(--state-frontier-rgb), 0.4);
     animation: float 3s ease-in-out infinite;
 }
 
@@ -125,35 +125,6 @@
     margin-top: 2rem;
 }
 
-.category-group {
-    margin-bottom: 4rem;
-}
-
-.category-header {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--border-color);
-}
-
-.category-icon {
-    width: 28px;
-    height: 28px;
-    stroke: var(--accent-primary);
-}
-
-.category-header h2 {
-    font-size: 1.75rem;
-    margin: 0;
-    background: var(--accent-gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: 700;
-}
-
 /* Card Grid */
 .card-grid {
     display: grid;
@@ -217,7 +188,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(var(--state-frontier-rgb), 0.05) 0%, rgba(var(--accent-rgb), 0.05) 100%);
     opacity: 0;
     transition: opacity 0.4s ease;
     z-index: 0;
@@ -229,8 +200,8 @@
     border-color: var(--accent-primary);
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.5),
-        0 0 60px rgba(99, 102, 241, 0.3),
-        inset 0 0 60px rgba(99, 102, 241, 0.05);
+        0 0 60px rgba(var(--state-frontier-rgb), 0.3),
+        inset 0 0 60px rgba(var(--state-frontier-rgb), 0.05);
 }
 
 .card:not(.disabled):hover::before {
@@ -253,7 +224,7 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     z-index: 2;
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 8px 20px rgba(var(--state-frontier-rgb), 0.3);
 }
 
 .card-icon::before {
@@ -271,7 +242,7 @@
 /* Brighten icon on hover */
 .card:not(.disabled):hover .card-icon {
     transform: scale(1.15) rotate(8deg);
-    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+    box-shadow: 0 0 40px rgba(var(--state-frontier-rgb), 0.6);
     filter: brightness(1.2);
 }
 
@@ -322,16 +293,16 @@
 }
 
 .status.learning {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(var(--state-frontier-rgb), 0.2) 0%, rgba(var(--accent-rgb), 0.2) 100%);
     color: var(--accent-primary);
-    border: 1px solid rgba(99, 102, 241, 0.4);
+    border: 1px solid rgba(var(--state-frontier-rgb), 0.4);
     transition: all 0.4s ease;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 4px 12px rgba(var(--state-frontier-rgb), 0.2);
 }
 
 .card:not(.disabled):hover .status.learning {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 100%);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+    background: linear-gradient(135deg, rgba(var(--state-frontier-rgb), 0.3) 0%, rgba(var(--accent-rgb), 0.3) 100%);
+    box-shadow: 0 6px 20px rgba(var(--state-frontier-rgb), 0.4);
     transform: translateY(-2px);
     border-color: var(--accent-primary);
 }
@@ -339,7 +310,7 @@
 /* Coming Soon - Subtle Badge Style */
 .status:not(.learning) {
     background: rgba(255, 255, 255, 0.03);
-    color: #666;
+    color: var(--text-muted);
     border: 1px solid rgba(255, 255, 255, 0.08);
     cursor: default;
     font-size: 0.7rem;
@@ -362,7 +333,7 @@
 }
 
 .card.disabled .card-icon {
-    background: linear-gradient(135deg, #3f3f46 0%, #27272a 100%);
+    background: linear-gradient(135deg, var(--bg-overlay) 0%, var(--bg-raised) 100%);
     opacity: 0.6;
 }
 
@@ -412,7 +383,7 @@
     align-items: flex-start;
     gap: 0.75rem;
     padding: 0.875rem;
-    background: rgba(99, 102, 241, 0.1);
+    background: rgba(var(--state-frontier-rgb), 0.1);
     border-radius: var(--radius-md);
     margin-bottom: 1rem;
     font-size: 0.85rem;

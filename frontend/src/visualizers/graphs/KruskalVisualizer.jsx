@@ -388,7 +388,7 @@ function KruskalVisualizer() {
                       key={idx}
                       className={`sorted-edge-item ${inMst ? 'in-mst' : ''} ${rejected ? 'rejected' : ''}`}
                     >
-                      <span>{v1}—{v2}</span>
+                      <span>{v1}-{v2}</span>
                       <span className="edge-weight">w={weight}</span>
                     </div>
                   );
@@ -536,7 +536,7 @@ function KruskalVisualizer() {
               <div className="mst-edges-list">
                 {mstEdges.map(([from, to, weight], idx) => (
                   <div key={idx} className="mst-edge-item">
-                    <span>{from} — {to}</span>
+                    <span>{from} - {to}</span>
                     <span className="edge-weight">(w: {weight})</span>
                   </div>
                 ))}

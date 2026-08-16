@@ -120,7 +120,7 @@
 
 /* Matrix headers */
 .matrix-header {
-  background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
   color: white;
   font-weight: 700;
   position: relative;
@@ -180,7 +180,7 @@
 
 /* Cell with edge */
 .matrix-cell.has-edge {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--state-visited) 0%, var(--state-visited) 100%);
   color: white;
   font-weight: 700;
 }
@@ -194,7 +194,7 @@
 /* Highlighted cell */
 .matrix-cell.highlighted {
   animation: cellPulse 0.5s ease-out;
-  box-shadow: 0 0 0 3px #f59e0b, 0 0 15px rgba(245, 158, 11, 0.5);
+  box-shadow: 0 0 0 3px var(--warning), 0 0 15px rgba(var(--warning-rgb), 0.5);
   z-index: 2;
   position: relative;
 }
@@ -223,15 +223,15 @@
 }
 
 .lookup-result.exists {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid #10b981;
-  color: #10b981;
+  background: rgba(var(--state-visited-rgb), 0.1);
+  border: 1px solid var(--state-visited);
+  color: var(--state-visited);
 }
 
 .lookup-result.not-exists {
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid #f59e0b;
-  color: #f59e0b;
+  background: rgba(var(--warning-rgb), 0.1);
+  border: 1px solid var(--warning);
+  color: var(--warning);
 }
 
 .lookup-result code {
@@ -273,22 +273,22 @@
 }
 
 .comparison-hint .pro {
-  color: #10b981;
+  color: var(--state-visited);
   font-weight: 600;
 }
 
 .comparison-hint .con {
-  color: #ef4444;
+  color: var(--state-invalid);
   font-weight: 600;
 }
 
 /* Check button */
 .btn-check {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(135deg, var(--warning) 0%, var(--warning) 100%);
 }
 
 .btn-check:hover {
-  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  background: linear-gradient(135deg, var(--warning) 0%, var(--warning) 100%);
 }
 
 /* Responsive */

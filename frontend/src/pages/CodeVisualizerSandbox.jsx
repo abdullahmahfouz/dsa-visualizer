@@ -55,7 +55,7 @@ const API_REF = [
 const EXAMPLES = [
   {
     label: 'Stack',
-    code: `# Push 1–5, then pop all
+    code: `# Push 1-5, then pop all
 for i in range(1, 6):
     my_stack.push(i * 10)
 
@@ -132,7 +132,7 @@ function DsSection({ title, color, children, defaultOpen = true }) {
   );
 }
 
-/** Stack — vertical blocks stacked on a base plate */
+/** Stack - vertical blocks stacked on a base plate */
 function StackPanel({ items, activeValue }) {
   const reversed = [...items].reverse(); // reversed[0] = top of stack
   return (
@@ -163,7 +163,7 @@ function StackPanel({ items, activeValue }) {
   );
 }
 
-/** Queue — horizontal conveyor belt with entry/exit labels */
+/** Queue - horizontal conveyor belt with entry/exit labels */
 function QueuePanel({ items, activeValue }) {
   if (items.length === 0) {
     return (
@@ -200,7 +200,7 @@ function QueuePanel({ items, activeValue }) {
   );
 }
 
-/** Linked List — data|ptr compartment nodes with pointer arrows */
+/** Linked List - data|ptr compartment nodes with pointer arrows */
 function LinkedListPanel({ nodes, activeValue }) {
   if (nodes.length === 0) {
     return (
@@ -396,7 +396,7 @@ export default function CodeVisualizerSandbox() {
         <div>
           <h1 className="sandbox-title">Python Code Sandbox</h1>
           <p className="sandbox-subtitle">
-            Write Python using <code>my_stack</code>, <code>my_queue</code>, or <code>my_list</code> — step through each operation and watch your data structures animate.
+            Write Python using <code>my_stack</code>, <code>my_queue</code>, or <code>my_list</code> - step through each operation and watch your data structures animate.
           </p>
         </div>
       </div>

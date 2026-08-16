@@ -21,9 +21,9 @@
 
 .challenge-banner {
     background: linear-gradient(135deg,
-        rgba(16, 185, 129, 0.06) 0%,
-        rgba(99, 102, 241, 0.05) 100%);
-    border: 1px solid rgba(16, 185, 129, 0.28);
+        rgba(var(--state-visited-rgb), 0.06) 0%,
+        rgba(var(--state-frontier-rgb), 0.05) 100%);
+    border: 1px solid rgba(var(--state-visited-rgb), 0.28);
     border-radius: var(--radius-lg);
     padding: 1.1rem 1.25rem;
     margin-bottom: 1rem;
@@ -66,21 +66,21 @@
 }
 
 .challenge-type-badge.search {
-    background: rgba(99, 102, 241, 0.15);
-    color: #a5b4fc;
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: rgba(var(--state-frontier-rgb), 0.15);
+    color: var(--state-frontier);
+    border: 1px solid rgba(var(--state-frontier-rgb), 0.3);
 }
 
 .challenge-type-badge.leaves {
-    background: rgba(245, 158, 11, 0.15);
-    color: #fcd34d;
-    border: 1px solid rgba(245, 158, 11, 0.3);
+    background: rgba(var(--warning-rgb), 0.15);
+    color: var(--warning);
+    border: 1px solid rgba(var(--warning-rgb), 0.3);
 }
 
 .challenge-type-badge.inorder {
-    background: rgba(16, 185, 129, 0.15);
-    color: #6ee7b7;
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background: rgba(var(--state-visited-rgb), 0.15);
+    color: var(--state-visited);
+    border: 1px solid rgba(var(--state-visited-rgb), 0.3);
 }
 
 /* ── Exit button ──────────────────────────────────────────────────────────── */
@@ -102,9 +102,9 @@
 }
 
 .challenge-exit-btn:hover {
-    border-color: #ef4444;
-    color: #ef4444;
-    background: rgba(239, 68, 68, 0.06);
+    border-color: var(--state-invalid);
+    color: var(--state-invalid);
+    background: rgba(var(--state-invalid-rgb), 0.06);
 }
 
 /* ── Description ──────────────────────────────────────────────────────────── */
@@ -141,14 +141,14 @@
 }
 
 .challenge-step-dot.done {
-    background: #10b981;
-    border-color: #10b981;
+    background: var(--state-visited);
+    border-color: var(--state-visited);
     color: white;
 }
 
 .challenge-step-dot.next {
-    border-color: #6366f1;
-    color: #a5b4fc;
+    border-color: var(--state-frontier);
+    color: var(--state-frontier);
     animation: challenge-pulse 1.6s ease-in-out infinite;
 }
 
@@ -157,8 +157,8 @@
 }
 
 @keyframes challenge-pulse {
-    0%, 100% { box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22); }
-    50%       { box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.07); }
+    0%, 100% { box-shadow: 0 0 0 3px rgba(var(--state-frontier-rgb), 0.22); }
+    50%       { box-shadow: 0 0 0 6px rgba(var(--state-frontier-rgb), 0.07); }
 }
 
 .challenge-progress-arrow {
@@ -183,7 +183,7 @@
 .challenge-identify-count {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #10b981;
+    color: var(--state-visited);
 }
 
 .challenge-identify-sep,
@@ -225,10 +225,10 @@
     margin-top: 0.4rem;
     font-size: 0.79rem;
     color: var(--text-secondary);
-    background: rgba(99, 102, 241, 0.06);
+    background: rgba(var(--state-frontier-rgb), 0.06);
     padding: 0.45rem 0.75rem;
     border-radius: var(--radius-sm);
-    border-left: 2px solid #6366f1;
+    border-left: 2px solid var(--state-frontier);
     line-height: 1.5;
 }
 
@@ -246,13 +246,13 @@
 }
 
 .challenge-result.success {
-    background: rgba(16, 185, 129, 0.07);
-    border: 1px solid rgba(16, 185, 129, 0.28);
+    background: rgba(var(--state-visited-rgb), 0.07);
+    border: 1px solid rgba(var(--state-visited-rgb), 0.28);
 }
 
 .challenge-result.failed {
-    background: rgba(239, 68, 68, 0.05);
-    border: 1px solid rgba(239, 68, 68, 0.22);
+    background: rgba(var(--state-invalid-rgb), 0.05);
+    border: 1px solid rgba(var(--state-invalid-rgb), 0.22);
 }
 
 .challenge-result-icon {
@@ -288,10 +288,10 @@
 .btn-challenge {
     width: 100%;
     background: linear-gradient(135deg,
-        rgba(16, 185, 129, 0.12),
-        rgba(99, 102, 241, 0.1));
-    border: 1px solid rgba(16, 185, 129, 0.35);
-    color: #6ee7b7;
+        rgba(var(--state-visited-rgb), 0.12),
+        rgba(var(--state-frontier-rgb), 0.1));
+    border: 1px solid rgba(var(--state-visited-rgb), 0.35);
+    color: var(--state-visited);
     font-weight: 600;
     display: flex;
     align-items: center;
@@ -302,10 +302,10 @@
 
 .btn-challenge:hover:not(:disabled) {
     background: linear-gradient(135deg,
-        rgba(16, 185, 129, 0.22),
-        rgba(99, 102, 241, 0.16));
-    border-color: rgba(16, 185, 129, 0.6);
-    color: #34d399;
+        rgba(var(--state-visited-rgb), 0.22),
+        rgba(var(--state-frontier-rgb), 0.16));
+    border-color: rgba(var(--state-visited-rgb), 0.6);
+    color: var(--state-visited);
     transform: translateY(-1px);
 }
 
@@ -315,11 +315,11 @@
     align-items: center;
     gap: 0.55rem;
     padding: 0.65rem 0.9rem;
-    background: rgba(16, 185, 129, 0.06);
-    border: 1px solid rgba(16, 185, 129, 0.22);
+    background: rgba(var(--state-visited-rgb), 0.06);
+    border: 1px solid rgba(var(--state-visited-rgb), 0.22);
     border-radius: var(--radius-md);
     font-size: 0.8rem;
-    color: #6ee7b7;
+    color: var(--state-visited);
     margin-bottom: 0.75rem;
 }
 
@@ -328,7 +328,7 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: #10b981;
+    background: var(--state-visited);
     flex-shrink: 0;
     animation: challenge-dot-blink 1.3s ease-in-out infinite;
 }

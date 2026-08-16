@@ -360,7 +360,7 @@ function SearchingTab() {
   };
 
   const ResultLine = ({ state, isLinear }) => {
-    if (state.notFound) return <span className="ac-result-notfound">Not found — {state.comparisons} step{state.comparisons !== 1 ? 's' : ''}</span>;
+    if (state.notFound) return <span className="ac-result-notfound">Not found - {state.comparisons} step{state.comparisons !== 1 ? 's' : ''}</span>;
     if (state.found)    return <span className="ac-result-found">Found in {state.comparisons} step{state.comparisons !== 1 ? 's' : ''}!</span>;
     if (state.comparisons > 0) return <span className="ac-result-idle">{state.comparisons} step{state.comparisons !== 1 ? 's' : ''}…</span>;
     return <span className="ac-result-idle">Awaiting search</span>;
@@ -538,7 +538,7 @@ function HashColumn({ name, formula, color, state, currentKey, isChaining, isWin
                 <div className="hc-slot-index">{i}</div>
                 <div className="hc-chain-items">
                   {chain.length === 0
-                    ? <span className="hc-empty-label">—</span>
+                    ? <span className="hc-empty-label">-</span>
                     : chain.map((k, j) => (
                         <React.Fragment key={j}>
                           {j > 0 && <ChevronRight size={9} className="hc-chain-sep" />}
@@ -553,7 +553,7 @@ function HashColumn({ name, formula, color, state, currentKey, isChaining, isWin
               <div key={i} className={`hc-slot${slot ? ' filled' : ' empty'}${lastSlot === i ? ' newly-inserted' : ''}`}>
                 <div className="hc-slot-index">{i}</div>
                 <div className="hc-slot-key">
-                  {slot ? <span className={slot === currentKey ? 'hc-new-key' : ''}>{slot}</span> : <span className="hc-empty-label">—</span>}
+                  {slot ? <span className={slot === currentKey ? 'hc-new-key' : ''}>{slot}</span> : <span className="hc-empty-label">-</span>}
                 </div>
               </div>
             ))
@@ -645,9 +645,9 @@ function HashTab() {
       </div>
       <div className="hc-legend">
         <span className="hc-legend-title">Probe count:</span>
-        <span className="hc-legend-item">Open addressing — slots examined (min 1)</span>
+        <span className="hc-legend-item">Open addressing - slots examined (min 1)</span>
         <span className="hc-legend-sep">·</span>
-        <span className="hc-legend-item">Chaining — chain nodes traversed before append (0 if empty)</span>
+        <span className="hc-legend-item">Chaining - chain nodes traversed before append (0 if empty)</span>
       </div>
     </div>
   );
@@ -665,7 +665,7 @@ function AlgoCompare() {
       <div className="ac-header">
         <h1 className="ac-title">Algorithm Comparison</h1>
         <p className="ac-subtitle">
-          Run algorithms side-by-side on the same data — watch how they differ in speed,
+          Run algorithms side-by-side on the same data - watch how they differ in speed,
           comparisons, and strategy in real time.
         </p>
       </div>

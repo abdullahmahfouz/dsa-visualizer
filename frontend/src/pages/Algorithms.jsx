@@ -22,35 +22,34 @@ function Algorithms() {
       id: 'linear',
       name: 'Linear Data Structures',
       icon: LinearIcon,
-      description: 'Elements stored sequentially where each element has a unique predecessor and successor. These are the building blocks of computer science — simple to implement yet powerful enough to solve complex problems.',
-      color: '#6366f1',
+      description: 'Elements stored sequentially where each element has a unique predecessor and successor. These are the building blocks of computer science - simple to implement yet powerful enough to solve complex problems.',
       items: [
         {
           to: '/stack',
           icon: StackIcon,
           title: 'Stack',
-          description: 'LIFO (Last In, First Out) — imagine a stack of plates where you can only add or remove from the top. The most recent item is always accessed first. Push adds to top, Pop removes from top. Both operations are O(1) constant time. Essential for: browser back button (page history), undo/redo in editors, function call management in recursion, parsing expressions like (a+b)*c, and depth-first search algorithms.',
+          description: 'LIFO (Last In, First Out) - imagine a stack of plates where you can only add or remove from the top. The most recent item is always accessed first. Push adds to top, Pop removes from top. Both operations are O(1) constant time. Essential for: browser back button (page history), undo/redo in editors, function call management in recursion, parsing expressions like (a+b)*c, and depth-first search algorithms.',
           available: true
         },
         {
           to: '/queue',
           icon: QueueIcon,
           title: 'Queue',
-          description: 'FIFO (First In, First Out) — like waiting in line at a coffee shop. The first person to arrive gets served first. Enqueue adds to the back, Dequeue removes from front. Both O(1) operations. Used everywhere: print job scheduling, CPU task management, breadth-first search (BFS) in graphs, handling requests in web servers, and buffering data streams like video playback.',
+          description: 'FIFO (First In, First Out) - like waiting in line at a coffee shop. The first person to arrive gets served first. Enqueue adds to the back, Dequeue removes from front. Both O(1) operations. Used everywhere: print job scheduling, CPU task management, breadth-first search (BFS) in graphs, handling requests in web servers, and buffering data streams like video playback.',
           available: true
         },
         {
           to: '/linkedlist',
           icon: LinkedListIcon,
           title: 'Linked List',
-          description: 'A chain of nodes where each node stores data and a pointer to the next node. Unlike arrays, memory doesn\'t need to be contiguous — nodes can be scattered in memory. Insertion/deletion at known positions is O(1), but finding a position is O(n). Perfect for: implementing stacks/queues, music playlists (next/previous song), browser history, memory allocation in operating systems, and polynomial arithmetic.',
+          description: 'A chain of nodes where each node stores data and a pointer to the next node. Unlike arrays, memory doesn\'t need to be contiguous - nodes can be scattered in memory. Insertion/deletion at known positions is O(1), but finding a position is O(n). Perfect for: implementing stacks/queues, music playlists (next/previous song), browser history, memory allocation in operating systems, and polynomial arithmetic.',
           available: true
         },
         {
           to: '/skiplist',
           icon: SkipListIcon,
           title: 'Skip List',
-          description: 'A probabilistic data structure that uses multiple layers of linked lists with decreasing density. Express lanes skip over elements like a train system — higher levels let you "skip" to your destination faster. Achieves O(log n) average for search, insert, and delete. Used in Redis for sorted sets, LevelDB for in-memory indexing, and concurrent data structures where lock-free operation is critical.',
+          description: 'A probabilistic data structure that uses multiple layers of linked lists with decreasing density. Express lanes skip over elements like a train system - higher levels let you "skip" to your destination faster. Achieves O(log n) average for search, insert, and delete. Used in Redis for sorted sets, LevelDB for in-memory indexing, and concurrent data structures where lock-free operation is critical.',
           available: true
         },
       ]
@@ -61,7 +60,6 @@ function Algorithms() {
       name: 'Hash-Tables',
       icon: HashTableIcon,
       description: 'Revolutionary data structures that use hash functions to map keys to array indices, enabling O(1) average-case lookup, insertion, and deletion. The backbone of databases, caches, and any system requiring fast key-value access.',
-      color: '#10b981',
       items: [
         {
           to: '/hashtable_linear',
@@ -81,7 +79,7 @@ function Algorithms() {
           to: '/hashtable_chaining',
           icon: HashChainingIcon,
           title: 'Separate Chaining',
-          description: 'Each array slot holds a linked list (chain) of all entries that hash to that index. No limit on how many items can be stored — just grow the chains. Handles high load factors gracefully (even > 1.0). Simpler deletion than open addressing. Used in Java\'s HashMap, Python\'s dict (with optimization). Trade-off: extra memory for pointers, potentially poor cache performance with long chains.',
+          description: 'Each array slot holds a linked list (chain) of all entries that hash to that index. No limit on how many items can be stored - just grow the chains. Handles high load factors gracefully (even > 1.0). Simpler deletion than open addressing. Used in Java\'s HashMap, Python\'s dict (with optimization). Trade-off: extra memory for pointers, potentially poor cache performance with long chains.',
           available: true
         },
       ]
@@ -90,14 +88,13 @@ function Algorithms() {
       id: 'heaps',
       name: 'Priority Queues & Heaps',
       icon: HeapCategoryIcon,
-      description: 'Complete binary trees satisfying the heap property — either every parent ≥ children (max-heap) or every parent ≤ children (min-heap). Heaps power priority queues, enabling O(1) access to the extreme element and O(log n) insertions and deletions.',
-      color: '#ec4899',
+      description: 'Complete binary trees satisfying the heap property - either every parent ≥ children (max-heap) or every parent ≤ children (min-heap). Heaps power priority queues, enabling O(1) access to the extreme element and O(log n) insertions and deletions.',
       items: [
         {
           to: '/minheap',
           icon: MinHeapIcon,
           title: 'Min Heap',
-          description: 'Every parent node is smaller than or equal to its children, so the minimum element is always at the root — accessible in O(1). Insert and extract-min are O(log n) as elements "bubble up" or "sink down" to maintain the heap property. Critical for: Dijkstra\'s shortest path algorithm, Prim\'s minimum spanning tree, job schedulers (process with smallest priority runs next), and efficiently finding the k largest elements in a stream.',
+          description: 'Every parent node is smaller than or equal to its children, so the minimum element is always at the root - accessible in O(1). Insert and extract-min are O(log n) as elements "bubble up" or "sink down" to maintain the heap property. Critical for: Dijkstra\'s shortest path algorithm, Prim\'s minimum spanning tree, job schedulers (process with smallest priority runs next), and efficiently finding the k largest elements in a stream.',
           available: true
         },
         {
@@ -114,7 +111,6 @@ function Algorithms() {
       name: 'Binary Trees',
       icon: TreeCategoryIcon,
       description: 'Hierarchical data structures where data flows from a root node down through children. Trees enable O(log n) operations on sorted data and model real-world hierarchies like file systems, organization charts, and decision trees in AI/ML.',
-      color: '#f59e0b',
       items: [
         {
           to: '/binarytree',
@@ -127,7 +123,7 @@ function Algorithms() {
           to: '/bst',
           icon: BSTIcon,
           title: 'Binary Search Tree',
-          description: 'The fundamental ordered tree: every node\'s left subtree contains only smaller values, right subtree only larger values. This property enables O(log n) search by eliminating half the tree at each step — like binary search but in tree form. Supports efficient range queries. Caveat: can degrade to O(n) if insertions create an unbalanced "stick". Foundation for databases, symbol tables, and more advanced balanced trees.',
+          description: 'The fundamental ordered tree: every node\'s left subtree contains only smaller values, right subtree only larger values. This property enables O(log n) search by eliminating half the tree at each step - like binary search but in tree form. Supports efficient range queries. Caveat: can degrade to O(n) if insertions create an unbalanced "stick". Foundation for databases, symbol tables, and more advanced balanced trees.',
           available: true
         },
         {
@@ -141,7 +137,7 @@ function Algorithms() {
           to: '/splay',
           icon: SplayIcon,
           title: 'Splay Tree',
-          description: 'A self-adjusting BST with a clever optimization: every accessed node is "splayed" (rotated) to the root. No explicit balance condition, yet achieves O(log n) amortized time. Recently accessed items stay near the root — perfect for caches where some items are accessed repeatedly (temporal locality). Used in Windows NT\'s virtual memory management, GCC\'s implementation of certain data structures, and network routers.',
+          description: 'A self-adjusting BST with a clever optimization: every accessed node is "splayed" (rotated) to the root. No explicit balance condition, yet achieves O(log n) amortized time. Recently accessed items stay near the root - perfect for caches where some items are accessed repeatedly (temporal locality). Used in Windows NT\'s virtual memory management, GCC\'s implementation of certain data structures, and network routers.',
           available: true
         },
         {
@@ -159,7 +155,6 @@ function Algorithms() {
       name: 'Graphs',
       icon: GraphIcon,
       description: 'Graphs model relationships between objects using vertices (nodes) and edges (connections). They power social networks, GPS navigation, recommendation systems, and the internet itself. Understanding graphs unlocks solutions to complex real-world problems like finding shortest paths, detecting communities, and optimizing networks.',
-      color: '#ef4444',
       items: [
         {
           to: '/adjacency-matrix',
@@ -197,24 +192,26 @@ function Algorithms() {
 
   return (
     <section className="algorithms-section">
-      <div className="section-header">
-        <h1>Explore Data Structures</h1>
-        <p>Choose a category to explore different data structures. Each visualizer includes step-by-step explanations and hands-on practice.</p>
-      </div>
+      <header className="page-head">
+        <h1>Explore data structures</h1>
+        <p>
+          Pick a category. Every visualizer runs step by step, with the code
+          and the structure side by side.
+        </p>
+      </header>
 
       <div className="categories-container">
         {categories.map((category) => (
           <div
             key={category.id}
             className={`category-wrapper${expandedCategory === category.id ? ' expanded-wrapper' : ''}`}
-            style={{ '--item-color': category.color }}
           >
             {/* Category Header */}
             <button
               className={`category-header ${expandedCategory === category.id ? 'expanded' : ''}`}
               onClick={() => toggleCategory(category.id)}
             >
-              <div className="category-icon" style={{ background: category.color }}>
+              <div className="category-icon">
                 <category.icon />
               </div>
               <div className="category-info">
@@ -232,7 +229,7 @@ function Algorithms() {
                 {category.items.map((item, index) => (
                   item.available ? (
                     <Link to={item.to} key={index} className="algorithm-item">
-                      <div className="item-icon" style={{ background: category.color }}>
+                      <div className="item-icon">
                         <item.icon />
                       </div>
                       <div className="item-info">

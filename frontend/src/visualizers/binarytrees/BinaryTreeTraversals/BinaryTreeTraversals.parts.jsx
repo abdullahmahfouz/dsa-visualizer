@@ -96,7 +96,7 @@ export function ConceptBoxes() {
           </p>
           <div className="concept-analogy">
             <Lightbulb />
-            <span>Think of a <strong>family tree</strong> – each person can have up to two children!</span>
+            <span>Think of a <strong>family tree</strong> - each person can have up to two children!</span>
           </div>
           <div className="concept-key-terms">
             <h4>Key Terms:</h4>
@@ -130,7 +130,7 @@ export function ConceptBoxes() {
           </div>
           <div className="concept-analogy" style={{ marginTop: '0.75rem' }}>
             <Lightbulb />
-            <span>Like reading a book – you can read in different orders based on your needs!</span>
+            <span>Like reading a book - you can read in different orders based on your needs!</span>
           </div>
         </div>
       </div>

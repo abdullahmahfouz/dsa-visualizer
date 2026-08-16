@@ -149,7 +149,7 @@ function LinkedListVisualizer() {
             <p>A <strong>Singly Linked List</strong> is a linear data structure where each element contains data and a pointer to the next node.</p>
             <div className="concept-analogy">
               <Lightbulb />
-              <span>Think of a treasure hunt – each clue points to the <strong>next location</strong>!</span>
+              <span>Think of a treasure hunt - each clue points to the <strong>next location</strong>!</span>
             </div>
           </div>
         </div>

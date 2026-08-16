@@ -219,7 +219,7 @@ function AIAssistant({ context = 'Data Structures' }) {
         </button>
       </div>
 
-      {/* Response panel — only rendered when there is something to show */}
+      {/* Response panel - only rendered when there is something to show */}
       {(loading || response) && (
         <div id="ai-response" className={response ? 'has-content' : ''}>
           {loading && (

@@ -117,7 +117,7 @@ function QueueVisualizer() {
             <p>A <strong>Queue</strong> is a linear data structure that follows the <strong>FIFO</strong> (First In, First Out) principle.</p>
             <div className="concept-analogy">
               <Lightbulb />
-              <span>Think of a line at a store – the first person in line gets served <strong>first</strong>!</span>
+              <span>Think of a line at a store - the first person in line gets served <strong>first</strong>!</span>
             </div>
             <div className="concept-operations">
               <div className="op-item">

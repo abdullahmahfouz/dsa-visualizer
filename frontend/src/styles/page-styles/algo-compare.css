@@ -147,7 +147,7 @@
 
 .ac-tog-btn.active,
 .ac-tog-btn:hover:not(:disabled) {
-    background: rgba(0, 191, 255, 0.1);
+    background: rgba(var(--accent-rgb), 0.1);
     border-color: var(--accent-primary);
     color: var(--accent-primary);
 }
@@ -174,8 +174,8 @@
     font-family: var(--font-mono);
     padding: 0.15rem 0.45rem;
     border-radius: var(--radius-full);
-    background: rgba(0, 191, 255, 0.1);
-    border: 1px solid rgba(0, 191, 255, 0.25);
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
     color: var(--accent-primary);
     white-space: nowrap;
 }
@@ -203,7 +203,7 @@
 .ac-sort-col {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
-    border-top: 3px solid var(--sort-color, #6366f1);
+    border-top: 3px solid var(--sort-color, var(--state-frontier));
     border-radius: var(--radius-lg);
     padding: 0.85rem 0.9rem;
     display: flex;
@@ -214,8 +214,8 @@
 }
 
 .ac-sort-col--done {
-    border-top-color: #10b981;
-    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.3);
+    border-top-color: var(--state-visited);
+    box-shadow: 0 0 0 1px rgba(var(--state-visited-rgb), 0.3);
 }
 
 .ac-sort-header {
@@ -234,9 +234,9 @@
 .ac-done-badge {
     font-size: 0.7rem;
     font-weight: 700;
-    color: #10b981;
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--state-visited);
+    background: rgba(var(--state-visited-rgb), 0.1);
+    border: 1px solid rgba(var(--state-visited-rgb), 0.3);
     border-radius: var(--radius-full);
     padding: 0.12rem 0.5rem;
     align-self: flex-start;
@@ -258,24 +258,24 @@
 .ac-bar {
     flex: 1;
     min-width: 2px;
-    background: var(--sort-color, #6366f1);
+    background: var(--sort-color, var(--state-frontier));
     opacity: 0.55;
     border-radius: 2px 2px 0 0;
     transition: height 0.06s ease;
 }
 
 .ac-bar--cmp {
-    background: #fbbf24 !important;
+    background: var(--warning) !important;
     opacity: 1;
 }
 
 .ac-bar--swp {
-    background: #ef4444 !important;
+    background: var(--state-invalid) !important;
     opacity: 1;
 }
 
 .ac-bar--done {
-    background: #10b981 !important;
+    background: var(--state-visited) !important;
     opacity: 0.75;
 }
 
@@ -372,7 +372,7 @@
 .ac-pill:hover:not(:disabled) {
     border-color: var(--accent-primary);
     color: var(--accent-primary);
-    background: rgba(0, 191, 255, 0.06);
+    background: rgba(var(--accent-rgb), 0.06);
 }
 
 .ac-pill:disabled { opacity: 0.45; cursor: not-allowed; }
@@ -392,7 +392,7 @@
 .ac-search-col {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
-    border-top: 3px solid var(--sc, #6366f1);
+    border-top: 3px solid var(--sc, var(--state-frontier));
     border-radius: var(--radius-lg);
     padding: 0.9rem 1rem;
     display: flex;
@@ -410,7 +410,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--sc, #6366f1);
+    background: var(--sc, var(--state-frontier));
     flex-shrink: 0;
 }
 
@@ -445,18 +445,18 @@
 }
 
 .ac-sv--checking {
-    background: rgba(251, 191, 36, 0.18);
-    border-color: #fbbf24;
-    color: #fbbf24;
+    background: rgba(var(--warning-rgb), 0.18);
+    border-color: var(--warning);
+    color: var(--warning);
     font-weight: 700;
     transform: scale(1.1);
     transition: transform 0.15s ease, background 0.2s ease;
 }
 
 .ac-sv--found {
-    background: rgba(16, 185, 129, 0.18);
-    border-color: #10b981;
-    color: #10b981;
+    background: rgba(var(--state-visited-rgb), 0.18);
+    border-color: var(--state-visited);
+    color: var(--state-visited);
     font-weight: 700;
 }
 
@@ -470,8 +470,8 @@
 }
 
 .ac-sv--range {
-    background: rgba(99, 102, 241, 0.08);
-    border-color: rgba(99, 102, 241, 0.35);
+    background: rgba(var(--state-frontier-rgb), 0.08);
+    border-color: rgba(var(--state-frontier-rgb), 0.35);
 }
 
 /* Result line */
@@ -481,8 +481,8 @@
     min-height: 1.2em;
 }
 
-.ac-result-found    { color: #10b981; font-weight: 700; }
-.ac-result-notfound { color: #ef4444; }
+.ac-result-found    { color: var(--state-visited); font-weight: 700; }
+.ac-result-notfound { color: var(--state-invalid); }
 .ac-result-idle     { color: var(--text-muted); }
 
 /* ── Hash tab tweaks ────────────────────────────────────────────────────────── */

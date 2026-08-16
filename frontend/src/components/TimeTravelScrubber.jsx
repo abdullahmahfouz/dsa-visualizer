@@ -13,13 +13,13 @@ import {
  * TimeTravelScrubber
  *
  * A fully controlled, purely presentational component.
- * It owns NO state — all values flow in as props, all actions flow out as callbacks.
+ * It owns NO state - all values flow in as props, all actions flow out as callbacks.
  * This makes it trivially testable and reusable across BFS, DFS, Dijkstra, etc.
  *
  * Performance:
- * - Wrapped in React.memo — only re-renders when props change by reference/value.
+ * - Wrapped in React.memo - only re-renders when props change by reference/value.
  * - onScrub (handleSliderChange) is stable via useCallback so memo is effective.
- * - The progress fill uses a CSS custom property set inline — no DOM queries,
+ * - The progress fill uses a CSS custom property set inline - no DOM queries,
  *   no layout thrashing. GPU-composited transform would be even faster for 60fps
  *   scrubbing, but inline style is sufficient for ≤200 steps.
  *
@@ -60,7 +60,7 @@ const TimeTravelScrubber = React.memo(function TimeTravelScrubber({
   onJumpToStart,
   onJumpToEnd,
 }) {
-  // Stable callback — won't cause memo to bust on every render of the parent
+  // Stable callback - won't cause memo to bust on every render of the parent
   const handleSliderChange = useCallback(
     (e) => onScrub(parseInt(e.target.value, 10)),
     [onScrub]
@@ -104,7 +104,7 @@ const TimeTravelScrubber = React.memo(function TimeTravelScrubber({
           <ChevronLeft size={20} />
         </button>
 
-        {/* Central play/pause — the single toggle point */}
+        {/* Central play/pause - the single toggle point */}
         <button
           onClick={isPlaying ? onPause : onPlay}
           className="play-pause-btn"
@@ -172,7 +172,7 @@ const TimeTravelScrubber = React.memo(function TimeTravelScrubber({
       {/* ── Step Description Panel ── */}
       {currentSnapshot && (
         <div className="step-details">
-          {/* Action badge — color comes from CSS [data-action] attribute selector */}
+          {/* Action badge - color comes from CSS [data-action] attribute selector */}
           <span
             className="step-action-badge"
             data-action={currentSnapshot.action}

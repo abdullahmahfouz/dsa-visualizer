@@ -1,42 +1,55 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, Trophy } from 'lucide-react';
+import { ArrowRight, Terminal } from 'lucide-react';
 import {
   StackIcon, HashTableIcon,
   LinkedListIcon, BSTIcon, GraphIcon, QueueIcon
 } from '../components/DSAIcons';
+import HeroGraphDemo from '../components/HeroGraphDemo';
 
+/**
+ * Six items, six cells, no gaps. The two spanning tiles bookend two rows of
+ * pairs, so the grid never ends on a half-empty row.
+ */
 const structures = [
+  { icon: GraphIcon, name: 'Graph Algorithms', desc: 'BFS, DFS, Dijkstra, Bellman-Ford, and minimum spanning trees, each with a step scrubber.', tag: 'Traversal', path: '/dijkstra', wide: true },
+  { icon: BSTIcon, name: 'Binary Search Tree', desc: 'Ordered tree for logarithmic search and insertion.', tag: 'O(log n)', path: '/bst' },
+  { icon: HashTableIcon, name: 'Hash Table', desc: 'Key-value mapping with three collision strategies.', tag: 'O(1) avg', path: '/hashtable_chaining' },
   { icon: StackIcon, name: 'Stack', desc: 'Last in, first out. Push, pop, and peek in constant time.', tag: 'O(1)', path: '/stack' },
   { icon: QueueIcon, name: 'Queue', desc: 'First in, first out. Enqueue and dequeue operations.', tag: 'O(1)', path: '/queue' },
-  { icon: LinkedListIcon, name: 'Linked List', desc: 'Dynamic chain of nodes with pointer-based traversal.', tag: 'O(1) insert', path: '/linkedlist' },
-  { icon: BSTIcon, name: 'Binary Search Tree', desc: 'Ordered tree for logarithmic search and insertion.', tag: 'O(log n)', path: '/bst' },
-  { icon: HashTableIcon, name: 'Hash Table', desc: 'Key-value mapping with collision handling strategies.', tag: 'O(1) avg', path: '/hashtable_chaining' },
-  { icon: GraphIcon, name: 'Graph Algorithms', desc: 'BFS, DFS, Dijkstra, and minimum spanning trees.', tag: 'Traversal', path: '/dijkstra' },
+  { icon: LinkedListIcon, name: 'Linked List', desc: 'Dynamic chain of nodes, traversed one pointer at a time.', tag: 'O(1) insert', path: '/linkedlist', wide: true },
 ];
 
 function Home() {
   return (
     <>
+      {/* Asymmetric split: the claim on the left, the claim being
+          demonstrated on the right. */}
       <section className="home-hero">
-        <div className="home-hero-glow" aria-hidden="true" />
         <div className="home-hero-inner">
-          <h1>
-            Data Structures<br />
-            <span>& Algorithms</span>
-          </h1>
-          <p>
-            Visualize operations step by step, interact with live structures,
-            and build real intuition for how algorithms work.
-          </p>
-          <div className="home-hero-actions">
-            <Link to="/algorithms" className="home-btn home-btn--primary">
-              Explore Visualizers
-              <ArrowRight size={18} />
-            </Link>
-            <Link to="/practice" className="home-btn home-btn--ghost">
-              <Trophy size={18} />
-              Practice Problems
-            </Link>
+          <div className="home-hero-copy">
+            <h1>
+              Watch data structures
+              <br />
+              <span>actually run.</span>
+            </h1>
+            <p>
+              Step through algorithms one operation at a time, scrub backwards,
+              and see exactly what changed.
+            </p>
+            <div className="home-hero-actions">
+              <Link to="/algorithms" className="home-btn home-btn--primary">
+                Explore Visualizers
+                <ArrowRight size={17} />
+              </Link>
+              <Link to="/sandbox" className="home-btn home-btn--ghost">
+                <Terminal size={17} />
+                Open Sandbox
+              </Link>
+            </div>
+          </div>
+
+          <div className="home-hero-demo">
+            <HeroGraphDemo />
           </div>
         </div>
       </section>
@@ -48,13 +61,16 @@ function Home() {
             All visualizers <ArrowRight size={15} />
           </Link>
         </header>
+
+        {/* The first tile spans the row: the graph visualizers are the
+            deepest part of the product, so the grid says so. */}
         <div className="home-cards">
           {structures.map((ds, i) => (
             <Link
               key={ds.name}
               to={ds.path}
-              className="home-card"
-              style={{ '--stagger': `${i * 0.05}s` }}
+              className={`home-card${ds.wide ? ' home-card--wide' : ''}`}
+              style={{ '--stagger': `${i * 0.04}s` }}
             >
               <div className="home-card-icon">
                 <ds.icon />
@@ -71,16 +87,16 @@ function Home() {
 
       <section className="home-section home-section--alt">
         <div className="home-banner">
-          <div>
-            <h2>Practice Problems</h2>
+          <div className="home-banner-copy">
+            <h2>Practice problems</h2>
             <p>
-              22 curated problems across arrays, trees, graphs, dynamic programming,
-              and more. Built-in editor with instant test feedback.
+              29 problems across arrays, trees, graphs, and dynamic programming.
+              Built-in editor with instant test feedback.
             </p>
           </div>
           <Link to="/practice" className="home-btn home-btn--primary">
             Start Practicing
-            <ArrowRight size={18} />
+            <ArrowRight size={17} />
           </Link>
         </div>
       </section>

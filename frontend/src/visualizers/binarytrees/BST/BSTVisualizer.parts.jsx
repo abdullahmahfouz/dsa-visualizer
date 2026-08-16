@@ -82,7 +82,7 @@ export function ConceptBoxes() {
           </p>
           <div className="concept-analogy">
             <Lightbulb />
-            <span>Like a <strong>dictionary</strong> – words are sorted, so you can find any word quickly by comparing!</span>
+            <span>Like a <strong>dictionary</strong> - words are sorted, so you can find any word quickly by comparing!</span>
           </div>
         </div>
       </div>
@@ -141,7 +141,7 @@ export function ControlPanel({
       {isChallengeMode ? (
         <div className="challenge-mode-indicator">
           <div className="challenge-mode-dot" />
-          Challenge Mode Active — click nodes in the tree
+          Challenge Mode Active - click nodes in the tree
         </div>
       ) : (
         <div className="operation-group">
@@ -380,7 +380,7 @@ export function TreeRenderer({
       elements.push(...renderTree(node.right, x + spacing, y + 100, level + 1, maxLevel));
     }
 
-    // Draw node — clickable in challenge mode
+    // Draw node - clickable in challenge mode
     elements.push(
       <g
         key={`n-${node.value}-${x}`}

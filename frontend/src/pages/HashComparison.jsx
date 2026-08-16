@@ -4,7 +4,7 @@ import '../styles/page-styles/hash-comparison.css';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const CAPACITY = 11; // prime — guarantees quadratic probing works to ~55% load
+const CAPACITY = 11; // prime - guarantees quadratic probing works to ~55% load
 
 const PRESETS = [
   { label: '5 Keys',  keys: ['cat', 'dog', 'fox', 'ant', 'bee'] },
@@ -199,7 +199,7 @@ function AlgoColumn({ name, formula, color, state, currentKey, isChaining, isWin
                 <div className="hc-slot-index">{i}</div>
                 <div className="hc-chain-items">
                   {chain.length === 0 ? (
-                    <span className="hc-empty-label">—</span>
+                    <span className="hc-empty-label">-</span>
                   ) : (
                     chain.map((k, j) => (
                       <React.Fragment key={j}>
@@ -221,7 +221,7 @@ function AlgoColumn({ name, formula, color, state, currentKey, isChaining, isWin
                   {slot ? (
                     <span className={slot === currentKey ? 'hc-new-key' : ''}>{slot}</span>
                   ) : (
-                    <span className="hc-empty-label">—</span>
+                    <span className="hc-empty-label">-</span>
                   )}
                 </div>
               </div>
@@ -279,7 +279,7 @@ function HashComparison() {
     if (isRunning) return;
     setIsRunning(true);
 
-    // Build fresh local state — avoids functional-update ordering issues
+    // Build fresh local state - avoids functional-update ordering issues
     let lin   = initOpen(CAPACITY);
     let quad  = initOpen(CAPACITY);
     let chain = initChaining(CAPACITY);
@@ -449,11 +449,11 @@ function HashComparison() {
       <div className="hc-legend">
         <span className="hc-legend-title">Probe count:</span>
         <span className="hc-legend-item">
-          Open addressing — slots examined until empty slot found (min 1)
+          Open addressing - slots examined until empty slot found (min 1)
         </span>
         <span className="hc-legend-sep">·</span>
         <span className="hc-legend-item">
-          Chaining — nodes traversed in chain before appending (0 if bucket empty)
+          Chaining - nodes traversed in chain before appending (0 if bucket empty)
         </span>
       </div>
     </div>

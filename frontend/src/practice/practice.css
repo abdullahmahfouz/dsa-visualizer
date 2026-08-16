@@ -86,18 +86,18 @@
 }
 
 .difficulty.easy {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: rgba(var(--state-visited-rgb), 0.15);
+  color: var(--state-visited);
 }
 
 .difficulty.medium {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: rgba(var(--warning-rgb), 0.15);
+  color: var(--warning);
 }
 
 .difficulty.hard {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: rgba(var(--state-invalid-rgb), 0.15);
+  color: var(--state-invalid);
 }
 
 .problem-preview {
@@ -321,7 +321,7 @@
 }
 
 .reveal-hint-btn:hover {
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(var(--state-frontier-rgb), 0.1);
 }
 
 .all-hints-shown {
@@ -419,21 +419,21 @@
 }
 
 .btn-run {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--state-visited) 0%, var(--state-visited) 100%);
   color: white;
 }
 
 .btn-run:hover:not(:disabled) {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  background: linear-gradient(135deg, var(--state-visited) 0%, var(--state-visited) 100%);
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, var(--accent) 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
   color: white;
 }
 
 .btn-submit:hover:not(:disabled) {
-  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+  background: linear-gradient(135deg, var(--accent-strong) 0%, var(--accent-strong) 100%);
 }
 
 .btn-reset {
@@ -443,8 +443,8 @@
 }
 
 .btn-reset:hover:not(:disabled) {
-  color: #ef4444;
-  border-color: #ef4444;
+  color: var(--state-invalid);
+  border-color: var(--state-invalid);
 }
 
 /* Output Panel */
@@ -476,13 +476,13 @@
 }
 
 .output-header .status.success {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: rgba(var(--state-visited-rgb), 0.15);
+  color: var(--state-visited);
 }
 
 .output-header .status.error {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: rgba(var(--state-invalid-rgb), 0.15);
+  color: var(--state-invalid);
 }
 
 .output-content {
@@ -526,7 +526,7 @@
 }
 
 .stderr pre {
-  color: #ef4444;
+  color: var(--state-invalid);
 }
 
 /* Test Results */
@@ -544,14 +544,14 @@
 }
 
 .test-summary .all-passed {
-  color: #10b981;
+  color: var(--state-visited);
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .test-summary .some-failed {
-  color: #ef4444;
+  color: var(--state-invalid);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -571,11 +571,11 @@
 }
 
 .test-case.passed {
-  border-left-color: #10b981;
+  border-left-color: var(--state-visited);
 }
 
 .test-case.failed {
-  border-left-color: #ef4444;
+  border-left-color: var(--state-invalid);
 }
 
 .test-case-header {
@@ -587,11 +587,11 @@
 }
 
 .test-case.passed .test-case-header {
-  color: #10b981;
+  color: var(--state-visited);
 }
 
 .test-case.failed .test-case-header {
-  color: #ef4444;
+  color: var(--state-invalid);
 }
 
 .test-case-details {
@@ -607,7 +607,7 @@
 }
 
 .test-error {
-  color: #ef4444;
+  color: var(--state-invalid);
   margin-top: 0.5rem;
 }
 
@@ -765,26 +765,17 @@
   overflow: hidden;
 }
 
-.map-node::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--node-color, var(--accent));
-  opacity: 0.8;
-}
+
 
 .map-node:hover {
-  transform: translateY(-4px);
-  border-color: var(--node-color, var(--accent));
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
 }
 
 .map-node.active {
-  border-color: var(--node-color, var(--accent));
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-wash-strong);
 }
 
 .map-node-header {
@@ -862,13 +853,13 @@
 }
 
 .map-node-badge.completed {
-  background: rgba(16, 185, 129, 0.2);
-  color: #10b981;
+  background: rgba(var(--state-visited-rgb), 0.2);
+  color: var(--state-visited);
 }
 
 .map-node-badge.in-progress {
-  background: rgba(245, 158, 11, 0.2);
-  color: #f59e0b;
+  background: rgba(var(--warning-rgb), 0.2);
+  color: var(--warning);
 }
 
 /* Connection Lines */
@@ -972,7 +963,7 @@
 }
 
 .problem-item.completed {
-  border-left: 3px solid #10b981;
+  border-left: 3px solid var(--state-visited);
 }
 
 .problem-status-icon {
@@ -986,8 +977,8 @@
 }
 
 .problem-status-icon.done {
-  background: rgba(16, 185, 129, 0.2);
-  color: #10b981;
+  background: rgba(var(--state-visited-rgb), 0.2);
+  color: var(--state-visited);
 }
 
 .problem-status-icon.pending {
@@ -1024,18 +1015,18 @@
 }
 
 .problem-item-difficulty.easy {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: rgba(var(--state-visited-rgb), 0.15);
+  color: var(--state-visited);
 }
 
 .problem-item-difficulty.medium {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: rgba(var(--warning-rgb), 0.15);
+  color: var(--warning);
 }
 
 .problem-item-difficulty.hard {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: rgba(var(--state-invalid-rgb), 0.15);
+  color: var(--state-invalid);
 }
 
 .problem-item-arrow {
@@ -1165,7 +1156,7 @@
 }
 
 .problem-node.completed {
-  border-left: 3px solid #10b981;
+  border-left: 3px solid var(--state-visited);
 }
 
 .node-connector {
@@ -1190,9 +1181,9 @@
 }
 
 .problem-node.completed .node-circle {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: #10b981;
-  color: #10b981;
+  background: rgba(var(--state-visited-rgb), 0.15);
+  border-color: var(--state-visited);
+  color: var(--state-visited);
 }
 
 .node-number {
@@ -1222,18 +1213,18 @@
 }
 
 .node-difficulty.easy {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: rgba(var(--state-visited-rgb), 0.15);
+  color: var(--state-visited);
 }
 
 .node-difficulty.medium {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: rgba(var(--warning-rgb), 0.15);
+  color: var(--warning);
 }
 
 .node-difficulty.hard {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: rgba(var(--state-invalid-rgb), 0.15);
+  color: var(--state-invalid);
 }
 
 .node-arrow {
@@ -1251,8 +1242,8 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: rgba(var(--state-visited-rgb), 0.15);
+  color: var(--state-visited);
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
   font-size: 0.8rem;
@@ -1335,10 +1326,10 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  background: linear-gradient(135deg, rgba(var(--state-frontier-rgb), 0.1), rgba(var(--accent-rgb), 0.1));
   border-radius: var(--radius-md);
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(var(--state-frontier-rgb), 0.2);
 }
 
 .solutions-header svg {
@@ -1370,7 +1361,7 @@
 
 .solution-card.expanded {
   border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+  box-shadow: 0 4px 12px rgba(var(--state-frontier-rgb), 0.15);
 }
 
 .solution-card-header {
@@ -1417,13 +1408,13 @@
 }
 
 .complexity-badge.time {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: rgba(var(--warning-rgb), 0.15);
+  color: var(--warning);
 }
 
 .complexity-badge.space {
-  background: rgba(59, 130, 246, 0.15);
-  color: #3b82f6;
+  background: rgba(var(--state-frontier-rgb), 0.15);
+  color: var(--state-frontier);
 }
 
 .solution-expand-icon {
@@ -1510,7 +1501,7 @@
 .solution-code {
   margin: 0;
   padding: 1rem;
-  background: #1a1a2e;
+  background: var(--bg-overlay);
   overflow-x: auto;
   font-size: 0.85rem;
   line-height: 1.6;
@@ -1520,7 +1511,7 @@
 
 .solution-code code {
   font-family: var(--font-mono);
-  color: #e2e8f0;
+  color: var(--text-strong);
   white-space: pre;
 }
 
@@ -1531,7 +1522,7 @@
   gap: 0.5rem;
   width: 100%;
   padding: 0.75rem;
-  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  background: linear-gradient(135deg, var(--accent), var(--accent));
   border: none;
   border-radius: var(--radius-md);
   color: white;
@@ -1543,7 +1534,7 @@
 
 .use-solution-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 12px rgba(var(--state-frontier-rgb), 0.3);
 }
 
 /* AI Reviewer Styles */
@@ -1556,7 +1547,7 @@
 .btn-review:hover:not(:disabled) {
   background: var(--accent-primary);
   color: var(--bg-primary);
-  box-shadow: 0 4px 12px rgba(0, 191, 255, 0.25);
+  box-shadow: var(--shadow-md);
 }
 
 .ai-review-results {
@@ -1603,7 +1594,7 @@
   padding: 0.5rem 1rem;
   border-radius: var(--radius-full);
   border: 2px solid var(--accent-primary);
-  box-shadow: 0 0 15px rgba(0, 191, 255, 0.15);
+  box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.15);
 }
 
 .score-value {
@@ -1681,7 +1672,7 @@
 }
 
 .line-badge {
-  background: rgba(0, 191, 255, 0.1);
+  background: rgba(var(--accent-rgb), 0.1);
   color: var(--accent-primary);
   padding: 0.2rem 0.6rem;
   border-radius: var(--radius-sm);
@@ -1702,15 +1693,15 @@
 
 .opt-code {
   margin-top: 1rem;
-  background: #0d1117;
+  background: var(--bg-overlay);
   border-radius: var(--radius-sm);
   padding: 0.75rem;
   overflow-x: auto;
-  border: 1px solid #30363d;
+  border: 1px solid var(--border);
 }
 
 .opt-code code {
-  color: #e6edf3;
+  color: var(--text-strong);
   font-size: 0.85rem;
 }
 
@@ -1734,8 +1725,8 @@
 
 /* Editor Decorations */
 .ai-code-issue-highlight {
-  background: rgba(0, 191, 255, 0.08);
-  border-bottom: 1px dashed rgba(0, 191, 255, 0.4);
+  background: rgba(var(--accent-rgb), 0.08);
+  border-bottom: 1px dashed rgba(var(--accent-rgb), 0.4);
 }
 
 .ai-code-issue-glyph {
@@ -1758,10 +1749,10 @@
   gap: 0.6rem;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(var(--state-invalid-rgb), 0.1);
+  border: 1px solid rgba(var(--state-invalid-rgb), 0.4);
   border-radius: var(--radius-md);
-  color: #ef4444;
+  color: var(--state-invalid);
   font-size: 0.875rem;
 }
 

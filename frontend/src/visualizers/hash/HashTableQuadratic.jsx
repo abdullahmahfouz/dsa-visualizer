@@ -194,7 +194,7 @@ function HashTableQuadratic() {
               </div>
               <div className="concept-analogy" style={{ marginTop: '0.75rem' }}>
                 <Lightbulb />
-                <span>Unlike linear probing, we jump further each time – reducing <strong>clustering</strong>!</span>
+                <span>Unlike linear probing, we jump further each time - reducing <strong>clustering</strong>!</span>
               </div>
             </div>
           </div>
@@ -401,7 +401,7 @@ function HashTableQuadratic() {
                         ) : isDeleted ? (
                           <span className="ht-deleted-text">DELETED</span>
                         ) : (
-                          <span className="ht-empty-slot">—</span>
+                          <span className="ht-empty-slot">-</span>
                         )}
                       </div>
                     </div>

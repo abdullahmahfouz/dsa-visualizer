@@ -33,7 +33,7 @@ function ChallengeSuccess({ challenge, clickCount, onNewChallenge, onExit }) {
       <div className="challenge-result-icon">🎉</div>
       <p className="challenge-result-title">Challenge Complete!</p>
       <p className="challenge-result-subtitle">
-        <em>{challenge.title}</em> — solved in {clickCount} click{clickCount !== 1 ? 's' : ''}
+        <em>{challenge.title}</em> - solved in {clickCount} click{clickCount !== 1 ? 's' : ''}
       </p>
       <div className="challenge-result-actions">
         <button className="btn btn-insert" onClick={onNewChallenge}>
@@ -53,7 +53,7 @@ function ChallengeFailed({ challenge, userClicks, onRetry, onExit }) {
       <p className="challenge-result-title">Wrong node!</p>
       <p className="challenge-result-subtitle">
         {challenge.type === 'identify_leaves'
-          ? "That node isn't part of the solution — look carefully."
+          ? "That node isn't part of the solution - look carefully."
           : `Expected step ${userClicks.length + 1} (value ${expectedNext}). Reset and try again.`}
       </p>
       <div className="challenge-result-actions">
@@ -144,15 +144,15 @@ function ChallengeActive({ challenge, userClicks, onExit }) {
 /**
  * ChallengeOverlay
  *
- * Renders above the TreeRenderer. Fully controlled — owns no state.
+ * Renders above the TreeRenderer. Fully controlled - owns no state.
  *
  * Props:
- *   challenge       – { title, description, type, target, expected_steps, hint }
- *   userClicks      – number[]  (values the user has correctly clicked so far)
- *   status          – 'loading' | 'active' | 'success' | 'failed'
- *   onExit          – () => void
- *   onRetry         – () => void  (same challenge, reset clicks)
- *   onNewChallenge  – () => void  (fetch a fresh challenge)
+ *   challenge - { title, description, type, target, expected_steps, hint }
+ *   userClicks - number[]  (values the user has correctly clicked so far)
+ *   status - 'loading' | 'active' | 'success' | 'failed'
+ *   onExit - () => void
+ *   onRetry - () => void  (same challenge, reset clicks)
+ *   onNewChallenge - () => void  (fetch a fresh challenge)
  */
 function ChallengeOverlay({
   challenge,

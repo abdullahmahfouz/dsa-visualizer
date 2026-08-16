@@ -251,7 +251,7 @@ function BSTVisualizer() {
       setChallenge(data);
       setChallengeStatus('active');
     } catch {
-      showMessage('Failed to generate challenge — check your connection');
+      showMessage('Failed to generate challenge - check your connection');
       setIsChallengeMode(false);
       setChallengeStatus('idle');
     }
@@ -259,8 +259,8 @@ function BSTVisualizer() {
 
   /**
    * Validates a node click against the current challenge.
-   * - search / inorder_start : ordered — each click must match expected_steps[userClicks.length]
-   * - identify_leaves        : unordered — click any expected node in any order
+   * - search / inorder_start : ordered - each click must match expected_steps[userClicks.length]
+   * - identify_leaves        : unordered - click any expected node in any order
    */
   const handleChallengeNodeClick = (value) => {
     if (challengeStatus !== 'active' || !challenge) return;

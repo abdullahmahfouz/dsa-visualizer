@@ -191,7 +191,7 @@ function HashTableVisualizer() {
               <p>A <strong>Hash Table</strong> maps keys to values using a hash function for O(1) lookups.</p>
               <div className="concept-analogy">
                 <Lightbulb />
-                <span>Like a <strong>coat check</strong> – give them your coat (value), get a ticket number (hash of key)!</span>
+                <span>Like a <strong>coat check</strong> - give them your coat (value), get a ticket number (hash of key)!</span>
               </div>
             </div>
           </div>
@@ -205,7 +205,7 @@ function HashTableVisualizer() {
               <p>When two keys hash to the same slot (<strong>collision</strong>), we check the next slot until we find an empty one.</p>
               <div className="concept-analogy" style={{ marginTop: '0.5rem' }}>
                 <Info style={{ color: '#3b82f6' }} />
-                <span>Like parking – if spot 3 is taken, try spot 4, then 5...</span>
+                <span>Like parking - if spot 3 is taken, try spot 4, then 5...</span>
               </div>
             </div>
           </div>
@@ -396,7 +396,7 @@ function HashTableVisualizer() {
                         {slot ? (
                           <span className="ht-value">{slot[1]}</span>
                         ) : (
-                          <span className="ht-empty-slot">—</span>
+                          <span className="ht-empty-slot">-</span>
                         )}
                       </div>
                     </div>

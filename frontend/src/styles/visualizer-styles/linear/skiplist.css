@@ -81,13 +81,13 @@
     align-items: center;
     justify-content: center;
     padding: 0.5rem 0.75rem;
-    background: linear-gradient(135deg, var(--success), #059669);
+    background: linear-gradient(135deg, var(--success), var(--state-visited));
     color: white;
     font-weight: 700;
     font-size: 0.7rem;
     border-radius: var(--radius-sm);
     min-width: 50px;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 2px 8px rgba(var(--state-visited-rgb), 0.3);
 }
 
 .skiplist-node {
@@ -101,7 +101,7 @@
     font-size: 0.9rem;
     border-radius: var(--radius-sm);
     min-width: 45px;
-    box-shadow: var(--shadow-md), 0 0 10px rgba(99, 102, 241, 0.2);
+    box-shadow: var(--shadow-md), 0 0 10px rgba(var(--state-frontier-rgb), 0.2);
     transition: all 0.3s ease;
     animation: nodeAppear 0.3s ease-out;
 }
@@ -119,21 +119,21 @@
 
 .skiplist-node:hover {
     transform: translateY(-2px) scale(1.05);
-    box-shadow: var(--shadow-lg), 0 0 20px rgba(99, 102, 241, 0.4);
+    box-shadow: var(--shadow-lg), 0 0 20px rgba(var(--state-frontier-rgb), 0.4);
 }
 
 .skiplist-node.highlighted {
-    background: linear-gradient(135deg, var(--warning), #d97706);
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+    background: linear-gradient(135deg, var(--warning), var(--warning));
+    box-shadow: 0 0 20px rgba(var(--warning-rgb), 0.5);
     animation: pulse 0.5s ease-in-out infinite;
 }
 
 @keyframes pulse {
     0%, 100% {
-        box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+        box-shadow: 0 0 15px rgba(var(--warning-rgb), 0.4);
     }
     50% {
-        box-shadow: 0 0 30px rgba(245, 158, 11, 0.7);
+        box-shadow: 0 0 30px rgba(var(--warning-rgb), 0.7);
     }
 }
 
@@ -164,7 +164,7 @@
     font-weight: 700;
     padding: 0 0.25rem;
     min-width: 25px;
-    text-shadow: 0 0 5px rgba(168, 85, 247, 0.5);
+    text-shadow: 0 0 5px rgba(var(--accent-rgb), 0.5);
 }
 
 
@@ -246,7 +246,7 @@
 }
 
 .legend-color.head {
-    background: linear-gradient(135deg, var(--success), #059669);
+    background: linear-gradient(135deg, var(--success), var(--state-visited));
 }
 
 .legend-color.node {
@@ -254,7 +254,7 @@
 }
 
 .legend-color.highlighted {
-    background: linear-gradient(135deg, var(--warning), #d97706);
+    background: linear-gradient(135deg, var(--warning), var(--warning));
 }
 
 .legend-color.null {
@@ -295,7 +295,7 @@
     font-family: var(--font-mono);
     font-weight: 600;
     color: var(--success);
-    background: rgba(16, 185, 129, 0.1);
+    background: rgba(var(--state-visited-rgb), 0.1);
     padding: 0.2rem 0.5rem;
     border-radius: var(--radius-sm);
 }
@@ -304,13 +304,13 @@
 /* ============ Search Button ============ */
 
 .btn-search {
-    background: linear-gradient(135deg, var(--accent-secondary), #7c3aed);
+    background: linear-gradient(135deg, var(--accent-secondary), var(--accent-strong));
     color: white;
     border: none;
 }
 
 .btn-search:hover {
-    background: linear-gradient(135deg, #7c3aed, var(--accent-secondary));
+    background: linear-gradient(135deg, var(--accent-strong), var(--accent-secondary));
     transform: translateY(-1px);
 }
 

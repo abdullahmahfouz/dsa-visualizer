@@ -35,3 +35,6 @@
 
 /* Mobile Responsive - Must be last to override other styles */
 @import './base-styles/responsive.css';
+
+/* Reduced-motion contract - imported last so it wins everywhere */
+@import './base-styles/motion.css';

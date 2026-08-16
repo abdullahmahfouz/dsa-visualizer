@@ -1,78 +1,144 @@
-/* ============================================
-   CSS Variables - Design Tokens
-   Refined Dark Theme with Warm Accents
-   ============================================ */
+/* ============================================================
+   DESIGN TOKENS - "Instrument"
+   ------------------------------------------------------------
+   The visual language of DSA Visualizer.
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500;600;700&display=swap');
+   Principle: the chrome recedes, the data leads. Every surface
+   in this product exists to make an algorithm's state legible.
+   Interface colour is therefore rationed; colour that carries
+   algorithmic meaning is not.
+
+   THE ONE ACCENT RULE
+   There is exactly one chrome accent: --accent (signal orange).
+   It marks the primary action, the active nav item, the focus
+   ring, and links. Nothing else in the interface is coloured.
+
+   THE STATE RAMP (documented exception to the one-accent rule)
+   --state-* tokens are content semantics, not decoration. They
+   are the vocabulary an algorithm uses to describe itself, and
+   they are deliberately hue-separated from each other:
+
+     active    the cell being examined right now   (= --accent)
+     frontier  discovered, queued, not yet visited (blue)
+     visited   settled, done                       (green)
+     invalid   collision, rejection, failure       (red)
+
+   --state-active IS --accent. That is the idea, not a shortcut:
+   the brand colour is "where the algorithm is looking".
+   Never introduce a fifth state hue without deleting one.
+
+   SHAPE RULE (one system, three steps)
+     --radius-control  interactive controls: buttons, inputs, pills
+     --radius-surface  containers: cards, panels, tiles
+     --radius-shell    large surfaces: modals, drawers, hero panels
+     --radius-full     pills and avatars ONLY
+   Nothing else. If a value is not one of these, it is a bug.
+
+   THEMING
+   :root carries light. Dark is applied when the OS asks for it
+   (unless the user forced light) and when [data-theme="dark"] is
+   set explicitly. Both modes are validated to WCAG AA on every
+   text/background pair that ships.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   TYPEFACES - self-hosted variable subsets (latin + latin-ext)
+   Geist for interface, Geist Mono for anything with a value in
+   it: complexities, code, array indices, node keys, counters.
+   ------------------------------------------------------------ */
+
+@font-face {
+    font-family: 'Geist';
+    font-style: normal;
+    font-weight: 300 700;
+    font-display: swap;
+    src: url('/fonts/geist-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+                   U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+                   U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Geist';
+    font-style: normal;
+    font-weight: 300 700;
+    font-display: swap;
+    src: url('/fonts/geist-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+                   U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+                   U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
+                   U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Geist Mono';
+    font-style: normal;
+    font-weight: 400 600;
+    font-display: swap;
+    src: url('/fonts/geist-mono-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+                   U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+                   U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Geist Mono';
+    font-style: normal;
+    font-weight: 400 600;
+    font-display: swap;
+    src: url('/fonts/geist-mono-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+                   U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+                   U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
+                   U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+
+/* ============================================================
+   MODE-INDEPENDENT TOKENS
+   ============================================================ */
 
 :root {
-    /* Colors - Stark Black Theme with Cool Accents */
-    --bg-primary: #000000; /* Pure black for primary background */
-    --bg-secondary: #0a0a0a;
-    --bg-tertiary: #141414;
-    --bg-elevated: #1f1f1f;
-    --bg-surface: #0a0a0a;
+    /* ---- Typeface stacks ---- */
+    --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system,
+                 'Segoe UI', Roboto, sans-serif;
+    --font-display: var(--font-sans);
+    --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo,
+                 'Cascadia Mono', monospace;
 
-    /* Text Colors - Crisp & Modern */
-    --text-primary: #e0e0e0; /* Light gray for primary text */
-    --text-secondary: #b0b0b0;
-    --text-muted: #707070;
-    --text-tertiary: #808080;
+    /* ---- Type scale (1.200 minor third, 16px base) ----
+       Display steps are fluid so a hero never needs a media query
+       to stay inside the viewport. */
+    --text-2xs: 0.6875rem;  /* 11px - mono labels, table keys */
+    --text-xs:  0.75rem;    /* 12px - captions, tags */
+    --text-sm:  0.875rem;   /* 14px - secondary UI, dense controls */
+    --text-base: 1rem;      /* 16px - body */
+    --text-md:  1.125rem;   /* 18px - lead paragraph */
+    --text-lg:  1.375rem;   /* 22px - card title, h3 */
+    --text-xl:  1.75rem;    /* 28px - section heading, h2 */
+    --text-2xl: clamp(2rem, 1.55rem + 1.9vw, 2.75rem);   /* page title, h1 */
+    --text-3xl: clamp(2.5rem, 1.7rem + 3.4vw, 4rem);     /* hero */
 
-    /* Accent Colors - Cool Blues & Cyans */
-    --accent-primary: #00bfff; /* Deep Sky Blue */
-    --accent-secondary: #00ced1; /* Dark Cyan */
-    --accent-tertiary: #1e90ff; /* Dodger Blue */
-    --accent-cool: #4682b4; /* Steel Blue */
-    --accent-warm: #ff6347; /* Tomato - retained for potential warning/danger, but less prominent */
+    --leading-tight: 1.12;   /* display */
+    --leading-snug: 1.3;     /* headings */
+    --leading-normal: 1.5;   /* UI */
+    --leading-relaxed: 1.65; /* body prose */
 
-    /* Gradient - Modern & Clean */
-    --accent-gradient: linear-gradient(135deg, #00bfff 0%, #1e90ff 100%);
-    --accent-gradient-cool: linear-gradient(135deg, #00ced1 0%, #4682b4 100%);
-    --accent-gradient-subtle: linear-gradient(135deg, rgba(0, 191, 255, 0.1) 0%, rgba(30, 144, 255, 0.05) 100%);
+    --tracking-display: -0.028em;
+    --tracking-heading: -0.015em;
+    --tracking-normal: 0;
+    --tracking-label: 0.06em;  /* the ONLY place letter-spacing goes positive */
 
-    /* Extended Color Palette */
-    --terracotta: #cc5500; /* Replaced with a more orange-red for contrast */
-    --sage: #008080; /* Teal */
-    --clay: #a52a2a; /* Brown */
-    --slate: #708090; /* Slate Gray */
-    --rust: #b82d00; /* Darker orange-red */
-    --cream: #f5f5dc; /* Behige */
-    --sand: #c2b280; /* Ecru */
-    --charcoal: #36454f; /* Charcoal Grey */
+    --weight-normal: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
 
-    /* Status Colors - Clear & Distinct */
-    --success: #28a745; /* Green */
-    --success-muted: rgba(40, 167, 69, 0.12);
-    --warning: #ffc107; /* Amber */
-    --warning-muted: rgba(255, 193, 7, 0.12);
-    --danger: #dc3545; /* Red */
-    --danger-muted: rgba(220, 53, 69, 0.12);
-    --info: #17a2b8; /* Light Blue */
-    --info-muted: rgba(23, 162, 184, 0.12);
+    /* ---- Measure ---- */
+    --measure: 68ch;       /* prose */
+    --measure-tight: 52ch; /* lead paragraphs, card copy */
 
-    /* Border & Shadow - Sharp & Defined */
-    --border-color: #333333;
-    --border-color-light: #444444;
-    --border-subtle: rgba(0, 191, 255, 0.1);
-    --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.5);
-    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.6);
-    --shadow-lg: 0 5px 15px rgba(0, 0, 0, 0.7);
-    --shadow-xl: 0 10px 25px rgba(0, 0, 0, 0.8);
-    --shadow-glow: 0 0 30px rgba(0, 191, 255, 0.2);
-    --shadow-glow-lg: 0 0 60px rgba(0, 191, 255, 0.3);
-
-    /* Glass Effects - Cooler */
-    --glass-bg: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-bg-hover: rgba(255, 255, 255, 0.05);
-
-    /* Typography - Modern & Legible */
-    --font-display: 'Montserrat', sans-serif; /* Modern sans-serif */
-    --font-sans: 'Open Sans', sans-serif; /* Highly legible body font */
-    --font-mono: 'Fira Code', monospace; /* Monospaced font for code */
-
-    /* Spacing - Consistent */
+    /* ---- Spacing (4px base) ---- */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
@@ -82,18 +148,300 @@
     --spacing-3xl: 4rem;
     --spacing-4xl: 6rem;
 
-    /* Border Radius - Modern */
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
-    --radius-2xl: 24px;
+    /* Page gutter and section rhythm. VISUAL_DENSITY 6: a working
+       tool, not an art gallery. Sections breathe but do not sprawl. */
+    --gutter: clamp(1.25rem, 0.6rem + 2.6vw, 3rem);
+    --section-y: clamp(2.5rem, 1.6rem + 3.2vw, 4.5rem);
+    --shell-max: 1400px;
+
+    /* ---- Shape: three steps, one system (see header) ---- */
+    --radius-control: 8px;
+    --radius-surface: 12px;
+    --radius-shell: 16px;
     --radius-full: 9999px;
 
-    /* Transitions - Snappy */
-    --transition-fast: 0.1s ease-out;
-    --transition-normal: 0.2s ease-out;
-    --transition-slow: 0.3s ease-out;
-    --transition-bounce: 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    --transition-smooth: 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Legacy aliases, collapsed onto the three-step scale so older
+       stylesheets cannot reintroduce a fourth or fifth radius. */
+    --radius-sm: 6px;
+    --radius-md: var(--radius-control);
+    --radius-lg: var(--radius-surface);
+    --radius-xl: var(--radius-shell);
+    --radius-2xl: var(--radius-shell);
+
+    /* ---- Motion. MOTION_INTENSITY 4: fluid, never theatrical.
+       The algorithm animation is the content; chrome must not
+       compete with it for attention. ---- */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --transition-fast: 0.12s var(--ease-out);
+    --transition-normal: 0.2s var(--ease-out);
+    --transition-slow: 0.32s var(--ease-out);
+    --transition-bounce: 0.4s var(--ease-out);
+    --transition-smooth: 0.45s var(--ease-in-out);
+
+    /* ---- Layer scale. Use these names, never a bare z-index. ---- */
+    --z-base: 0;
+    --z-raised: 10;
+    --z-sticky: 100;
+    --z-sidebar: 200;
+    --z-overlay: 300;
+    --z-modal: 400;
+    --z-toast: 500;
+
+    /* ---- Focus ring: one definition, used everywhere ---- */
+    --focus-ring: 0 0 0 2px var(--bg-base), 0 0 0 4px var(--accent);
+}
+
+
+/* ============================================================
+   LIGHT PALETTE (default)
+   ============================================================ */
+
+:root {
+    color-scheme: light;
+
+    /* Surfaces, sunken -> floating */
+    --bg-sunken: #f1f1ef;
+    --bg-base: #fbfbfa;
+    --bg-raised: #ffffff;
+    --bg-overlay: #ffffff;
+
+    /* Text */
+    --text-strong: #16191c;
+    --text: #41484e;
+    --text-muted: #666d73;
+
+    /* The one accent */
+    --accent: #bf4519;
+    --accent-strong: #99360f;
+    --accent-ink: var(--ink-on-fill);
+    --accent-rgb: 191, 69, 25;          /* channels, for rgba() at arbitrary alpha */
+    --state-frontier-rgb: 21, 101, 216;
+    --state-visited-rgb: 26, 127, 79;
+    --state-invalid-rgb: 198, 40, 40;
+    --warning-rgb: 154, 98, 7;
+    /* Label colour that sits ON a filled swatch (accent or any
+       state). Validated AA against all five fills, both modes. */
+    --ink-on-fill: #ffffff;
+    --ink-on-fill-dim: rgba(255, 255, 255, 0.32);
+    --accent-wash: rgba(var(--accent-rgb), 0.08);
+    --accent-wash-strong: rgba(var(--accent-rgb), 0.16);
+
+    /* Algorithm state ramp */
+    --state-active: var(--accent);
+    --state-active-wash: var(--accent-wash);
+    --state-frontier: #1565d8;
+    --state-frontier-wash: rgba(21, 101, 216, 0.1);
+    --state-visited: #1a7f4f;
+    --state-visited-wash: rgba(26, 127, 79, 0.1);
+    --state-invalid: #c62828;
+    --state-invalid-wash: rgba(198, 40, 40, 0.1);
+    --state-idle: var(--bg-sunken);
+
+    /* Feedback reuses the state hues: the page gains no new colour */
+    --success: var(--state-visited);
+    --success-muted: var(--state-visited-wash);
+    --warning: #9a6207;
+    --warning-muted: rgba(154, 98, 7, 0.12);
+    --danger: var(--state-invalid);
+    --danger-muted: var(--state-invalid-wash);
+    --info: var(--state-frontier);
+    --info-muted: var(--state-frontier-wash);
+
+    /* Lines */
+    --border: #e2e2df;
+    --border-strong: #cfcfcb;
+    --border-subtle: rgba(22, 25, 28, 0.07);
+
+    /* Elevation. Shadows are tinted toward the surface hue,
+       never pure black (4.4). */
+    --shadow-sm: 0 1px 2px rgba(22, 25, 28, 0.06);
+    --shadow-md: 0 2px 8px rgba(22, 25, 28, 0.07), 0 1px 2px rgba(22, 25, 28, 0.05);
+    --shadow-lg: 0 8px 24px rgba(22, 25, 28, 0.09), 0 2px 6px rgba(22, 25, 28, 0.05);
+    --shadow-xl: 0 16px 48px rgba(22, 25, 28, 0.12), 0 4px 12px rgba(22, 25, 28, 0.06);
+
+    /* Glass */
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-bg-hover: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(22, 25, 28, 0.08);
+}
+
+
+/* ============================================================
+   DARK PALETTE
+   Applied on OS preference (unless light was forced) and on an
+   explicit [data-theme="dark"]. Both selectors carry the same
+   values so the manual toggle wins in either direction.
+   ============================================================ */
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+
+        --bg-sunken: #08090b;
+        --bg-base: #0c0e10;          /* off-black, cool cast. never #000 */
+        --bg-raised: #131619;
+        --bg-overlay: #1a1e22;
+
+        --text-strong: #f2f4f5;
+        --text: #c3c9cd;
+        --text-muted: #8b9399;
+
+        --accent: #f26430;
+        --accent-strong: #ff8154;
+        --accent-ink: var(--ink-on-fill);
+        --accent-rgb: 242, 100, 48;
+        --state-frontier-rgb: 74, 158, 255;
+        --state-visited-rgb: 63, 191, 127;
+        --state-invalid-rgb: 242, 85, 90;
+        --warning-rgb: 224, 160, 32;
+        --ink-on-fill: #0c0e10;
+        --ink-on-fill-dim: rgba(12, 14, 16, 0.35);
+        --accent-wash: rgba(var(--accent-rgb), 0.1);
+        --accent-wash-strong: rgba(var(--accent-rgb), 0.2);
+
+        --state-active: var(--accent);
+        --state-active-wash: var(--accent-wash);
+        --state-frontier: #4a9eff;
+        --state-frontier-wash: rgba(74, 158, 255, 0.14);
+        --state-visited: #3fbf7f;
+        --state-visited-wash: rgba(63, 191, 127, 0.14);
+        --state-invalid: #f2555a;
+        --state-invalid-wash: rgba(242, 85, 90, 0.14);
+        --state-idle: var(--bg-overlay);
+
+        --success: var(--state-visited);
+        --success-muted: var(--state-visited-wash);
+        --warning: #e0a020;
+        --warning-muted: rgba(224, 160, 32, 0.14);
+        --danger: var(--state-invalid);
+        --danger-muted: var(--state-invalid-wash);
+        --info: var(--state-frontier);
+        --info-muted: var(--state-frontier-wash);
+
+        --border: #262b30;
+        --border-strong: #363c43;
+        --border-subtle: rgba(242, 244, 245, 0.07);
+
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+        --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+        --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+
+        --glass-bg: rgba(255, 255, 255, 0.04);
+        --glass-bg-hover: rgba(255, 255, 255, 0.07);
+        --glass-border: rgba(255, 255, 255, 0.09);
+    }
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --bg-sunken: #08090b;
+    --bg-base: #0c0e10;
+    --bg-raised: #131619;
+    --bg-overlay: #1a1e22;
+
+    --text-strong: #f2f4f5;
+    --text: #c3c9cd;
+    --text-muted: #8b9399;
+
+    --accent: #f26430;
+    --accent-strong: #ff8154;
+    --accent-ink: var(--ink-on-fill);
+    --accent-rgb: 242, 100, 48;
+    --state-frontier-rgb: 74, 158, 255;
+    --state-visited-rgb: 63, 191, 127;
+    --state-invalid-rgb: 242, 85, 90;
+    --warning-rgb: 224, 160, 32;
+    --ink-on-fill: #0c0e10;
+    --ink-on-fill-dim: rgba(12, 14, 16, 0.35);
+    --accent-wash: rgba(var(--accent-rgb), 0.1);
+    --accent-wash-strong: rgba(var(--accent-rgb), 0.2);
+
+    --state-active: var(--accent);
+    --state-active-wash: var(--accent-wash);
+    --state-frontier: #4a9eff;
+    --state-frontier-wash: rgba(74, 158, 255, 0.14);
+    --state-visited: #3fbf7f;
+    --state-visited-wash: rgba(63, 191, 127, 0.14);
+    --state-invalid: #f2555a;
+    --state-invalid-wash: rgba(242, 85, 90, 0.14);
+    --state-idle: var(--bg-overlay);
+
+    --success: var(--state-visited);
+    --success-muted: var(--state-visited-wash);
+    --warning: #e0a020;
+    --warning-muted: rgba(224, 160, 32, 0.14);
+    --danger: var(--state-invalid);
+    --danger-muted: var(--state-invalid-wash);
+    --info: var(--state-frontier);
+    --info-muted: var(--state-frontier-wash);
+
+    --border: #262b30;
+    --border-strong: #363c43;
+    --border-subtle: rgba(242, 244, 245, 0.07);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-bg-hover: rgba(255, 255, 255, 0.07);
+    --glass-border: rgba(255, 255, 255, 0.09);
+}
+
+
+/* ============================================================
+   BACK-COMPATIBILITY ALIASES
+   ------------------------------------------------------------
+   ~1,600 var() call sites across the visualizer stylesheets still
+   use the previous token names. They are mapped here so the whole
+   site inherits the new language without a risky mass rename, and
+   so both themes reach code that was written dark-only.
+
+   These are frozen. New code uses the tokens above.
+   ============================================================ */
+
+:root {
+    --bg-primary: var(--bg-base);
+    --bg-secondary: var(--bg-raised);
+    --bg-tertiary: var(--bg-overlay);
+    --bg-elevated: var(--bg-overlay);
+    --bg-surface: var(--bg-raised);
+
+    --text-primary: var(--text-strong);
+    --text-secondary: var(--text);
+    --text-tertiary: var(--text-muted);
+
+    --accent-primary: var(--accent);
+    --accent-secondary: var(--accent-strong);
+    --accent-tertiary: var(--accent);
+    --accent-cool: var(--state-frontier);
+    --accent-warm: var(--accent);
+
+    /* Former decorative palette. Folded onto the state ramp rather
+       than kept alive as a parallel colour system. */
+    --terracotta: var(--accent);
+    --rust: var(--accent-strong);
+    --sage: var(--state-visited);
+    --clay: var(--state-invalid);
+    --slate: var(--text-muted);
+    --charcoal: var(--bg-overlay);
+    --cream: var(--text-strong);
+    --sand: var(--text-muted);
+
+    --border-color: var(--border);
+    --border-color-light: var(--border-strong);
+
+    /* The previous theme lit these as cyan neon glows. Retired to
+       tinted elevation: the interface no longer glows, the
+       algorithm state does the signalling. */
+    --shadow-glow: var(--shadow-md);
+    --shadow-glow-lg: var(--shadow-lg);
+
+    --accent-gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+    --accent-gradient-cool: linear-gradient(135deg, var(--state-frontier) 0%, var(--state-visited) 100%);
+    --accent-gradient-subtle: linear-gradient(135deg, var(--accent-wash) 0%, transparent 100%);
 }

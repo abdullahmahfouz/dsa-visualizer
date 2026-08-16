@@ -1,5 +1,5 @@
 /**
- * codeRunner.js — Async bridge to the Python execution backend.
+ * codeRunner.js - Async bridge to the Python execution backend.
  *
  * Sends user code to POST /api/sandbox/run and returns the snapshot array.
  * All sandboxing and safety constraints live in the Flask route.

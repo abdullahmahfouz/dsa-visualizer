@@ -67,7 +67,7 @@
     animation: stackPush 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     box-shadow:
         var(--shadow-md),
-        0 0 20px rgba(201, 162, 126, 0.2);
+        0 0 20px rgba(var(--accent-rgb), 0.2);
     transition: all var(--transition-normal);
 }
 
@@ -75,21 +75,21 @@
     transform: scale(1.03);
     box-shadow:
         var(--shadow-lg),
-        0 0 30px rgba(201, 162, 126, 0.3);
+        0 0 30px rgba(var(--accent-rgb), 0.3);
 }
 
 /* First item (top) gets special treatment */
 .stack-item:first-child {
-    background: linear-gradient(135deg, var(--accent-secondary) 0%, #7a8a5d 100%);
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--state-visited) 100%);
     box-shadow:
         var(--shadow-md),
-        0 0 25px rgba(139, 154, 109, 0.3);
+        0 0 25px rgba(var(--accent-rgb), 0.3);
 }
 
 .stack-item:first-child:hover {
     box-shadow:
         var(--shadow-lg),
-        0 0 35px rgba(139, 154, 109, 0.4);
+        0 0 35px rgba(var(--accent-rgb), 0.4);
 }
 
 @keyframes stackPush {
@@ -105,12 +105,12 @@
 
 /* Top Item Styling */
 .stack-top {
-    background: linear-gradient(135deg, var(--accent-secondary) 0%, #7a8a5d 100%);
-    box-shadow: var(--shadow-md), 0 0 25px rgba(139, 154, 109, 0.3);
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--state-visited) 100%);
+    box-shadow: var(--shadow-md), 0 0 25px rgba(var(--accent-rgb), 0.3);
 }
 
 .stack-top:hover {
-    box-shadow: var(--shadow-lg), 0 0 35px rgba(139, 154, 109, 0.4);
+    box-shadow: var(--shadow-lg), 0 0 35px rgba(var(--accent-rgb), 0.4);
 }
 
 /* Top Marker */
@@ -134,10 +134,10 @@
 
 @keyframes stackHighlight {
     0%, 100% {
-        box-shadow: var(--shadow-md), 0 0 20px rgba(201, 162, 126, 0.3);
+        box-shadow: var(--shadow-md), 0 0 20px rgba(var(--accent-rgb), 0.3);
     }
     50% {
-        box-shadow: var(--shadow-lg), 0 0 40px rgba(201, 162, 126, 0.5);
+        box-shadow: var(--shadow-lg), 0 0 40px rgba(var(--accent-rgb), 0.5);
     }
 }
 

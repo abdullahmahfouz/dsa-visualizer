@@ -82,3 +82,4 @@ claude/
 .cursor/
 .gemini/
 .agents/
+.gstack/

@@ -1,174 +1,332 @@
 /* ============================================
    Home Page
+   Layout families used here, one each:
+     1. hero        asymmetric split (copy | live demo)
+     2. featured    grid with a spanning lead tile
+     3. practice    full-width banner
    ============================================ */
 
-/* Hero */
+/* ---- Hero ----
+   Top padding is capped: content that floats halfway down the
+   viewport reads as a layout bug rather than as generous space. */
 .home-hero {
     position: relative;
-    padding: 8rem 4rem 5rem;
-    overflow: hidden;
-}
-
-.home-hero-glow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-        ellipse at 15% 35%,
-        rgba(201, 162, 126, 0.07) 0%,
-        transparent 55%
-    );
-    pointer-events: none;
+    padding: clamp(2.5rem, 1.5rem + 3vw, 4.5rem) var(--gutter) var(--section-y);
+    border-bottom: 1px solid var(--border);
 }
 
 .home-hero-inner {
     position: relative;
-    max-width: 620px;
+    max-width: var(--shell-max);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: clamp(2rem, 1rem + 4vw, 4.5rem);
+    align-items: center;
+}
+
+.home-hero-copy {
+    max-width: 38rem;
 }
 
 .home-hero h1 {
-    font-family: var(--font-display);
-    font-size: 4rem;
-    font-weight: 400;
-    line-height: 1.08;
-    color: var(--text-primary);
-    letter-spacing: -0.03em;
-    margin-bottom: 1.5rem;
+    /* Capped below the shared --text-3xl ceiling: the headline has to hold
+       two lines inside the copy column, and 4rem overflows it. */
+    font-size: clamp(2.25rem, 1.5rem + 2.6vw, 3.35rem);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-display);
+    color: var(--text-strong);
+    margin-bottom: 1.15rem;
 }
 
 .home-hero h1 span {
-    color: var(--accent-primary);
+    color: var(--accent);
 }
 
-.home-hero-inner > p {
-    font-size: 1.15rem;
-    line-height: 1.7;
-    color: var(--text-secondary);
-    max-width: 500px;
-    margin-bottom: 2.5rem;
+.home-hero-copy > p {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--text);
+    max-width: var(--measure-tight);
+    margin-bottom: 1.85rem;
 }
 
 .home-hero-actions {
     display: flex;
-    gap: 1rem;
+    gap: 0.7rem;
     flex-wrap: wrap;
 }
 
-/* Buttons */
+/* ---- Buttons ---- */
 .home-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.85rem 1.75rem;
-    font-size: 0.95rem;
-    font-weight: 600;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.25rem;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
     font-family: var(--font-sans);
-    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    border-radius: var(--radius-control);
     text-decoration: none;
-    transition: all var(--transition-fast);
+    /* Labels stay on one line: a CTA that wraps is a broken CTA. */
     white-space: nowrap;
+    transition: background-color var(--transition-fast),
+                border-color var(--transition-fast),
+                color var(--transition-fast);
 }
 
 .home-btn--primary {
-    background: var(--accent-gradient);
-    color: var(--bg-primary);
+    background: var(--accent);
+    color: var(--ink-on-fill);
 }
 
 .home-btn--primary:hover {
-    box-shadow: 0 4px 18px rgba(201, 162, 126, 0.3);
-    transform: translateY(-1px);
+    background: var(--accent-strong);
+    color: var(--ink-on-fill);
 }
 
 .home-btn--ghost {
     background: transparent;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
+    color: var(--text-strong);
+    border-color: var(--border-strong);
 }
 
 .home-btn--ghost:hover {
-    border-color: var(--accent-primary);
-    color: var(--accent-primary);
+    background: var(--bg-sunken);
+    border-color: var(--text-muted);
+    color: var(--text-strong);
 }
 
-/* Sections */
+/* Tactile press, both variants. */
+.home-btn:active {
+    translate: 0 1px;
+}
+
+/* ---- Hero demo ---- */
+.home-hero-demo {
+    min-width: 0;
+}
+
+.hero-demo {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-shell);
+    padding: 1rem 1.1rem 0.9rem;
+    box-shadow: var(--shadow-md);
+}
+
+.hero-demo-caption {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.hero-demo-title {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--text-strong);
+}
+
+.hero-demo-step {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+}
+
+.hero-demo-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.hero-demo-edge {
+    stroke: var(--border-strong);
+    stroke-width: 1.5;
+    transition: stroke var(--transition-slow);
+}
+
+.hero-demo-edge.is-traversed {
+    stroke: var(--state-visited);
+    stroke-width: 2;
+}
+
+.hero-demo-node circle {
+    fill: var(--bg-sunken);
+    stroke: var(--border-strong);
+    stroke-width: 1.5;
+    transition: fill var(--transition-slow), stroke var(--transition-slow);
+}
+
+.hero-demo-node text {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    fill: var(--text-muted);
+    transition: fill var(--transition-slow);
+}
+
+.hero-demo-node.is-frontier circle {
+    fill: var(--state-frontier-wash);
+    stroke: var(--state-frontier);
+}
+
+.hero-demo-node.is-frontier text { fill: var(--state-frontier); }
+
+.hero-demo-node.is-visited circle {
+    fill: var(--state-visited-wash);
+    stroke: var(--state-visited);
+}
+
+.hero-demo-node.is-visited text { fill: var(--state-visited); }
+
+.hero-demo-node.is-active circle {
+    fill: var(--state-active);
+    stroke: var(--state-active);
+}
+
+.hero-demo-node.is-active text { fill: var(--ink-on-fill); }
+
+.hero-demo-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    list-style: none;
+    margin-top: 0.65rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--border);
+}
+
+.hero-demo-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+}
+
+/* The only status dots in the product. They carry real state meaning:
+   this is the legend for the colours every visualiser uses. */
+.hero-demo-key {
+    width: 9px;
+    height: 9px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+}
+
+.hero-demo-key.is-active { background: var(--state-active); }
+.hero-demo-key.is-frontier { background: var(--state-frontier); }
+.hero-demo-key.is-visited { background: var(--state-visited); }
+
+/* ---- Sections ---- */
 .home-section {
-    padding: 3rem 4rem 4rem;
+    padding: var(--section-y) var(--gutter);
+}
+
+.home-section > * {
+    max-width: var(--shell-max);
+    margin-inline: auto;
 }
 
 .home-section--alt {
-    background: var(--bg-secondary);
+    background: var(--bg-raised);
+    border-top: 1px solid var(--border);
 }
 
 .home-section-head {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 1.5rem;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
 }
 
 .home-section-head h2 {
-    font-family: var(--font-display);
-    font-size: 1.65rem;
-    font-weight: 400;
-    color: var(--text-primary);
-    letter-spacing: -0.01em;
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    color: var(--text-strong);
+    letter-spacing: var(--tracking-heading);
+    margin-bottom: 0;
 }
 
 .home-link-muted {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    font-size: 0.85rem;
-    font-weight: 500;
+    gap: 0.3rem;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
     color: var(--text-muted);
     text-decoration: none;
+    white-space: nowrap;
     transition: color var(--transition-fast);
 }
 
 .home-link-muted:hover {
-    color: var(--accent-primary);
+    color: var(--accent);
 }
 
-/* Cards */
+/* ---- Featured grid ----
+   Six items, six cells. The lead tile spans the row because the graph
+   visualizers are the deepest surface in the product. */
 .home-cards {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.85rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.home-card--wide {
+    grid-column: 1 / -1;
 }
 
 .home-card {
     display: flex;
     align-items: center;
-    gap: 1.15rem;
-    padding: 1.25rem 1.35rem;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
+    gap: 1rem;
+    padding: 1.1rem 1.2rem;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-surface);
     text-decoration: none;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-    animation: homeIn 0.35s ease both;
+    transition: border-color var(--transition-fast),
+                background-color var(--transition-fast);
+    animation: homeIn 0.35s var(--ease-out) both;
     animation-delay: var(--stagger);
 }
 
 .home-card:hover {
-    border-color: var(--accent-primary);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    border-color: var(--border-strong);
+}
+
+.home-card:hover .home-card-icon {
+    background: var(--accent-wash);
+}
+
+.home-card:hover .home-card-icon svg {
+    color: var(--accent);
 }
 
 .home-card-icon {
-    width: 46px;
-    height: 46px;
+    width: 42px;
+    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(201, 162, 126, 0.06);
-    border-radius: var(--radius-sm);
+    background: var(--bg-sunken);
+    border-radius: var(--radius-control);
     flex-shrink: 0;
+    transition: background-color var(--transition-fast);
 }
 
 .home-card-icon svg {
-    width: 24px;
-    height: 24px;
-    color: var(--accent-primary);
+    width: 22px;
+    height: 22px;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
 }
 
 .home-card-body {
@@ -177,120 +335,99 @@
 }
 
 .home-card-body h3 {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 0.2rem;
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    color: var(--text-strong);
+    margin-bottom: 0.15rem;
 }
 
 .home-card-body p {
-    font-size: 0.82rem;
-    color: var(--text-secondary);
-    line-height: 1.45;
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+    line-height: var(--leading-normal);
 }
 
 .home-card-tag {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 500;
+    font-size: var(--text-2xs);
+    font-variant-numeric: tabular-nums;
     color: var(--text-muted);
-    background: var(--bg-tertiary);
-    padding: 0.25rem 0.55rem;
-    border-radius: var(--radius-sm);
+    background: var(--bg-sunken);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-control);
     flex-shrink: 0;
     white-space: nowrap;
 }
 
-/* Banner */
+/* ---- Practice banner ---- */
 .home-banner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 3rem;
+    gap: 2.5rem;
 }
 
 .home-banner h2 {
-    font-family: var(--font-display);
-    font-size: 1.65rem;
-    font-weight: 400;
-    color: var(--text-primary);
-    margin-bottom: 0.5rem;
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    color: var(--text-strong);
+    letter-spacing: var(--tracking-heading);
+    margin-bottom: 0.4rem;
 }
 
 .home-banner p {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    max-width: 460px;
+    font-size: var(--text-sm);
+    color: var(--text);
+    line-height: var(--leading-relaxed);
+    max-width: var(--measure-tight);
 }
 
-/* Animation */
+/* ---- Motion ---- */
 @keyframes homeIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .home-card {
-        animation: none;
-    }
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .home-hero {
-        padding: 6rem 3rem 4rem;
+/* ---- Responsive ----
+   The asymmetric hero collapses to a single column below the tablet
+   breakpoint, with the demo kept first-class rather than squeezed. */
+@media (max-width: 900px) {
+    .home-hero-inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
-    .home-hero h1 {
-        font-size: 3.25rem;
+    .home-hero-copy {
+        max-width: 100%;
     }
 
-    .home-section {
-        padding: 2.5rem 3rem 3rem;
+    .home-hero-demo {
+        max-width: 30rem;
     }
 }
 
 @media (max-width: 768px) {
-    .home-hero {
-        padding: 5rem 2rem 3rem;
-    }
-
-    .home-hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .home-hero-inner > p {
-        font-size: 1.05rem;
-    }
-
-    .home-hero-actions {
-        flex-direction: column;
-    }
-
-    .home-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .home-section {
-        padding: 2rem;
-    }
-
     .home-cards {
         grid-template-columns: 1fr;
     }
 
+    .home-card--wide {
+        grid-column: auto;
+    }
+
+    .home-hero-actions {
+        gap: 0.6rem;
+    }
+
+    .home-btn {
+        flex: 1 1 auto;
+    }
+
     .home-banner {
         flex-direction: column;
-        gap: 1.5rem;
         align-items: flex-start;
+        gap: 1.35rem;
     }
 
     .home-banner p {
@@ -299,19 +436,12 @@
 }
 
 @media (max-width: 480px) {
-    .home-hero {
-        padding: 4rem 1.5rem 2.5rem;
+    .home-card {
+        padding: 0.95rem 1rem;
+        gap: 0.85rem;
     }
 
-    .home-hero h1 {
-        font-size: 2.1rem;
-    }
-
-    .home-section {
-        padding: 1.75rem 1.5rem;
-    }
-
-    .home-section-head h2 {
-        font-size: 1.4rem;
+    .home-btn {
+        width: 100%;
     }
 }

@@ -6,7 +6,6 @@ export const roadmap = [
         id: 'arrays-hashing',
         title: 'Arrays & Hashing',
         icon: 'grid',
-        color: '#10b981',
         description: 'Foundation of DSA - array manipulation and hash maps',
         problems: ['two-sum', 'valid-anagram', 'contains-duplicate', 'group-anagrams']
     },
@@ -14,7 +13,6 @@ export const roadmap = [
         id: 'two-pointers',
         title: 'Two Pointers',
         icon: 'pointer',
-        color: '#3b82f6',
         description: 'Efficient array traversal techniques',
         problems: ['valid-palindrome', 'two-sum-sorted', 'container-with-most-water']
     },
@@ -22,7 +20,6 @@ export const roadmap = [
         id: 'stack',
         title: 'Stack',
         icon: 'layers',
-        color: '#8b5cf6',
         description: 'LIFO data structure problems',
         problems: ['valid-parentheses', 'min-stack', 'evaluate-reverse-polish-notation']
     },
@@ -30,7 +27,6 @@ export const roadmap = [
         id: 'binary-search',
         title: 'Binary Search',
         icon: 'search',
-        color: '#f59e0b',
         description: 'Divide and conquer search technique',
         problems: ['binary-search', 'search-rotated-array', 'find-minimum-in-rotated-sorted-array']
     },
@@ -38,7 +34,6 @@ export const roadmap = [
         id: 'linked-list',
         title: 'Linked List',
         icon: 'link',
-        color: '#ec4899',
         description: 'Pointer-based data structures',
         problems: ['reverse-linked-list', 'merge-two-lists', 'linked-list-cycle', 'reorder-list']
     },
@@ -46,7 +41,6 @@ export const roadmap = [
         id: 'trees',
         title: 'Trees',
         icon: 'tree',
-        color: '#14b8a6',
         description: 'Hierarchical data structures',
         problems: ['invert-tree', 'max-depth-tree', 'same-tree', 'kth-smallest-element-in-a-bst']
     },
@@ -54,7 +48,6 @@ export const roadmap = [
         id: 'graphs',
         title: 'Graphs',
         icon: 'network',
-        color: '#6366f1',
         description: 'Graph traversal and algorithms',
         problems: ['bfs-traversal', 'dfs-traversal', 'number-of-islands']
     },
@@ -62,7 +55,6 @@ export const roadmap = [
         id: 'dynamic-programming',
         title: 'Dynamic Programming',
         icon: 'puzzle',
-        color: '#ef4444',
         description: 'Optimization through memoization',
         problems: ['climbing-stairs', 'house-robber']
     },
@@ -70,7 +62,6 @@ export const roadmap = [
         id: 'sorting',
         title: 'Sorting',
         icon: 'sort',
-        color: '#84cc16',
         description: 'Classic sorting algorithms',
         problems: ['merge-sort', 'quick-sort']
     }

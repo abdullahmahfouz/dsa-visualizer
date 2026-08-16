@@ -228,7 +228,7 @@ function extractDate(t) {
   const matches = [...t.matchAll(DATE_RANGE)];
   if (!matches.length) return { main: t, date: '' };
   const date = matches.length >= 2
-    ? `${matches[0][0]} – ${matches[matches.length - 1][0]}`
+    ? `${matches[0][0]} - ${matches[matches.length - 1][0]}`
     : matches[0][0];
   const main = t
     .replace(DATE_RANGE, '')
@@ -447,7 +447,7 @@ function ResumePDFPreview({ text, targetRole, onClose }) {
       </div>`).join('');
 
     printWin.document.write(`<!DOCTYPE html>
-<html><head><meta charset="utf-8"/><title>${name} — Resume</title><style>${PRINT_RESUME_CSS}</style></head>
+<html><head><meta charset="utf-8"/><title>${name} - Resume</title><style>${PRINT_RESUME_CSS}</style></head>
 <body><div class="paper">
   <div class="rh">
     <div class="rname">${name}</div>
@@ -721,7 +721,7 @@ export default function ResumeReviewer() {
 
       {/* Layout */}
       <div className="rr-layout">
-        {/* Left — Input */}
+        {/* Left - Input */}
         <div className="rr-input-panel">
           <div>
             <div className="rr-panel-label">Your Resume</div>
@@ -810,7 +810,7 @@ export default function ResumeReviewer() {
           </div>
         </div>
 
-        {/* Right — Tabbed Results */}
+        {/* Right - Tabbed Results */}
         <div className="rr-results-panel">
           {/* Tab bar */}
           <div className="rr-tabs">
@@ -937,8 +937,8 @@ export default function ResumeReviewer() {
                   <div>
                     <div className="rr-improve-intro-title">AI Resume Rewriter</div>
                     <p className="rr-improve-intro-desc">
-                      The AI will rewrite your entire resume — stronger verbs, quantified impact,
-                      tighter bullets, and a punchy summary — while keeping all your real experience
+                      The AI will rewrite your entire resume - stronger verbs, quantified impact,
+                      tighter bullets, and a punchy summary - while keeping all your real experience
                       intact. Download the result as a polished, print-ready PDF.
                     </p>
                   </div>
@@ -1006,7 +1006,7 @@ export default function ResumeReviewer() {
                     {viewMode === 'original' ? (
                       <><Eye size={11} /> Original resume (read-only)</>
                     ) : (
-                      <><Edit3 size={11} /> AI-improved version — edit freely, then download as PDF</>
+                      <><Edit3 size={11} /> AI-improved version - edit freely, then download as PDF</>
                     )}
                   </div>
 
@@ -1125,11 +1125,11 @@ export default function ResumeReviewer() {
                       <p className="rr-ats-hero-summary">{tailorResults.ats_summary}</p>
                       <div className="rr-ats-hero-hint">
                         {tailorResults.ats_score >= 75 ? (
-                          <><CheckCircle size={13} /> Strong match — focus on the gaps below to push higher.</>
+                          <><CheckCircle size={13} /> Strong match - focus on the gaps below to push higher.</>
                         ) : tailorResults.ats_score >= 50 ? (
-                          <><AlertTriangle size={13} /> Moderate match — incorporate the missing keywords and rewrites below.</>
+                          <><AlertTriangle size={13} /> Moderate match - incorporate the missing keywords and rewrites below.</>
                         ) : (
-                          <><XCircle size={13} /> Weak match — significant tailoring needed. Follow all suggestions below.</>
+                          <><XCircle size={13} /> Weak match - significant tailoring needed. Follow all suggestions below.</>
                         )}
                       </div>
                     </div>
@@ -1236,7 +1236,7 @@ export default function ResumeReviewer() {
                       </div>
                       {checkedTips.size === tailorResults.tailoring_tips.length && (
                         <div className="rr-tips-complete">
-                          <CheckCircle size={14} /> All done — your resume is ready to submit!
+                          <CheckCircle size={14} /> All done - your resume is ready to submit!
                         </div>
                       )}
                     </div>

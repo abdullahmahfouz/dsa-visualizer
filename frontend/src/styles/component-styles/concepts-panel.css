@@ -11,16 +11,16 @@
 
 /* Concept Box */
 .concept-box {
-  background: linear-gradient(135deg, rgba(201, 162, 126, 0.06) 0%, rgba(139, 154, 109, 0.04) 100%);
-  border: 1px solid rgba(201, 162, 126, 0.15);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   overflow: hidden;
   transition: all var(--transition-normal);
 }
 
 .concept-box:hover {
-  border-color: rgba(201, 162, 126, 0.25);
-  box-shadow: 0 12px 32px rgba(201, 162, 126, 0.08);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
 }
 
 .concept-header {
@@ -28,11 +28,11 @@
   align-items: center;
   gap: 0.6rem;
   padding: 1rem 1.25rem;
-  background: rgba(201, 162, 126, 0.06);
-  border-bottom: 1px solid rgba(201, 162, 126, 0.1);
-  font-weight: 600;
-  color: var(--accent-primary);
-  font-size: 1rem;
+  background: var(--bg-sunken);
+  border-bottom: 1px solid var(--border);
+  font-weight: var(--weight-semibold);
+  color: var(--text-strong);
+  font-size: var(--text-base);
 }
 
 .concept-header .icon-sm {
@@ -79,9 +79,9 @@
   gap: 0.75rem;
   margin-top: 1rem;
   padding: 1rem;
-  background: rgba(139, 154, 109, 0.08);
-  border: 1px solid rgba(139, 154, 109, 0.2);
-  border-left: 3px solid var(--accent-secondary);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
   border-radius: var(--radius-md);
   font-size: 0.9rem;
   color: var(--text-secondary);
@@ -394,7 +394,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--accent-primary);
-  background: rgba(201, 162, 126, 0.1);
+  background: rgba(var(--accent-rgb), 0.1);
   padding: 0.3rem 0.6rem;
   border-radius: var(--radius-full);
 }
@@ -501,7 +501,7 @@
 .message-banner.success {
   background: var(--success-muted);
   color: var(--success);
-  border: 1px solid rgba(139, 154, 109, 0.25);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
 }
 
 .message-banner.error {

@@ -106,7 +106,7 @@ function DFSVisualizer() {
 
       const snapshots = buildHistory(result.steps, 'dfs', graph);
       loadHistory(snapshots);
-      showMessage('DFS complete — use the scrubber to explore each step.', 'info');
+      showMessage('DFS complete - use the scrubber to explore each step.', 'info');
     } catch (error) {
       console.error('DFS Error:', error);
       showMessage('Error running DFS', 'error');

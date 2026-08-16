@@ -21,7 +21,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
  * 1. STALE CLOSURE FIX (Bug #2 from audit):
  *    setInterval callbacks capture variables at creation time. If we read
  *    `currentStepIndex` state inside the interval, we get the value from when
- *    startPlayback() was called — not the current value. Fix: maintain
+ *    startPlayback() was called - not the current value. Fix: maintain
  *    `stepIndexRef` as a ref that is always kept in sync with state. The interval
  *    reads `stepIndexRef.current` which is always fresh.
  *
@@ -57,7 +57,7 @@ export function useAlgorithmHistory(intervalMs = 800) {
   // This is the canonical fix for the stale closure problem with setInterval.
   const stepIndexRef = useRef(-1);
 
-  // historyLengthRef: same pattern — interval needs to know total steps
+  // historyLengthRef: same pattern - interval needs to know total steps
   // without being recreated every time history.length changes.
   const historyLengthRef = useRef(0);
 
@@ -96,7 +96,7 @@ export function useAlgorithmHistory(intervalMs = 800) {
     setIsPlaying(true);
 
     intervalRef.current = setInterval(() => {
-      // Read from ref — this is ALWAYS the current step, never stale
+      // Read from ref - this is ALWAYS the current step, never stale
       const next = stepIndexRef.current + 1;
 
       if (next >= historyLengthRef.current) {
@@ -116,7 +116,7 @@ export function useAlgorithmHistory(intervalMs = 800) {
   // ── Public API ─────────────────────────────────────────────────────────────
 
   /**
-   * loadHistory — Call this after receiving steps from the backend.
+   * loadHistory - Call this after receiving steps from the backend.
    * Accepts a pre-built frozen history array from buildHistory() in snapshotBuilder.js.
    *
    * @param {TraversalSnapshot[]} snapshots
@@ -143,7 +143,7 @@ export function useAlgorithmHistory(intervalMs = 800) {
   }, [stopInterval]);
 
   const resume = useCallback(() => {
-    // Use ref values — reading from state here would risk stale values
+    // Use ref values - reading from state here would risk stale values
     if (stepIndexRef.current < historyLengthRef.current - 1) {
       startPlayback(stepIndexRef.current, historyLengthRef.current);
     }
@@ -168,7 +168,7 @@ export function useAlgorithmHistory(intervalMs = 800) {
   }, [stopInterval, resume]);
 
   /**
-   * stepForward — Pauses auto-play and advances one step.
+   * stepForward - Pauses auto-play and advances one step.
    * Using functional updater ensures we always mutate from the latest state,
    * even if multiple stepForward calls are batched.
    */
@@ -193,9 +193,9 @@ export function useAlgorithmHistory(intervalMs = 800) {
   }, [stopInterval]);
 
   /**
-   * scrubTo — Called by the range slider onChange.
+   * scrubTo - Called by the range slider onChange.
    * Only clears the interval if one is actually running (Bug #4 fix).
-   * Does NOT call setIsPlaying(false) if not playing — avoids spurious re-renders.
+   * Does NOT call setIsPlaying(false) if not playing - avoids spurious re-renders.
    *
    * Performance note: This is called on every slider tick (mousemove).
    * By only calling setCurrentStepIndex (O(1) array lookup) and skipping
@@ -226,7 +226,7 @@ export function useAlgorithmHistory(intervalMs = 800) {
   }, [stopInterval]);
 
   // ── Derived values ─────────────────────────────────────────────────────────
-  // These are computed inline — no useMemo needed.
+  // These are computed inline - no useMemo needed.
   // history[index] is an O(1) array lookup; React's reconciler handles the rest.
   const currentSnapshot = history[currentStepIndex] ?? null;
   const totalSteps = history.length;

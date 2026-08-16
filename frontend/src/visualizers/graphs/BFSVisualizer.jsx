@@ -15,7 +15,7 @@ function BFSVisualizer() {
   const [nodePositions, setNodePositions] = useState({});
   const { message, showMessage } = useTimedMessage(3000);
 
-  // All history/playback logic lives in the hook — zero duplication with DFS
+  // All history/playback logic lives in the hook - zero duplication with DFS
   const {
     currentStepIndex,
     currentSnapshot,
@@ -32,7 +32,7 @@ function BFSVisualizer() {
     reset: resetTraversal,
   } = useAlgorithmHistory(900);
 
-  // Derived rendering state — computed from the single snapshot source of truth
+  // Derived rendering state - computed from the single snapshot source of truth
   const visitedNodes = new Set(currentSnapshot?.visited ?? []);
   const currentNode  = currentSnapshot?.currentNode ?? null;
   const queue        = currentSnapshot?.frontier ?? [];
@@ -108,10 +108,10 @@ function BFSVisualizer() {
 
       // buildHistory is a pure function: maps raw API steps → frozen snapshots.
       // Each snapshot is deep-copied (structuredClone) + Object.frozen.
-      // No shared references between steps — scrubbing can never mutate history.
+      // No shared references between steps - scrubbing can never mutate history.
       const snapshots = buildHistory(result.steps, 'bfs', graph);
       loadHistory(snapshots);
-      showMessage('BFS complete — use the scrubber to explore each step.', 'info');
+      showMessage('BFS complete - use the scrubber to explore each step.', 'info');
     } catch (error) {
       console.error('BFS Error:', error);
       showMessage('Error running BFS', 'error');
@@ -205,7 +205,7 @@ function BFSVisualizer() {
             </div>
           </div>
 
-          {/* Time-Travel Debugger — fully controlled, zero local state */}
+          {/* Time-Travel Debugger - fully controlled, zero local state */}
           {totalSteps > 0 && (
             <TimeTravelScrubber
               currentStepIndex={currentStepIndex}

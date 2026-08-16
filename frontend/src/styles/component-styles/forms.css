@@ -44,7 +44,7 @@
 .input-group input:focus {
     outline: none;
     border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px rgba(201, 162, 126, 0.12);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
     background: var(--bg-secondary);
 }
 
@@ -97,18 +97,18 @@
 .btn-enqueue {
     background: var(--accent-gradient);
     color: var(--bg-primary);
-    box-shadow: 0 4px 16px rgba(201, 162, 126, 0.3);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-push:hover,
 .btn-enqueue:hover {
     transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 8px 24px rgba(201, 162, 126, 0.4);
+    box-shadow: var(--shadow-lg);
 }
 
 .btn-pop,
 .btn-dequeue {
-    background: linear-gradient(135deg, var(--danger) 0%, #b86969 100%);
+    background: linear-gradient(135deg, var(--danger) 0%, var(--state-invalid) 100%);
     color: white;
     box-shadow: 0 4px 16px rgba(201, 126, 126, 0.25);
 }
@@ -120,7 +120,7 @@
 }
 
 .btn-peek {
-    background: linear-gradient(135deg, var(--accent-cool) 0%, #5a7a8a 100%);
+    background: linear-gradient(135deg, var(--accent-cool) 0%, var(--state-frontier) 100%);
     color: white;
     box-shadow: 0 4px 16px rgba(109, 138, 154, 0.25);
 }
@@ -146,16 +146,16 @@
 .btn-insert {
     background: var(--accent-gradient);
     color: var(--bg-primary);
-    box-shadow: 0 4px 16px rgba(201, 162, 126, 0.3);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-insert:hover {
     transform: translateY(-2px) scale(1.01);
-    box-shadow: 0 8px 24px rgba(201, 162, 126, 0.4);
+    box-shadow: var(--shadow-lg);
 }
 
 .btn-delete {
-    background: linear-gradient(135deg, var(--danger) 0%, #b86969 100%);
+    background: linear-gradient(135deg, var(--danger) 0%, var(--state-invalid) 100%);
     color: white;
     box-shadow: 0 4px 16px rgba(201, 126, 126, 0.25);
 }
@@ -166,7 +166,7 @@
 }
 
 .btn-search {
-    background: linear-gradient(135deg, var(--accent-cool) 0%, #5a7a8a 100%);
+    background: linear-gradient(135deg, var(--accent-cool) 0%, var(--state-frontier) 100%);
     color: white;
     box-shadow: 0 4px 16px rgba(109, 138, 154, 0.25);
 }
@@ -179,15 +179,15 @@
 /* Tree/Graph Buttons */
 .btn-traverse,
 .btn-run {
-    background: linear-gradient(135deg, var(--accent-secondary) 0%, #7a8a5d 100%);
+    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--state-visited) 100%);
     color: var(--bg-primary);
-    box-shadow: 0 4px 16px rgba(139, 154, 109, 0.3);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-traverse:hover,
 .btn-run:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(139, 154, 109, 0.4);
+    box-shadow: var(--shadow-lg);
 }
 
 /* Secondary/Ghost buttons */

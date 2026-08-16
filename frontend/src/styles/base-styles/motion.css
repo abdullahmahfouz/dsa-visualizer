@@ -1,0 +1,53 @@
+/* ============================================================
+   MOTION GUARD
+   ------------------------------------------------------------
+   Imported last so it wins against every stylesheet in the app.
+
+   MOTION_INTENSITY is 4 for this product: interface motion is
+   fluid but never theatrical, because the algorithm animation IS
+   the content. Chrome that competes with a running BFS for the
+   user's attention is chrome that is actively lying about what
+   matters on the page.
+
+   Everything below is the reduced-motion contract. A user who has
+   asked their OS for less motion gets a fully static interface.
+   The one thing that must NOT be flattened is a visualiser that
+   the user explicitly pressed play on: that is requested content,
+   not ambient decoration. Those transitions are shortened rather
+   than removed, so stepping through an algorithm still reads as
+   a sequence of discrete states.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Ambient / decorative motion is removed outright. */
+    .home-hero-glow,
+    [class*='pulse'],
+    [class*='shimmer'],
+    [class*='float'],
+    [class*='marquee'] {
+        animation: none !important;
+    }
+
+    /* User-initiated algorithm playback stays legible: state changes
+       remain perceptible, they just stop being animated travel. */
+    .node,
+    .edge,
+    .array-cell,
+    .stack-item,
+    .queue-item,
+    .list-node,
+    .tree-node,
+    .hash-cell,
+    .heap-node {
+        transition-duration: 60ms !important;
+    }
+}

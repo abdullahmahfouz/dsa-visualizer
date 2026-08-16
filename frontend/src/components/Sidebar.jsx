@@ -3,12 +3,14 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Menu, X, Home, Code2, Layers, ArrowRightLeft, Link as LinkIcon,
   Hash, GitBranch, Mail, HeartHandshake, BrainCircuit, Github, Linkedin,
-  Trophy, History, FastForward, GitMerge, Terminal, FileText
+  Trophy, History, FastForward, GitMerge, Terminal, FileText, Sun, Moon
 } from 'lucide-react';
+import { useTheme } from '../hooks/useTheme';
 
 function Sidebar() {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const activePage = location.pathname === '/' ? 'home' : 
                      location.pathname.replace('/', '').replace('_', '');
@@ -92,25 +94,37 @@ function Sidebar() {
         </nav>
         
         <div className="sidebar-footer">
-          <div className="social-links-sidebar">
-            <a 
-              href="https://github.com/abdullahmahfouz" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              title="GitHub"
-              aria-label="Visit our GitHub"
+          <div className="sidebar-footer-row">
+            <div className="social-links-sidebar">
+              <a
+                href="https://github.com/abdullahmahfouz"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="GitHub"
+                aria-label="GitHub profile"
+              >
+                <Github />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/abdullah-mahfouz-5188b1306/"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="LinkedIn"
+                aria-label="LinkedIn profile"
+              >
+                <Linkedin />
+              </a>
+            </div>
+
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={toggleTheme}
+              title={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+              aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
             >
-              <Github />
-            </a>
-            <a 
-              href="https://www.linkedin.com/in/abdullah-mahfouz-5188b1306/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              title="LinkedIn"
-              aria-label="Visit our LinkedIn"
-            >
-              <Linkedin />
-            </a>
+              {theme === 'dark' ? <Sun /> : <Moon />}
+            </button>
           </div>
           <p className="copyright">&copy; 2026 Abdullah Mahfouz</p>
         </div>
