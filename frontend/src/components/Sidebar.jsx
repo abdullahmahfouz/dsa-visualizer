@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Menu, X, Home, Code2, Layers, ArrowRightLeft, Link as LinkIcon,
   Hash, GitBranch, Mail, HeartHandshake, BrainCircuit, Github, Linkedin,
-  Trophy, History, FastForward, GitMerge, Terminal, FileText, Sun, Moon
+  Trophy, History, FastForward, GitMerge, Terminal, Sun, Moon
 } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 
@@ -69,6 +69,7 @@ function Sidebar() {
       <aside className={`sidebar ${isOpen ? 'active' : ''}`} id="sidebar">
         <div className="sidebar-header">
           <Link to="/" className="logo-wrapper" onClick={closeMenu}>
+            <span className="logo-mark" aria-hidden="true">DS</span>
             <span className="logo-text">DSA Visualizer</span>
           </Link>
         </div>
@@ -81,7 +82,6 @@ function Sidebar() {
             <NavItem to="/practice" icon={Trophy} pageName="practice">Practice</NavItem>
             <NavItem to="/compare" icon={GitMerge} pageName="compare">Compare</NavItem>
             <NavItem to="/sandbox" icon={Terminal} pageName="sandbox">Sandbox</NavItem>
-            <NavItem to="/resume-reviewer" icon={FileText} pageName="resume-reviewer">Resume Reviewer</NavItem>
           </div>
           
          

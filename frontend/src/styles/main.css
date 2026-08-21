@@ -12,6 +12,9 @@
 @import './component-styles/forms.css';
 @import './component-styles/code-tabs.css';
 @import './component-styles/concepts-panel.css';
+@import './component-styles/top-app-bar.css';
+@import './component-styles/complexity-badge.css';
+@import './component-styles/execution-trace.css';
 
 /* Pages */
 @import './page-styles/homepage.css';

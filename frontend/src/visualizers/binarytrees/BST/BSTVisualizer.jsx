@@ -4,6 +4,7 @@ import AIAssistant from '../../../components/AIAssistant';
 import CodeTabs from '../../../components/CodeTabs';
 import ConceptsPanel from '../../../components/ConceptsPanel';
 import ChallengeOverlay from '../../../components/ChallengeOverlay';
+import ComplexityBadge from '../../../components/ComplexityBadge';
 
 import {
   ControlPanel,
@@ -359,6 +360,7 @@ function BSTVisualizer() {
         />
 
         <div className="visual-panel">
+          <ComplexityBadge time="O(log n) avg" space="O(n)" />
           <h2>BST Visualization</h2>
           <p className="bst-property-reminder">
             Remember: <code>Left {'<'} Parent {'<'} Right</code>

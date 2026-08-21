@@ -3,6 +3,7 @@ import { HelpCircle, Lightbulb } from 'lucide-react';
 import AIAssistant from '../../components/AIAssistant';
 import CodeTabs from '../../components/CodeTabs';
 import MessageBanner from '../../components/MessageBanner';
+import ComplexityBadge from '../../components/ComplexityBadge';
 import { getJson, postJson } from '../../api/api';
 import { useTimedMessage } from '../../hooks/useTimedMessage';
 
@@ -200,6 +201,7 @@ function StackVisualizer() {
         </div>
 
         <div className="visual-panel">
+          <ComplexityBadge time="O(1)" space="O(n)" />
           <h2>Stack Visualization</h2>
           <div className="stack-container">
             <div className="stack-visual">

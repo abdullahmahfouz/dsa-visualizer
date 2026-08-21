@@ -1,0 +1,82 @@
+/* ============================================
+   Top App Bar
+   Sits above the routed page content, inside .main-content, so it
+   already respects the sidebar's offset without any fixed-position
+   coordinate math. Sticky, not fixed: it occupies real flow space,
+   so nothing else needs to compensate with manual top padding.
+   ============================================ */
+
+.top-app-bar {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-inline: var(--gutter);
+    background: var(--bg-base);
+    border-bottom: 1px solid var(--border);
+}
+
+.top-app-bar-brand {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-heading);
+    color: var(--text-strong);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--transition-fast);
+}
+
+.top-app-bar-brand:hover {
+    color: var(--accent);
+}
+
+.top-app-bar-brand-slash {
+    color: var(--accent);
+}
+
+.top-app-bar-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    height: 100%;
+}
+
+.top-app-bar-link {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.top-app-bar-link:hover {
+    color: var(--text-strong);
+}
+
+.top-app-bar-link.active {
+    color: var(--accent-strong);
+    font-weight: var(--weight-bold);
+}
+
+/* The floating drawer trigger becomes the bar's embedded left edge
+   below the desktop breakpoint - same coordinates, same height, no
+   shadow or radius of its own, so it reads as part of the bar
+   rather than a separate control floating on top of it. */
+@media (max-width: 1024px) {
+    .top-app-bar {
+        padding-left: 3.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .top-app-bar-nav {
+        display: none;
+    }
+}

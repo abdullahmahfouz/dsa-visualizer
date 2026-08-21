@@ -1,6 +1,8 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
+import TopAppBar from './components/TopAppBar';
+import PageMeta from './components/PageMeta';
 import Footer from './components/Footer';
 
 // Pages
@@ -52,9 +54,6 @@ const CodeVisualizerSandbox = lazy(() => import('./pages/CodeVisualizerSandbox')
 const HashComparison = lazy(() => import('./pages/HashComparison'));
 const AlgoCompare = lazy(() => import('./pages/AlgoCompare'));
 
-// Resume Reviewer
-const ResumeReviewer = lazy(() => import('./pages/ResumeReviewer'));
-
 // Loading component
 const PageLoader = () => (
   <div className="page-loader">
@@ -68,6 +67,8 @@ function App() {
     <div className="homepage-body">
       <Sidebar />
       <main className="main-content">
+        <TopAppBar />
+        <PageMeta />
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -102,7 +103,6 @@ function App() {
             <Route path="/sandbox" element={<CodeVisualizerSandbox />} />
             <Route path="/compare-hash" element={<HashComparison />} />
             <Route path="/compare" element={<AlgoCompare />} />
-            <Route path="/resume-reviewer" element={<ResumeReviewer />} />
           </Routes>
         </Suspense>
         <Footer />

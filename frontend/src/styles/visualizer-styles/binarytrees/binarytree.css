@@ -8,7 +8,7 @@
     margin-top: 1rem;
     padding: 0.75rem;
     background: var(--bg-tertiary);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
 }
 
 .concept-key-terms h4,
@@ -49,14 +49,14 @@
 }
 
 .legend-dot--default { background: var(--state-frontier); }
-.legend-dot--visiting { background: var(--warning); box-shadow: 0 0 8px var(--warning); }
+.legend-dot--visiting { background: var(--warning); }
 .legend-dot--visited { background: var(--state-visited); }
 
 /* Traversal Output Panel */
 .traversal-output-panel {
     margin-top: 1.5rem;
     padding: 1.25rem;
-    background: linear-gradient(135deg, rgba(var(--state-frontier-rgb), 0.1) 0%, rgba(var(--accent-rgb), 0.1) 100%);
+    background: rgba(var(--state-frontier-rgb), 0.06);
     border: 1px solid rgba(var(--state-frontier-rgb), 0.3);
     border-radius: var(--radius-lg);
 }
@@ -278,8 +278,8 @@
 
 .btn-traversal:hover {
     background: var(--bg-tertiary);
-    border-color: var(--accent-purple);
-    color: var(--accent-purple);
+    border-color: var(--accent);
+    color: var(--accent);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
@@ -326,7 +326,7 @@
 
 .traversal-header {
     font-weight: 700;
-    color: var(--accent-purple);
+    color: var(--accent);
     margin-bottom: 0.75rem;
     font-size: 0.95rem;
 }
@@ -354,10 +354,10 @@
 
 .traversal-value.highlighted {
     background: var(--accent-gradient);
-    border-color: var(--accent-purple);
+    border-color: var(--accent);
     color: white;
     transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(var(--state-frontier-rgb), 0.4);
+    box-shadow: var(--shadow-sm);
     animation: traversalHighlight 0.5s ease;
 }
 
@@ -394,7 +394,7 @@
 }
 
 .traversal-sequence .arrow {
-    color: var(--accent-purple);
+    color: var(--accent);
     font-weight: 700;
     font-size: 1.2rem;
 }
@@ -427,8 +427,8 @@
 
 .btn-secondary:hover {
     background: var(--bg-tertiary);
-    border-color: var(--accent-purple);
-    color: var(--accent-purple);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 /* Message Styles */

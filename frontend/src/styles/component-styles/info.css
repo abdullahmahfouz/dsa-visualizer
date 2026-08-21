@@ -46,6 +46,7 @@
     text-align: center;
     min-height: 2rem;
     margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
     font-weight: 500;
     font-size: 0.85rem;
     transition: all 0.3s ease;

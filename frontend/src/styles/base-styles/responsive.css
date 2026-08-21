@@ -26,28 +26,10 @@
         max-width: 320px;
     }
     
-    .hamburger-menu {
-        position: fixed;
-        top: 1rem;
-        left: 1rem;
-        z-index: 101;
-        background: var(--bg-secondary);
-        border: 1px solid var(--border-color);
-        padding: 0.75rem;
-        border-radius: var(--radius-md);
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-    
-    .hamburger-menu:hover {
-        background: var(--bg-tertiary);
-    }
-    
     .main-content {
         margin-left: 0;
-        padding-top: 4rem;
     }
-    
+
     /* Container adjustments */
     .container {
         padding: 0.75rem;

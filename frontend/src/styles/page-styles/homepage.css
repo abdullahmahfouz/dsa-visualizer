@@ -55,6 +55,24 @@
     object-fit: contain;
 }
 
+/* Compact mark shown only on the desktop icon rail, where there is
+   no room for the full wordmark - the wordmark itself now lives in
+   .top-app-bar instead. */
+.logo-mark {
+    display: none;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-label);
+    color: var(--accent-strong);
+    background: var(--accent-wash);
+    border: 1px solid var(--border);
+}
+
 /* Solid wordmark. Gradient-clipped brand text was reading as
    decoration rather than identity, and it fails badly at small sizes. */
 .logo-text {
@@ -223,7 +241,10 @@
     flex-direction: column;
 }
 
-.main-content > *:first-child {
+/* The routed page fills remaining height; the app bar and footer
+   (matched by class, not position) stay their intrinsic size now
+   that TopAppBar sits before the page content in the DOM. */
+.main-content > *:not(.top-app-bar):not(.main-footer) {
     flex: 1;
 }
 
@@ -904,30 +925,31 @@
     font-style: italic;
 }
 
-/* Mobile Menu Toggle - drawer trigger below the desktop breakpoint */
+/* Mobile Menu Toggle - drawer trigger below the desktop breakpoint.
+   Fixed at the same coordinates and height as .top-app-bar so it
+   reads as the bar's embedded left edge, not a floating control on
+   top of it (no radius/shadow/margin of its own). */
 .mobile-menu-toggle {
     display: flex;
     position: fixed;
-    top: 0.85rem;
-    left: 0.85rem;
-    z-index: var(--z-overlay);
-    width: 42px;
-    height: 42px;
-    background: var(--bg-raised);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-control);
+    top: 0;
+    left: 0;
+    z-index: calc(var(--z-sticky) + 1);
+    width: 3.5rem;
+    height: 48px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border);
     align-items: center;
     justify-content: center;
     cursor: pointer;
     color: var(--text-strong);
-    transition: background-color var(--transition-fast), border-color var(--transition-fast);
-    box-shadow: var(--shadow-md);
+    transition: background-color var(--transition-fast);
     -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-menu-toggle:hover {
-    background: var(--bg-overlay);
-    border-color: var(--border-strong);
+    background: var(--bg-sunken);
 }
 
 .mobile-menu-toggle:active {
@@ -977,10 +999,6 @@
 
 /* Responsive */
 @media (max-width: 1024px) {
-    .main-content {
-        padding-top: 4rem;
-    }
-    
     .hero-title {
         font-size: 3rem;
     }
@@ -1125,17 +1143,15 @@
 }
 
 @media (max-width: 480px) {
+    .top-app-bar {
+        padding-left: 3rem;
+        padding-right: 1rem;
+    }
+
     .mobile-menu-toggle {
-        width: 40px;
-        height: 40px;
-        top: 0.75rem;
-        left: 0.75rem;
+        width: 3rem;
     }
-    
-    .main-content {
-        padding-top: 3rem;
-    }
-    
+
     .explore-hero {
         padding: 2rem 1rem;
     }
@@ -1283,16 +1299,21 @@
     color: var(--text-muted);
     text-decoration: none;
     transition: color var(--transition-fast);
-    font-size: var(--text-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
 }
 
 .footer-link:hover {
-    color: var(--accent);
+    color: var(--accent-strong);
 }
 
 .footer-copyright {
     color: var(--text-muted);
-    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-label);
     margin: 0;
 }
 
@@ -1658,16 +1679,113 @@
    ============================================ */
 @media (min-width: 1025px) {
     .sidebar {
+        width: 64px;
         transform: none;
         box-shadow: none;
     }
 
     .main-content {
-        margin-left: 264px;
+        margin-left: 64px;
     }
 
     .mobile-menu-toggle,
     .sidebar-overlay {
+        display: none;
+    }
+
+    /* Compact icon rail: swap the wordmark for the small mark,
+       stack icon-over-label in each nav item, and collapse the
+       footer to its icons - the pattern reads instrument-panel
+       rather than app-sidebar at this width. */
+    .sidebar-header {
+        padding: 1rem 0;
+        display: flex;
+        justify-content: center;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .logo-mark {
+        display: flex;
+    }
+
+    .logo-text {
+        display: none;
+    }
+
+    .sidebar-nav {
+        padding: 0.75rem 0 0.5rem;
+    }
+
+    .nav-section {
+        padding: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .nav-section + .nav-section {
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--border);
+    }
+
+    .nav-section-title {
+        display: none;
+    }
+
+    .nav-item {
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.3rem;
+        padding: 0.6rem 0.25rem;
+        text-align: center;
+        margin-bottom: 0;
+        min-height: 52px;
+        min-width: 0;
+    }
+
+    .nav-item svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .nav-item span {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        line-height: 1.2;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        white-space: normal;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        hyphens: auto;
+        max-width: 100%;
+    }
+
+    .nav-item.active::before {
+        left: 0;
+        width: 2px;
+        height: 24px;
+        border-radius: 0;
+    }
+
+    .sidebar-footer {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .sidebar-footer-row {
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .social-links-sidebar {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .social-links-sidebar a,
+    .theme-toggle {
+        width: 100%;
+    }
+
+    .copyright {
         display: none;
     }
 }

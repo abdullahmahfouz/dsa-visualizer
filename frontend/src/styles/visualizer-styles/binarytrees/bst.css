@@ -4,8 +4,8 @@
 
 /* BST Property Box */
 .bst-property-box {
-    background: linear-gradient(135deg, rgba(var(--state-frontier-rgb), 0.2) 0%, rgba(var(--accent-rgb), 0.2) 100%);
-    border: 2px solid var(--accent-primary);
+    background: var(--accent-wash);
+    border: 1px solid var(--accent-primary);
     border-radius: var(--radius-md);
     padding: 0.75rem 1rem;
     margin: 0.75rem 0;
@@ -30,7 +30,6 @@
     color: var(--accent-primary);
     background: rgba(var(--state-frontier-rgb), 0.1);
     padding: 0.2rem 0.5rem;
-    border-radius: 4px;
 }
 
 /* Complexity Highlight */
@@ -59,7 +58,6 @@
     font-weight: 600;
     background: rgba(var(--state-visited-rgb), 0.1);
     padding: 0.2rem 0.5rem;
-    border-radius: 4px;
 }
 
 .complexity-bad {
@@ -67,7 +65,6 @@
     font-weight: 600;
     background: rgba(var(--state-invalid-rgb), 0.1);
     padding: 0.2rem 0.5rem;
-    border-radius: 4px;
 }
 
 .complexity-note {
@@ -77,8 +74,8 @@
 
 /* Search Button */
 .btn-search {
-    background: linear-gradient(135deg, var(--state-frontier) 0%, var(--state-frontier) 100%);
-    border: none;
+    background: var(--state-frontier);
+    border: 1px solid var(--state-frontier);
     color: white;
     display: flex;
     align-items: center;
@@ -86,9 +83,8 @@
 }
 
 .btn-search:hover {
-    background: linear-gradient(135deg, var(--state-frontier) 0%, var(--state-frontier) 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(var(--state-frontier-rgb), 0.4);
+    background: var(--state-frontier);
+    box-shadow: var(--shadow-sm);
 }
 
 /* Search Path Display */
@@ -118,19 +114,16 @@
     background: var(--state-frontier);
     color: white;
     padding: 0.25rem 0.5rem;
-    border-radius: 4px;
     font-size: 0.85rem;
     font-weight: 500;
 }
 
 .search-path-node.found {
     background: var(--state-visited);
-    box-shadow: 0 0 8px rgba(var(--state-visited-rgb), 0.5);
 }
 
 .search-path-node.not-found {
     background: var(--state-invalid);
-    box-shadow: 0 0 8px rgba(var(--state-invalid-rgb), 0.5);
 }
 
 .search-path-arrow {
@@ -141,7 +134,6 @@
 /* Legend for Search */
 .legend-dot--search {
     background: var(--state-frontier);
-    box-shadow: 0 0 6px var(--state-frontier);
 }
 
 /* Sorted Badge */
@@ -150,7 +142,6 @@
     background: var(--state-visited);
     color: white;
     padding: 0.15rem 0.4rem;
-    border-radius: 4px;
     margin-left: 0.5rem;
 }
 

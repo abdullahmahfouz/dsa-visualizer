@@ -27,12 +27,13 @@
    the brand colour is "where the algorithm is looking".
    Never introduce a fifth state hue without deleting one.
 
-   SHAPE RULE (one system, three steps)
-     --radius-control  interactive controls: buttons, inputs, pills
+   SHAPE RULE (instrument panel: sharp by default, one exception)
+     --radius-control  interactive controls: buttons, inputs
      --radius-surface  containers: cards, panels, tiles
      --radius-shell    large surfaces: modals, drawers, hero panels
-     --radius-full     pills and avatars ONLY
-   Nothing else. If a value is not one of these, it is a bug.
+   The three above are 0 - every edge is sharp, like a drafted
+   instrument face. --radius-full stays a true pill/circle for the
+   one legitimate exception: round avatars. Nothing else rounds.
 
    THEMING
    :root carries light. Dark is applied when the OS asks for it
@@ -43,27 +44,30 @@
 
 /* ------------------------------------------------------------
    TYPEFACES - self-hosted variable subsets (latin + latin-ext)
-   Geist for interface, Geist Mono for anything with a value in
-   it: complexities, code, array indices, node keys, counters.
+   Public Sans carries the display type (the one place headline
+   type appears). JetBrains Mono carries everything else: nav,
+   buttons, labels, badges, complexities, code, array indices,
+   node keys, counters - the instrument-panel language leans on
+   mono for its interface chrome, not just its data.
    ------------------------------------------------------------ */
 
 @font-face {
-    font-family: 'Geist';
+    font-family: 'Public Sans';
     font-style: normal;
-    font-weight: 300 700;
+    font-weight: 100 900;
     font-display: swap;
-    src: url('/fonts/geist-latin.woff2') format('woff2');
+    src: url('/fonts/public-sans-latin.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
                    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
                    U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-    font-family: 'Geist';
+    font-family: 'Public Sans';
     font-style: normal;
-    font-weight: 300 700;
+    font-weight: 100 900;
     font-display: swap;
-    src: url('/fonts/geist-latin-ext.woff2') format('woff2');
+    src: url('/fonts/public-sans-latin-ext.woff2') format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
                    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
                    U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
@@ -71,22 +75,22 @@
 }
 
 @font-face {
-    font-family: 'Geist Mono';
+    font-family: 'JetBrains Mono';
     font-style: normal;
-    font-weight: 400 600;
+    font-weight: 100 800;
     font-display: swap;
-    src: url('/fonts/geist-mono-latin.woff2') format('woff2');
+    src: url('/fonts/jetbrains-mono-latin.woff2') format('woff2');
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
                    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
                    U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-    font-family: 'Geist Mono';
+    font-family: 'JetBrains Mono';
     font-style: normal;
-    font-weight: 400 600;
+    font-weight: 100 800;
     font-display: swap;
-    src: url('/fonts/geist-mono-latin-ext.woff2') format('woff2');
+    src: url('/fonts/jetbrains-mono-latin-ext.woff2') format('woff2');
     unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
                    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
                    U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0,
@@ -100,10 +104,10 @@
 
 :root {
     /* ---- Typeface stacks ---- */
-    --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system,
+    --font-sans: 'Public Sans', ui-sans-serif, system-ui, -apple-system,
                  'Segoe UI', Roboto, sans-serif;
     --font-display: var(--font-sans);
-    --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo,
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo,
                  'Cascadia Mono', monospace;
 
     /* ---- Type scale (1.200 minor third, 16px base) ----
@@ -154,10 +158,10 @@
     --section-y: clamp(2.5rem, 1.6rem + 3.2vw, 4.5rem);
     --shell-max: 1400px;
 
-    /* ---- Shape: three steps, one system (see header) ---- */
-    --radius-control: 8px;
-    --radius-surface: 12px;
-    --radius-shell: 16px;
+    /* ---- Shape: sharp by default, one system (see header) ---- */
+    --radius-control: 0px;
+    --radius-surface: 0px;
+    --radius-shell: 0px;
     --radius-full: 9999px;
 
     /* Legacy aliases, collapsed onto the three-step scale so older
@@ -201,21 +205,21 @@
     color-scheme: light;
 
     /* Surfaces, sunken -> floating */
-    --bg-sunken: #f1f1ef;
-    --bg-base: #fbfbfa;
+    --bg-sunken: #f4f4f2;
+    --bg-base: #f9f9f7;
     --bg-raised: #ffffff;
     --bg-overlay: #ffffff;
 
     /* Text */
-    --text-strong: #16191c;
-    --text: #41484e;
-    --text-muted: #666d73;
+    --text-strong: #1a1c1b;
+    --text: #3e4947;
+    --text-muted: #5f5e5e;
 
     /* The one accent */
-    --accent: #bf4519;
-    --accent-strong: #99360f;
+    --accent: #0f766e;
+    --accent-strong: #005c55;
     --accent-ink: var(--ink-on-fill);
-    --accent-rgb: 191, 69, 25;          /* channels, for rgba() at arbitrary alpha */
+    --accent-rgb: 15, 118, 110;          /* channels, for rgba() at arbitrary alpha */
     --state-frontier-rgb: 21, 101, 216;
     --state-visited-rgb: 26, 127, 79;
     --state-invalid-rgb: 198, 40, 40;
@@ -249,16 +253,18 @@
     --info-muted: var(--state-frontier-wash);
 
     /* Lines */
-    --border: #e2e2df;
-    --border-strong: #cfcfcb;
-    --border-subtle: rgba(22, 25, 28, 0.07);
+    --border: #bdc9c6;
+    --border-strong: #6e7977;
+    --border-subtle: rgba(26, 28, 27, 0.07);
 
-    /* Elevation. Shadows are tinted toward the surface hue,
-       never pure black (4.4). */
-    --shadow-sm: 0 1px 2px rgba(22, 25, 28, 0.06);
-    --shadow-md: 0 2px 8px rgba(22, 25, 28, 0.07), 0 1px 2px rgba(22, 25, 28, 0.05);
-    --shadow-lg: 0 8px 24px rgba(22, 25, 28, 0.09), 0 2px 6px rgba(22, 25, 28, 0.05);
-    --shadow-xl: 0 16px 48px rgba(22, 25, 28, 0.12), 0 4px 12px rgba(22, 25, 28, 0.06);
+    /* Elevation. Near-flat: the instrument face reads through
+       hairline borders, not shadow. Shadows are tinted toward the
+       surface hue, never pure black (4.4), and reserved for true
+       overlays (badges, the mobile drawer) rather than every card. */
+    --shadow-sm: 0 1px 1px rgba(26, 28, 27, 0.05);
+    --shadow-md: 0 1px 2px rgba(26, 28, 27, 0.06), 0 1px 1px rgba(26, 28, 27, 0.04);
+    --shadow-lg: 0 4px 12px rgba(26, 28, 27, 0.08), 0 1px 3px rgba(26, 28, 27, 0.05);
+    --shadow-xl: 0 12px 32px rgba(26, 28, 27, 0.14), 0 3px 10px rgba(26, 28, 27, 0.07);
 
     /* Glass */
     --glass-bg: rgba(255, 255, 255, 0.72);
@@ -287,10 +293,10 @@
         --text: #c3c9cd;
         --text-muted: #8b9399;
 
-        --accent: #f26430;
-        --accent-strong: #ff8154;
+        --accent: #2dd4bf;
+        --accent-strong: #5eead4;
         --accent-ink: var(--ink-on-fill);
-        --accent-rgb: 242, 100, 48;
+        --accent-rgb: 45, 212, 191;
         --state-frontier-rgb: 74, 158, 255;
         --state-visited-rgb: 63, 191, 127;
         --state-invalid-rgb: 242, 85, 90;
@@ -319,14 +325,14 @@
         --info: var(--state-frontier);
         --info-muted: var(--state-frontier-wash);
 
-        --border: #262b30;
-        --border-strong: #363c43;
+        --border: #2a3230;
+        --border-strong: #3f4a47;
         --border-subtle: rgba(242, 244, 245, 0.07);
 
         --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-        --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
-        --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
-        --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+        --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+        --shadow-lg: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.28);
+        --shadow-xl: 0 14px 40px rgba(0, 0, 0, 0.55), 0 3px 10px rgba(0, 0, 0, 0.35);
 
         --glass-bg: rgba(255, 255, 255, 0.04);
         --glass-bg-hover: rgba(255, 255, 255, 0.07);
@@ -346,10 +352,10 @@
     --text: #c3c9cd;
     --text-muted: #8b9399;
 
-    --accent: #f26430;
-    --accent-strong: #ff8154;
+    --accent: #2dd4bf;
+    --accent-strong: #5eead4;
     --accent-ink: var(--ink-on-fill);
-    --accent-rgb: 242, 100, 48;
+    --accent-rgb: 45, 212, 191;
     --state-frontier-rgb: 74, 158, 255;
     --state-visited-rgb: 63, 191, 127;
     --state-invalid-rgb: 242, 85, 90;
@@ -378,14 +384,14 @@
     --info: var(--state-frontier);
     --info-muted: var(--state-frontier-wash);
 
-    --border: #262b30;
-    --border-strong: #363c43;
+    --border: #2a3230;
+    --border-strong: #3f4a47;
     --border-subtle: rgba(242, 244, 245, 0.07);
 
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
-    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.28);
+    --shadow-xl: 0 14px 40px rgba(0, 0, 0, 0.55), 0 3px 10px rgba(0, 0, 0, 0.35);
 
     --glass-bg: rgba(255, 255, 255, 0.04);
     --glass-bg-hover: rgba(255, 255, 255, 0.07);
@@ -441,7 +447,11 @@
     --shadow-glow: var(--shadow-md);
     --shadow-glow-lg: var(--shadow-lg);
 
-    --accent-gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
-    --accent-gradient-cool: linear-gradient(135deg, var(--state-frontier) 0%, var(--state-visited) 100%);
-    --accent-gradient-subtle: linear-gradient(135deg, var(--accent-wash) 0%, transparent 100%);
+    /* Flattened to solid fills - the instrument panel has no
+       gradients, decorative or otherwise (9.A). Kept as tokens
+       (not deleted) so the ~1,600 existing call sites that expect
+       a `background` value keep working unchanged. */
+    --accent-gradient: var(--accent);
+    --accent-gradient-cool: var(--state-frontier);
+    --accent-gradient-subtle: var(--accent-wash);
 }

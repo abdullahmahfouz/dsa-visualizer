@@ -4,6 +4,8 @@ import AIAssistant from '../../components/AIAssistant';
 import CodeTabs from '../../components/CodeTabs';
 import MessageBanner from '../../components/MessageBanner';
 import TimeTravelScrubber from '../../components/TimeTravelScrubber';
+import ComplexityBadge from '../../components/ComplexityBadge';
+import ExecutionTrace from '../../components/ExecutionTrace';
 import { getJson, postJson } from '../../api/api';
 import { useTimedMessage } from '../../hooks/useTimedMessage';
 import { useAlgorithmHistory } from '../../hooks/useAlgorithmHistory';
@@ -17,6 +19,7 @@ function BFSVisualizer() {
 
   // All history/playback logic lives in the hook - zero duplication with DFS
   const {
+    history,
     currentStepIndex,
     currentSnapshot,
     isPlaying,
@@ -242,42 +245,48 @@ function BFSVisualizer() {
           <MessageBanner message={message} />
         </div>
 
-        <div className="visual-panel">
-          <h2>BFS Visualization</h2>
-          <div className="graph-container">
-            {graph.vertices.length === 0 ? (
-              <div className="graph-empty">Loading graph...</div>
-            ) : (
-              <svg className="graph-svg" viewBox="0 0 500 350">
-                {graph.edges.map(([v1, v2], index) => {
-                  const pos1 = nodePositions[v1];
-                  const pos2 = nodePositions[v2];
-                  if (!pos1 || !pos2) return null;
-                  return (
-                    <line
-                      key={`edge-${index}`}
-                      x1={pos1.x} y1={pos1.y}
-                      x2={pos2.x} y2={pos2.y}
-                      className="graph-edge"
-                    />
-                  );
-                })}
+        <div className="visual-panel-with-trace">
+          <div className="visual-panel">
+            <ComplexityBadge time="O(V+E)" space="O(V)" />
+            <h2>BFS Visualization</h2>
+            <div className="graph-container">
+              {graph.vertices.length === 0 ? (
+                <div className="graph-empty">Loading graph...</div>
+              ) : (
+                <svg className="graph-svg" viewBox="0 0 500 350">
+                  {graph.edges.map(([v1, v2], index) => {
+                    const pos1 = nodePositions[v1];
+                    const pos2 = nodePositions[v2];
+                    if (!pos1 || !pos2) return null;
+                    return (
+                      <line
+                        key={`edge-${index}`}
+                        x1={pos1.x} y1={pos1.y}
+                        x2={pos2.x} y2={pos2.y}
+                        className="graph-edge"
+                      />
+                    );
+                  })}
 
-                {graph.vertices.map((vertex) => {
-                  const pos = nodePositions[vertex];
-                  if (!pos) return null;
-                  return (
-                    <g key={vertex} className={getNodeClass(vertex)}>
-                      <circle cx={pos.x} cy={pos.y} r={25} className="node-circle" />
-                      <text x={pos.x} y={pos.y} className="node-label" dominantBaseline="central" textAnchor="middle">
-                        {vertex}
-                      </text>
-                    </g>
-                  );
-                })}
-              </svg>
-            )}
+                  {graph.vertices.map((vertex) => {
+                    const pos = nodePositions[vertex];
+                    if (!pos) return null;
+                    return (
+                      <g key={vertex} className={getNodeClass(vertex)}>
+                        <circle cx={pos.x} cy={pos.y} r={25} className="node-circle" />
+                        <text x={pos.x} y={pos.y} className="node-label" dominantBaseline="central" textAnchor="middle">
+                          {vertex}
+                        </text>
+                      </g>
+                    );
+                  })}
+                </svg>
+              )}
+            </div>
           </div>
+          {totalSteps > 0 && (
+            <ExecutionTrace history={history} currentStepIndex={currentStepIndex} />
+          )}
         </div>
       </div>
 

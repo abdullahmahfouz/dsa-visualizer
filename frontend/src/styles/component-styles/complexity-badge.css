@@ -1,0 +1,39 @@
+/* ============================================
+   Complexity Badge
+   Floating readout for a visualizer's canvas - meant to sit inside
+   a `position: relative` panel, top-right corner.
+   ============================================ */
+
+.complexity-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: var(--z-raised);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.35rem 0.85rem;
+    background: var(--bg-sunken);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+.complexity-badge-stat {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.complexity-badge-stat strong {
+    color: var(--text-strong);
+    font-weight: var(--weight-semibold);
+}
+
+.complexity-badge-divider {
+    width: 1px;
+    align-self: stretch;
+    background: var(--border-strong);
+}

@@ -290,102 +290,70 @@ export function TreeRenderer({
   challengeWrongClick = null,
   onNodeClick = null,
 }) {
-  const getNodeStyle = (value) => {
-    // ── Challenge mode overrides all traversal/search coloring ──────────────
-    if (isChallengeMode) {
-      if (value === challengeWrongClick) {
-        return {
-          color: '#ef4444',
-          glow: 'drop-shadow(0 0 14px rgba(239,68,68,0.9))',
-          radius: 28, stroke: 3, fontSize: 14, fontWeight: 'bold',
-        };
-      }
-      if (challengeClickedNodes.includes(value)) {
-        return {
-          color: '#10b981',
-          glow: 'drop-shadow(0 0 10px rgba(16,185,129,0.8))',
-          radius: 28, stroke: 3, fontSize: 14, fontWeight: 'bold',
-        };
-      }
-      return {
-        color: '#6366f1', glow: 'none',
-        radius: 25, stroke: 2, fontSize: 14, fontWeight: 'normal',
-      };
+  // Flat instrument-panel fills, no glow - state reads through color and
+  // size alone (9.A bans decorative neon halos).
+  const getChallengeModeNodeStyle = (value) => {
+    if (value === challengeWrongClick) {
+      return { color: 'var(--state-invalid)', radius: 28, stroke: 3, fontSize: 14, fontWeight: 'bold' };
     }
+    if (challengeClickedNodes.includes(value)) {
+      return { color: 'var(--state-visited)', radius: 28, stroke: 3, fontSize: 14, fontWeight: 'bold' };
+    }
+    return { color: 'var(--accent)', radius: 25, stroke: 2, fontSize: 14, fontWeight: 'normal' };
+  };
 
-    // ── Normal mode ──────────────────────────────────────────────────────────
+  const getNormalModeNodeStyle = (value) => {
     const isCurrent      = currentNode === value;
     const isVisited      = visitedNodes.includes(value);
     const isInSearchPath = searchPath.includes(value);
     const isSearchTarget = searchPath.length > 0 && searchPath[searchPath.length - 1] === value;
 
-    let color = '#6366f1';
-    let glow  = 'none';
-
+    let color = 'var(--accent)';
     if (isCurrent) {
-      color = '#f59e0b';
-      glow  = 'drop-shadow(0 0 12px #f59e0b) drop-shadow(0 0 20px #f59e0b)';
+      color = 'var(--warning)';
     } else if (isSearchTarget) {
-      color = searchResult ? '#10b981' : '#ef4444';
-      glow  = searchResult ? 'drop-shadow(0 0 12px #10b981)' : 'drop-shadow(0 0 12px #ef4444)';
+      color = searchResult ? 'var(--state-visited)' : 'var(--state-invalid)';
     } else if (isInSearchPath) {
-      color = '#3b82f6';
-      glow  = 'drop-shadow(0 0 8px #3b82f6)';
+      color = 'var(--state-frontier)';
     } else if (isVisited) {
-      color = '#10b981';
-      glow  = 'drop-shadow(0 0 6px #10b981)';
+      color = 'var(--state-visited)';
     }
 
+    const emphasize = isCurrent || isSearchTarget;
     return {
       color,
-      glow,
-      radius:     isCurrent || isSearchTarget ? 30 : 25,
-      stroke:     isCurrent || isSearchTarget ? 3  : 2,
-      fontSize:   isCurrent || isSearchTarget ? 16 : 14,
-      fontWeight: isCurrent || isSearchTarget ? 'bold' : 'normal',
+      radius:     emphasize ? 30 : 25,
+      stroke:     emphasize ? 3  : 2,
+      fontSize:   emphasize ? 16 : 14,
+      fontWeight: emphasize ? 'bold' : 'normal',
     };
   };
 
-  const renderTree = (node, x, y, level, maxLevel) => {
-    if (!node) return [];
-    const spacing = Math.pow(2, maxLevel - level) * 50;
-    const style   = getNodeStyle(node.value);
-    const elements = [];
+  // Challenge mode overrides all traversal/search coloring.
+  const getNodeStyle = (value) =>
+    isChallengeMode ? getChallengeModeNodeStyle(value) : getNormalModeNodeStyle(value);
 
-    // Draw lines to children
-    if (node.left) {
-      const isPathLine = !isChallengeMode &&
-        searchPath.includes(node.value) && searchPath.includes(node.left.value);
-      elements.push(
-        <line
-          key={`l-${node.value}-l`}
-          x1={x} y1={y} x2={x - spacing} y2={y + 100}
-          stroke={isPathLine ? '#3b82f6' : 'rgba(255,255,255,0.3)'}
-          strokeWidth={isPathLine ? 3 : 2}
-        />
-      );
-      elements.push(...renderTree(node.left, x - spacing, y + 100, level + 1, maxLevel));
-    }
-    if (node.right) {
-      const isPathLine = !isChallengeMode &&
-        searchPath.includes(node.value) && searchPath.includes(node.right.value);
-      elements.push(
-        <line
-          key={`l-${node.value}-r`}
-          x1={x} y1={y} x2={x + spacing} y2={y + 100}
-          stroke={isPathLine ? '#3b82f6' : 'rgba(255,255,255,0.3)'}
-          strokeWidth={isPathLine ? 3 : 2}
-        />
-      );
-      elements.push(...renderTree(node.right, x + spacing, y + 100, level + 1, maxLevel));
-    }
+  const renderEdge = (parent, child, x1, y1, x2, y2) => {
+    const isPathLine = !isChallengeMode &&
+      searchPath.includes(parent.value) && searchPath.includes(child.value);
+    return (
+      <line
+        key={`l-${parent.value}-${child.value}`}
+        x1={x1} y1={y1} x2={x2} y2={y2}
+        stroke={isPathLine ? 'var(--state-frontier)' : 'var(--border-strong)'}
+        strokeWidth={isPathLine ? 3 : 2}
+      />
+    );
+  };
 
-    // Draw node - clickable in challenge mode
-    elements.push(
+  // Flat fill, hairline ring cut from the panel background (not a literal
+  // "white" that would vanish or clash depending on theme), no glow.
+  const renderNode = (node, x, y) => {
+    const style = getNodeStyle(node.value);
+    return (
       <g
         key={`n-${node.value}-${x}`}
         style={{
-          filter:     style.glow,
           transition: 'all 0.3s ease',
           cursor:     isChallengeMode ? 'pointer' : 'default',
         }}
@@ -393,18 +361,36 @@ export function TreeRenderer({
       >
         <circle
           cx={x} cy={y} r={style.radius}
-          fill={style.color} stroke="white" strokeWidth={style.stroke}
+          fill={style.color} stroke="var(--bg-raised)" strokeWidth={style.stroke}
           style={{ transition: 'all 0.3s ease' }}
         />
         <text
           x={x} y={y}
           textAnchor="middle" dominantBaseline="middle"
-          fill="white" fontSize={style.fontSize} fontWeight={style.fontWeight}
+          fill="var(--ink-on-fill)" fontFamily="var(--font-mono)"
+          fontSize={style.fontSize} fontWeight={style.fontWeight}
         >
           {node.value}
         </text>
       </g>
     );
+  };
+
+  const renderTree = (node, x, y, level, maxLevel) => {
+    if (!node) return [];
+    const spacing = Math.pow(2, maxLevel - level) * 50;
+    const elements = [];
+
+    if (node.left) {
+      elements.push(renderEdge(node, node.left, x, y, x - spacing, y + 100));
+      elements.push(...renderTree(node.left, x - spacing, y + 100, level + 1, maxLevel));
+    }
+    if (node.right) {
+      elements.push(renderEdge(node, node.right, x, y, x + spacing, y + 100));
+      elements.push(...renderTree(node.right, x + spacing, y + 100, level + 1, maxLevel));
+    }
+
+    elements.push(renderNode(node, x, y));
     return elements;
   };
 

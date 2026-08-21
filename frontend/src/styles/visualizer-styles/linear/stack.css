@@ -1,6 +1,8 @@
 /* ============================================
    Stack Visualizer Styles
-   Refined Warm Theme
+   Instrument-panel theme: flat teal fills, hairline base/empty
+   states, no glow (9.A) - matches the retheme in stack.css's
+   siblings across the linear family.
    ============================================ */
 
 /* Stack Container */
@@ -29,10 +31,10 @@
     width: 220px;
     padding: 0.85rem;
     background: var(--bg-tertiary);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-strong);
     border-top: none;
-    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     text-align: center;
+    font-family: var(--font-mono);
     font-weight: 600;
     font-size: 0.7rem;
     text-transform: uppercase;
@@ -44,11 +46,9 @@
 .stack-empty {
     padding: 3.5rem 2.25rem;
     color: var(--text-muted);
-    font-style: italic;
     text-align: center;
     background: var(--bg-tertiary);
-    border-radius: var(--radius-lg);
-    border: 2px dashed var(--border-color);
+    border: 1px dashed var(--border-strong);
     width: 220px;
     font-size: 0.9rem;
 }
@@ -57,60 +57,42 @@
 .stack-item {
     width: 220px;
     padding: 1.15rem 1.75rem;
-    background: var(--accent-gradient);
-    border-radius: var(--radius-md);
+    background: var(--accent);
+    border: 1px solid var(--accent-strong);
     text-align: center;
     font-weight: 700;
     font-size: 1.25rem;
     color: var(--bg-primary);
     position: relative;
     animation: stackPush 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    box-shadow:
-        var(--shadow-md),
-        0 0 20px rgba(var(--accent-rgb), 0.2);
-    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-normal);
 }
 
 .stack-item:hover {
-    transform: scale(1.03);
-    box-shadow:
-        var(--shadow-lg),
-        0 0 30px rgba(var(--accent-rgb), 0.3);
+    box-shadow: var(--shadow-md);
 }
 
-/* First item (top) gets special treatment */
+/* Top of stack: a solid darker fill marks it, no gradient mixing
+   the accent with an unrelated state hue. */
 .stack-item:first-child {
-    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--state-visited) 100%);
-    box-shadow:
-        var(--shadow-md),
-        0 0 25px rgba(var(--accent-rgb), 0.3);
-}
-
-.stack-item:first-child:hover {
-    box-shadow:
-        var(--shadow-lg),
-        0 0 35px rgba(var(--accent-rgb), 0.4);
+    background: var(--accent-strong);
 }
 
 @keyframes stackPush {
     from {
         opacity: 0;
-        transform: translateY(-35px) scale(0.85);
+        transform: translateY(-35px);
     }
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
     }
 }
 
 /* Top Item Styling */
 .stack-top {
-    background: linear-gradient(135deg, var(--accent-secondary) 0%, var(--state-visited) 100%);
-    box-shadow: var(--shadow-md), 0 0 25px rgba(var(--accent-rgb), 0.3);
-}
-
-.stack-top:hover {
-    box-shadow: var(--shadow-lg), 0 0 35px rgba(var(--accent-rgb), 0.4);
+    background: var(--accent-strong);
 }
 
 /* Top Marker */
@@ -119,6 +101,7 @@
     left: -65px;
     top: 50%;
     transform: translateY(-50%);
+    font-family: var(--font-mono);
     font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -127,17 +110,17 @@
     white-space: nowrap;
 }
 
-/* Highlight Animation */
+/* Highlight: a border pulse, not a glow. */
 .stack-highlight {
     animation: stackHighlight 1.2s ease-in-out infinite;
 }
 
 @keyframes stackHighlight {
     0%, 100% {
-        box-shadow: var(--shadow-md), 0 0 20px rgba(var(--accent-rgb), 0.3);
+        border-color: var(--accent-strong);
     }
     50% {
-        box-shadow: var(--shadow-lg), 0 0 40px rgba(var(--accent-rgb), 0.5);
+        border-color: var(--state-frontier);
     }
 }
 
