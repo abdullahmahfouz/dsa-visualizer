@@ -27,11 +27,7 @@ function Home() {
       <section className="home-hero">
         <div className="home-hero-inner">
           <div className="home-hero-copy">
-            <h1>
-              Watch data structures
-              <br />
-              <span>actually run.</span>
-            </h1>
+            <h1>Watch data structures actually run.</h1>
             <p>
               Step through algorithms one operation at a time, scrub backwards,
               and see exactly what changed.

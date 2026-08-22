@@ -9,11 +9,18 @@ Supported languages: Python, JavaScript, C++, Java, Go, Rust, and more
 """
 
 import os
+import re
 
 from flask import Blueprint, request, jsonify
 import requests
 
 practice_bp = Blueprint('practice', __name__, url_prefix='/api/practice')
+
+# Pasted `code` almost always ends with its own hardcoded demo/"# Test" section
+# (every starterCode and solutions[].code snippet in the problems data does).
+# That demo runs and prints before our generated driver does, so we mark where
+# the driver's own output begins and discard everything printed before it.
+TEST_DRIVER_SENTINEL = '__DSA_TEST_DRIVER_START__'
 
 JDOODLE_URL = "https://api.jdoodle.com/v1/execute"
 JDOODLE_CLIENT_ID = os.getenv("JDOODLE_CLIENT_ID")
@@ -33,6 +40,30 @@ LANGUAGES = {
     'ruby': {'name': 'ruby', 'versionIndex': '0'},
     'csharp': {'name': 'csharp', 'versionIndex': '0'},
 }
+
+
+def _split_top_level_args(raw):
+    """Split a comma-separated argument string on top-level commas only,
+    ignoring commas nested inside [], {}, () so e.g. '[1,2], [1,null,2]'
+    splits into ['[1,2]', '[1,null,2]']."""
+    args = []
+    depth = 0
+    current = ''
+    for ch in raw:
+        if ch in '[{(':
+            depth += 1
+            current += ch
+        elif ch in ']})':
+            depth -= 1
+            current += ch
+        elif ch == ',' and depth == 0:
+            args.append(current.strip())
+            current = ''
+        else:
+            current += ch
+    if current.strip():
+        args.append(current.strip())
+    return args
 
 
 def _run_via_jdoodle(language_code, version_index, code, stdin='', timeout=15):
@@ -219,6 +250,7 @@ def run_tests():
     code = data.get('code', '')
     test_cases = data.get('testCases', [])
     function_name = data.get('functionName', 'solution')
+    test_harness = data.get('testHarness')
 
     if not test_cases:
         return jsonify({'success': False, 'error': 'No test cases provided'}), 400
@@ -242,6 +274,12 @@ def run_tests():
             except:
                 pass
 
+            # testCases store JS-style literals (null/true/false); convert to the
+            # Python equivalents before splicing into the executed script.
+            python_input = re.sub(r'\bnull\b', 'None', test_input)
+            python_input = re.sub(r'\btrue\b', 'True', python_input)
+            python_input = re.sub(r'\bfalse\b', 'False', python_input)
+
             if is_class_test:
                 # Generate class driver
                 methods = input_data['methods']
@@ -250,6 +288,8 @@ def run_tests():
 
                 full_code = f"""import json
 {code}
+
+print("{TEST_DRIVER_SENTINEL}")
 
 # Test Driver
 def run_test():
@@ -279,9 +319,36 @@ def run_test():
 
 run_test()
 """
+            elif test_harness:
+                # Problem-specific harness (e.g. linked-list/tree problems that need
+                # to build ListNode/TreeNode objects via helpers already defined in
+                # `code`, and/or unwrap the result back into a plain array before
+                # comparing to `expected`). `test_harness` is a snippet template with
+                # {0}, {1}, ... placeholders for each top-level test-case argument,
+                # and must assign its final answer to a variable named `result`.
+                harness_args = _split_top_level_args(python_input)
+                filled = test_harness
+                for idx, arg in enumerate(harness_args):
+                    filled = filled.replace('{%d}' % idx, arg)
+                indented = '\n'.join('    ' + line for line in filled.split('\n'))
+                full_code = f"""{code}
+
+print("{TEST_DRIVER_SENTINEL}")
+
+# Test case {i + 1}
+try:
+{indented}
+    print(result)
+except Exception as e:
+    import sys
+    print(str(e), file=sys.stderr)
+    raise e
+"""
             else:
                 # Standard runner (Function or Class Solution)
                 full_code = f"""{code}
+
+print("{TEST_DRIVER_SENTINEL}")
 
 # Test case {i + 1}
 use_class = False
@@ -294,9 +361,9 @@ except:
 try:
     if use_class:
         s = Solution()
-        result = s.{function_name}({test_input})
+        result = s.{function_name}({python_input})
     else:
-        result = {function_name}({test_input})
+        result = {function_name}({python_input})
     print(result)
 except Exception as e:
     # Print error so it's captured in stderr
@@ -349,14 +416,20 @@ console.log(JSON.stringify(result));
                 })
                 continue
 
+            # Discard anything printed by the pasted code's own demo/"# Test"
+            # section - only what our driver printed after the sentinel counts.
+            output = result['output']
+            if language == 'python' and TEST_DRIVER_SENTINEL in output:
+                output = output.split(TEST_DRIVER_SENTINEL, 1)[1]
+
             # JDoodle doesn't separate stdout/stderr - on failure the traceback
             # lands in `output`, not `error`. Route it to error_output instead.
             if result['isExecutionSuccess']:
-                actual_output = result['output'].strip()
+                actual_output = output.strip()
                 error_output = ''
             else:
                 actual_output = ''
-                error_output = result['error'] or result['output']
+                error_output = result['error'] or output
 
             # Normalize outputs for comparison
             actual_normalized = actual_output.replace(' ', '').replace("'", '"')

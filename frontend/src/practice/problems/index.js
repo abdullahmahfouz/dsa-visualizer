@@ -1633,6 +1633,7 @@ print(solution([3,4,5,1,2]))`
             { input: '[1,2,3,4,5]', expected: '[5, 4, 3, 2, 1]' },
             { input: '[1,2]', expected: '[2, 1]' }
         ],
+        testHarness: 'result = to_array(solution(create_list({0})))',
         starterCode: {
             python: `class ListNode:
     def __init__(self, val=0, next=None):
@@ -1814,6 +1815,7 @@ print(to_array(solution(create_list([1,2,3,4,5]))))`
         testCases: [
             { input: '[1,2,4], [1,3,4]', expected: '[1, 1, 2, 3, 4, 4]' }
         ],
+        testHarness: 'result = to_array(solution(create_list({0}), create_list({1})))',
         starterCode: {
             python: `class ListNode:
     def __init__(self, val=0, next=None):
@@ -1957,6 +1959,7 @@ print(to_array(solution(l1, l2)))`
             { input: '[3,2,0,-4], 1', expected: 'True' },
             { input: '[1], -1', expected: 'False' }
         ],
+        testHarness: 'result = solution(create_list_with_cycle({0}, {1}))',
         starterCode: {
             python: `class ListNode:
     def __init__(self, val=0, next=None):
@@ -2073,6 +2076,7 @@ print(solution(head))`
             { input: '[3,2,0,-4], 1', expected: 'True' },
             { input: '[1], -1', expected: 'False' }
         ],
+        testHarness: 'result = solution(create_list_with_cycle({0}, {1}))',
         starterCode: {
             python: `class ListNode:
     def __init__(self, val=0, next=None):
@@ -2086,7 +2090,7 @@ def solution(head):
 # Helper to create list with cycle
 def create_list_with_cycle(arr, pos):
     if not arr: return None
-    nodes = [ListNode(v) for v v in arr]
+    nodes = [ListNode(v) for v in arr]
     for i in range(len(nodes) - 1):
         nodes[i].next = nodes[i + 1]
     if pos >= 0:
@@ -2192,6 +2196,7 @@ You may not modify the values in the list's nodes, only nodes themselves may be 
             { input: '[1,2,3,4]', expected: '[1, 4, 2, 3]' },
             { input: '[1,2,3,4,5]', expected: '[1, 5, 2, 4, 3]' }
         ],
+        testHarness: 'head = create_list({0})\nsolution(head)\nresult = to_array(head)',
         starterCode: {
             python: `class ListNode:
     def __init__(self, val=0, next=None):
@@ -2367,6 +2372,7 @@ print(to_array(head))`
         testCases: [
             { input: '[4,2,7,1,3,6,9]', expected: '[4, 7, 2, 9, 6, 3, 1]' }
         ],
+        testHarness: 'result = tree_to_list(solution(create_tree({0})))',
         starterCode: {
             python: `class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -2598,6 +2604,7 @@ print(tree_to_list(solution(create_tree([4,2,7,1,3,6,9]))))`
         testCases: [
             { input: '[3,9,20,null,null,15,7]', expected: '3' }
         ],
+        testHarness: 'result = solution(create_tree({0}))',
         starterCode: {
             python: `class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -2774,6 +2781,7 @@ print(solution(create_tree([3,9,20,None,None,15,7])))`
             { input: '[1,2,3], [1,2,3]', expected: 'True' },
             { input: '[1,2], [1,null,2]', expected: 'False' }
         ],
+        testHarness: 'result = solution(create_tree({0}), create_tree({1}))',
         starterCode: {
             python: `class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -2962,6 +2970,7 @@ print(solution(p, q))`
             { input: '[1,2,3], [1,2,3]', expected: 'True' },
             { input: '[1,2], [1,null,2]', expected: 'False' }
         ],
+        testHarness: 'result = solution(create_tree({0}), create_tree({1}))',
         starterCode: {
             python: `class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -3151,6 +3160,7 @@ print(solution(p, q))`
             { input: '[3,1,4,null,2], 1', expected: '1' },
             { input: '[5,3,6,2,4,null,null,1], 3', expected: '3' }
         ],
+        testHarness: 'result = solution(create_tree({0}), {1})',
         starterCode: {
             python: `class TreeNode:
     def __init__(self, val=0, left=None, right=None):
@@ -3654,6 +3664,7 @@ print(solution(grid))`
             { input: '[1,2,3], [1,2,3]', expected: 'True' },
             { input: '[1,2], [1,null,2]', expected: 'False' }
         ],
+        testHarness: 'result = solution(create_tree({0}), create_tree({1}))',
         starterCode: {
             python: `class TreeNode:
     def __init__(self, val=0, left=None, right=None):

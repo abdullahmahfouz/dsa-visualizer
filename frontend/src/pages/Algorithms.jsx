@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowRight, ChevronDown, ChevronUp, Rows, Hash, ListTree, GitBranch, Network } from 'lucide-react';
 import {
   StackIcon, QueueIcon, LinkedListIcon, SkipListIcon,
-  HashTableIcon, HashChainingIcon, HashProbeIcon,
+  HashChainingIcon, HashProbeIcon,
   BinaryTreeIcon, BSTIcon, AVLIcon, SplayIcon, TreapIcon,
   MinHeapIcon, MaxHeapIcon,
-  GraphIcon, AdjMatrixIcon, AdjListIcon, BFSIcon, DFSIcon,
-  LinearIcon, TreeCategoryIcon, HeapCategoryIcon,
+  AdjMatrixIcon, AdjListIcon, BFSIcon, DFSIcon,
 } from '../components/DSAIcons';
 
 function Algorithms() {
@@ -21,7 +20,7 @@ function Algorithms() {
     {
       id: 'linear',
       name: 'Linear Data Structures',
-      icon: LinearIcon,
+      icon: Rows,
       description: 'Elements stored sequentially where each element has a unique predecessor and successor. These are the building blocks of computer science - simple to implement yet powerful enough to solve complex problems.',
       items: [
         {
@@ -58,7 +57,7 @@ function Algorithms() {
     {
       id: 'hash',
       name: 'Hash-Tables',
-      icon: HashTableIcon,
+      icon: Hash,
       description: 'Revolutionary data structures that use hash functions to map keys to array indices, enabling O(1) average-case lookup, insertion, and deletion. The backbone of databases, caches, and any system requiring fast key-value access.',
       items: [
         {
@@ -87,7 +86,7 @@ function Algorithms() {
     {
       id: 'heaps',
       name: 'Priority Queues & Heaps',
-      icon: HeapCategoryIcon,
+      icon: ListTree,
       description: 'Complete binary trees satisfying the heap property - either every parent ≥ children (max-heap) or every parent ≤ children (min-heap). Heaps power priority queues, enabling O(1) access to the extreme element and O(log n) insertions and deletions.',
       items: [
         {
@@ -109,7 +108,7 @@ function Algorithms() {
     {
       id: 'trees',
       name: 'Binary Trees',
-      icon: TreeCategoryIcon,
+      icon: GitBranch,
       description: 'Hierarchical data structures where data flows from a root node down through children. Trees enable O(log n) operations on sorted data and model real-world hierarchies like file systems, organization charts, and decision trees in AI/ML.',
       items: [
         {
@@ -153,7 +152,7 @@ function Algorithms() {
     {
       id: 'Graphs',
       name: 'Graphs',
-      icon: GraphIcon,
+      icon: Network,
       description: 'Graphs model relationships between objects using vertices (nodes) and edges (connections). They power social networks, GPS navigation, recommendation systems, and the internet itself. Understanding graphs unlocks solutions to complex real-world problems like finding shortest paths, detecting communities, and optimizing networks.',
       items: [
         {

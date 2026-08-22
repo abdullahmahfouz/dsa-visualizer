@@ -215,7 +215,8 @@ function PracticePage() {
           language,
           code,
           testCases: currentProblem.testCases,
-          functionName: 'solution'
+          functionName: 'solution',
+          testHarness: currentProblem.testHarness
         })
       });
 
